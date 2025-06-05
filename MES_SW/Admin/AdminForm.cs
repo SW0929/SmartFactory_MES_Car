@@ -18,7 +18,7 @@ namespace mes
         // TODO : 로그인 한 사용자 이름, 사번 좌측 상단에 표시
         public AdminForm(string UserID, string UserName)
         {
-            
+
             InitializeComponent();
             _UserID = UserID;
             _UserName = UserName;
@@ -27,7 +27,7 @@ namespace mes
             //string query = "SELECT EmployeeID, UserName FROM Users WHERE UserName = @UserName";
         }
 
-        
+
 
         #region methods
         private void LoadControl(UserControl control)
@@ -67,8 +67,15 @@ namespace mes
 
         private void ExitButton_Click(object sender, EventArgs e)
         {
-            Close();
+            Application.Exit(); // 애플리케이션 종료
 
+        }
+
+        private void LogOutButton_Click(object sender, EventArgs e)
+        {
+            // 로그아웃 처리
+            this.Tag = "Logout";  // Logout임을 표시
+            this.Close();         // 폼 닫기 → 다시 LoginForm 띄움
         }
         #endregion
 
