@@ -41,6 +41,7 @@
             timer1 = new System.Windows.Forms.Timer(components);
             CurrentTime = new Label();
             AdminName = new Label();
+            LogOutButton = new Button();
             tableLayoutPanel1.SuspendLayout();
             panelMenu.SuspendLayout();
             SuspendLayout();
@@ -157,6 +158,8 @@
             // 
             // CurrentTime
             // 
+            CurrentTime.BackColor = Color.DimGray;
+            CurrentTime.ForeColor = Color.White;
             CurrentTime.Location = new Point(1221, 19);
             CurrentTime.Name = "CurrentTime";
             CurrentTime.Size = new Size(214, 49);
@@ -172,12 +175,23 @@
             AdminName.TabIndex = 8;
             AdminName.Text = "관리자 이름";
             // 
+            // LogOutButton
+            // 
+            LogOutButton.Location = new Point(135, 15);
+            LogOutButton.Name = "LogOutButton";
+            LogOutButton.Size = new Size(75, 23);
+            LogOutButton.TabIndex = 9;
+            LogOutButton.Text = "로그아웃";
+            LogOutButton.UseVisualStyleBackColor = true;
+            LogOutButton.Click += LogOutButton_Click;
+            // 
             // AdminForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1447, 673);
+            Controls.Add(LogOutButton);
             Controls.Add(AdminName);
             Controls.Add(CurrentTime);
             Controls.Add(panelMain);
@@ -203,5 +217,6 @@
         private Label CurrentTime;
         private Button EquipmentDefectButton;
         private Label AdminName;
+        private Button LogOutButton;
     }
 }

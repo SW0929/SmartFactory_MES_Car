@@ -42,6 +42,7 @@
             WorkerName = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
             CurrentTime = new Label();
+            LogOutButton = new Button();
             panel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -177,12 +178,23 @@
             // 
             // CurrentTime
             // 
+            CurrentTime.BackColor = Color.DimGray;
+            CurrentTime.ForeColor = Color.White;
             CurrentTime.Location = new Point(1270, 20);
             CurrentTime.Name = "CurrentTime";
             CurrentTime.Size = new Size(165, 42);
             CurrentTime.TabIndex = 3;
-            CurrentTime.Text = "현재 시각";
             CurrentTime.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // LogOutButton
+            // 
+            LogOutButton.Location = new Point(164, 17);
+            LogOutButton.Name = "LogOutButton";
+            LogOutButton.Size = new Size(75, 23);
+            LogOutButton.TabIndex = 4;
+            LogOutButton.Text = "로그아웃";
+            LogOutButton.UseVisualStyleBackColor = true;
+            LogOutButton.Click += LogOutButton_Click;
             // 
             // WorkerForm
             // 
@@ -190,6 +202,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1447, 673);
+            Controls.Add(LogOutButton);
             Controls.Add(CurrentTime);
             Controls.Add(WorkerName);
             Controls.Add(PanelMain);
@@ -217,5 +230,6 @@
         private Label WorkerName;
         private System.Windows.Forms.Timer timer1;
         private Label CurrentTime;
+        private Button LogOutButton;
     }
 }

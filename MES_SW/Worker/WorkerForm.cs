@@ -45,7 +45,7 @@ namespace mes
 
         private void ExitButton_Click(object sender, EventArgs e)
         {
-            Close();
+            Application.Exit(); // 애플리케이션 종료
         }
 
         private void DashboardButton_Click(object sender, EventArgs e)
@@ -57,6 +57,13 @@ namespace mes
         private void timer1_Tick(object sender, EventArgs e)
         {
             CurrentTime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:MM:ss"); // 현재 시간을 "yyyy-MM-dd HH:mm:ss" 형식으로 표시
+        }
+
+        private void LogOutButton_Click(object sender, EventArgs e)
+        {
+            // 로그아웃 처리
+            this.Tag = "Logout";  // Logout임을 표시
+            this.Close();         // 폼 닫기 → 다시 LoginForm 띄움
         }
     }
 }
