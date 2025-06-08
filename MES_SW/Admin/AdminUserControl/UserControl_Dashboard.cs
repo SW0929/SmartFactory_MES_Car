@@ -25,6 +25,7 @@ namespace MES_SW.Admin
 
         private void LoadDashBoardData()
         {
+            // TODO : ProcessID 를 ProcessName로 변경
             string query = "SELECT * FROM WorkOrderProcess";
             dataGridView1.DataSource = DBHelper.ExecuteDataTable(query);
             dataGridView1.Columns["StartTime"].DefaultCellStyle.Format = "yyyy-MM-dd tt h:mm:ss";
