@@ -46,6 +46,8 @@
             StatusColour = new Label();
             AdminNameLabel = new Label();
             StatusLabel = new Label();
+            EquipmentLabel = new Label();
+            EquipmentComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -71,7 +73,7 @@
             // 
             // QuantityTextBox
             // 
-            QuantityTextBox.Location = new Point(100, 65);
+            QuantityTextBox.Location = new Point(100, 88);
             QuantityTextBox.Name = "QuantityTextBox";
             QuantityTextBox.Size = new Size(100, 23);
             QuantityTextBox.TabIndex = 4;
@@ -79,7 +81,7 @@
             // QuantityLabel
             // 
             QuantityLabel.AutoSize = true;
-            QuantityLabel.Location = new Point(32, 68);
+            QuantityLabel.Location = new Point(32, 91);
             QuantityLabel.Name = "QuantityLabel";
             QuantityLabel.Size = new Size(62, 15);
             QuantityLabel.TabIndex = 3;
@@ -88,7 +90,7 @@
             // StartDateLabel
             // 
             StartDateLabel.AutoSize = true;
-            StartDateLabel.Location = new Point(32, 113);
+            StartDateLabel.Location = new Point(32, 136);
             StartDateLabel.Name = "StartDateLabel";
             StartDateLabel.Size = new Size(46, 15);
             StartDateLabel.TabIndex = 5;
@@ -96,7 +98,7 @@
             // 
             // StartDateTimePicker
             // 
-            StartDateTimePicker.Location = new Point(100, 113);
+            StartDateTimePicker.Location = new Point(100, 136);
             StartDateTimePicker.Name = "StartDateTimePicker";
             StartDateTimePicker.Size = new Size(200, 23);
             StartDateTimePicker.TabIndex = 9;
@@ -146,6 +148,8 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(EquipmentComboBox);
+            panel1.Controls.Add(EquipmentLabel);
             panel1.Controls.Add(WorkOrderIDLabel);
             panel1.Controls.Add(ProductNameComboBox);
             panel1.Controls.Add(DepartmentComboBox);
@@ -166,7 +170,7 @@
             // WorkOrderIDLabel
             // 
             WorkOrderIDLabel.AutoSize = true;
-            WorkOrderIDLabel.Location = new Point(32, 255);
+            WorkOrderIDLabel.Location = new Point(32, 278);
             WorkOrderIDLabel.Name = "WorkOrderIDLabel";
             WorkOrderIDLabel.Size = new Size(83, 15);
             WorkOrderIDLabel.TabIndex = 20;
@@ -186,7 +190,7 @@
             DepartmentComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             DepartmentComboBox.FormattingEnabled = true;
             DepartmentComboBox.Items.AddRange(new object[] { "프레스", "차제", "도장", "의장", "검사" });
-            DepartmentComboBox.Location = new Point(100, 155);
+            DepartmentComboBox.Location = new Point(100, 178);
             DepartmentComboBox.Name = "DepartmentComboBox";
             DepartmentComboBox.Size = new Size(121, 23);
             DepartmentComboBox.TabIndex = 18;
@@ -194,7 +198,7 @@
             // DepartmentNameLabel
             // 
             DepartmentNameLabel.AutoSize = true;
-            DepartmentNameLabel.Location = new Point(32, 158);
+            DepartmentNameLabel.Location = new Point(32, 181);
             DepartmentNameLabel.Name = "DepartmentNameLabel";
             DepartmentNameLabel.Size = new Size(42, 15);
             DepartmentNameLabel.TabIndex = 17;
@@ -213,7 +217,7 @@
             // AdminNameLabel
             // 
             AdminNameLabel.AutoSize = true;
-            AdminNameLabel.Location = new Point(32, 213);
+            AdminNameLabel.Location = new Point(32, 236);
             AdminNameLabel.Name = "AdminNameLabel";
             AdminNameLabel.Size = new Size(43, 15);
             AdminNameLabel.TabIndex = 13;
@@ -227,6 +231,24 @@
             StatusLabel.Size = new Size(31, 15);
             StatusLabel.TabIndex = 12;
             StatusLabel.Text = "상태";
+            // 
+            // EquipmentLabel
+            // 
+            EquipmentLabel.AutoSize = true;
+            EquipmentLabel.Location = new Point(36, 59);
+            EquipmentLabel.Name = "EquipmentLabel";
+            EquipmentLabel.Size = new Size(34, 15);
+            EquipmentLabel.TabIndex = 21;
+            EquipmentLabel.Text = "설비:";
+            // 
+            // EquipmentComboBox
+            // 
+            EquipmentComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            EquipmentComboBox.FormattingEnabled = true;
+            EquipmentComboBox.Location = new Point(100, 56);
+            EquipmentComboBox.Name = "EquipmentComboBox";
+            EquipmentComboBox.Size = new Size(121, 23);
+            EquipmentComboBox.TabIndex = 22;
             // 
             // UserControl_WorkOrder
             // 
@@ -268,5 +290,7 @@
         private ComboBox DepartmentComboBox;
         private ComboBox ProductNameComboBox;
         private Label WorkOrderIDLabel;
+        private ComboBox EquipmentComboBox;
+        private Label EquipmentLabel;
     }
 }

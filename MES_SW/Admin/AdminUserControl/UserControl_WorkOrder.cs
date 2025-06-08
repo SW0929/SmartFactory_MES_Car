@@ -73,7 +73,10 @@ namespace MES_SW.Admin
             if (ProductNameComboBox.Items.Count > 0)
                 ProductNameComboBox.SelectedIndex = 0; // 기본 선택값 설정
         }
+
         #endregion
+
+
 
         #region Event_Handlers
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -161,15 +164,25 @@ namespace MES_SW.Admin
                 new SqlParameter("@StartDate", StartDateTimePicker.Value),
                 new SqlParameter("@IssueBy", int.Parse(_adminID))
             };
-            
-            //TODO : 설비 추가 여부 확인하기
+
+            //TODO : 현재 설비가 중복으로 선택되는 문제가 발생 해결 필요****************************************************
+            int __processId = 1; // 실제 공정에 맞게 동적으로 결정
+            int selectedEquipmentId = DBHelper.GetAvailableEquipmentId(__processId);
+
+            if (selectedEquipmentId == 0)
+            {
+                MessageBox.Show("사용 가능한 설비가 없습니다.");
+                return;
+            }
+
             //WorkOrderProcess 테이블에 작업 지시 추가
             string workOrderProcessQuery = @"INSERT 
-                              INTO WorkOrderProcess (WorkOrderID, ProcessID, Status)
-                              VALUES(@WorkOrderID, 1, '대기')";
+                              INTO WorkOrderProcess (WorkOrderID, ProcessID, EquipmentID, Status)
+                              VALUES(@WorkOrderID, 1, @EquipmentID, '대기')";
             SqlParameter[] workOrderProcessParameters = new SqlParameter[]
             {
                 new SqlParameter("@WorkOrderID", 0), // 마지막으로 추가된 작업 지시 ID
+                new SqlParameter("@EquipmentID", selectedEquipmentId) // 선택된 설비 ID
                 
             };
             // 실행
@@ -195,6 +208,7 @@ namespace MES_SW.Admin
                 new SqlParameter("@ProductID", ((ProductItem)ProductNameComboBox.SelectedItem).ProductID),
                 new SqlParameter("@OrderQty", QuantityTextBox.Text),
                 new SqlParameter("@StartDate", StartDateTimePicker.Value),
+                new SqlParameter("@WorkOrderID", WorkOrderIDLabel.Text),
                 new SqlParameter("@IssueBy", AdminNameLabel.Text)
             };
             try
@@ -219,18 +233,31 @@ namespace MES_SW.Admin
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            string query = @"DELETE FROM WorkOrders WHERE WorkOrderID = @WorkOrderID";
-            SqlParameter[] parameters = new SqlParameter[]
+            string workOrderId = WorkOrderIDLabel.Text;
+
+            // 1. 먼저 WorkOrderProcess에서 해당 작업지시 삭제
+            string deleteProcessQuery = @"DELETE FROM WorkOrderProcess WHERE WorkOrderID = @WorkOrderID";
+            SqlParameter[] processParams = 
             {
-                new SqlParameter("@WorkOrderID", WorkOrderIDLabel.Text)
+                new SqlParameter("@WorkOrderID", workOrderId)
             };
+
+            // 2. 그 다음 WorkOrders 삭제
+            string deleteOrderQuery = @"DELETE FROM WorkOrders WHERE WorkOrderID = @WorkOrderID";
+            SqlParameter[] orderParams = 
+            {
+                new SqlParameter("@WorkOrderID", workOrderId)
+            };
+
             try
             {
-                int rowsAffected = DBHelper.ExecuteNonQuery(query, parameters);
+                DBHelper.ExecuteNonQuery(deleteProcessQuery, processParams);
+                int rowsAffected = DBHelper.ExecuteNonQuery(deleteOrderQuery, orderParams);
+
                 if (rowsAffected > 0)
                 {
                     MessageBox.Show("생산 지시가 삭제되었습니다.");
-                    LoadWorkOrders(); // 작업 지시 목록 새로 고침
+                    LoadWorkOrders(); // 목록 새로고침
                 }
                 else
                 {
@@ -251,7 +278,6 @@ namespace MES_SW.Admin
             WorkOrderIDLabel.Text = string.Empty; // 작업 지시 ID 초기화
             StatusColour.BackColor = SystemColors.Control; // 상태 색상 초기화
 
-            
         }
         #endregion
     }

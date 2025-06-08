@@ -125,5 +125,29 @@ namespace MES_SW.DB
             }
         }
 
+        // 공정 흐름에 맞는 설비 자동 부여하기 위한 메서드
+        public static int GetAvailableEquipmentId(int processId)
+        {
+            int equipmentId = 0;
+            string query = @"
+                            SELECT TOP 1 EquipmentID
+                            FROM Equipment
+                            WHERE ProcessID = @ProcessID AND Status = '대기'
+                            "; // 혹은 다른 기준
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@ProcessID", processId);
+                conn.Open();
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    equipmentId = Convert.ToInt32(result);
+            }
+
+            return equipmentId; // 없으면 0
+        }
+
+
     }
 }
