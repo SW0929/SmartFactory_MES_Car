@@ -120,6 +120,38 @@ namespace MES_SW.Worker.WorkerUserControl
                 MessageBox.Show("오류 발생: " + ex.Message);
 
             }
+
+            string query3 = @"UPDATE e
+                            SET e.Status = '가동'
+                            FROM Equipment e
+                            JOIN WorkOrderProcess wop ON e.EquipmentID = wop.EquipmentID
+                            JOIN WorkOrders wds ON wop.WorkOrderID = wds.WorkOrderID
+                            WHERE wds.WorkOrderID = @WorkOrderID
+                            ";
+            SqlParameter[] parameters3 = new SqlParameter[]
+            {
+                new SqlParameter("@WorkOrderID", SqlDbType.Int) { Value = int.Parse(WorkOrderID.Text) }
+            };
+
+            try
+            {
+                int affectedRows3 = DBHelper.ExecuteNonQuery(query3, parameters3);
+                if (affectedRows3 > 0)
+                {
+                    MessageBox.Show("설비 가동");
+                }
+                else
+                {
+                    MessageBox.Show("설비 가동 실패");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("오류 발생: " + ex.Message);
+
+            }
+
+
         }
 
         private void EndButton_Click(object sender, EventArgs e)
@@ -173,6 +205,38 @@ namespace MES_SW.Worker.WorkerUserControl
             {
                 MessageBox.Show("오류 발생: " + ex.Message);
             }
+
+            string query3 = @"UPDATE e
+                            SET e.Status = '대기', e.LastUsedTime = @LastUsedTime
+                            FROM Equipment e
+                            JOIN WorkOrderProcess wop ON e.EquipmentID = wop.EquipmentID
+                            JOIN WorkOrders wds ON wop.WorkOrderID = wds.WorkOrderID
+                            WHERE wds.WorkOrderID = @WorkOrderID
+                            ";
+            SqlParameter[] parameters3 = new SqlParameter[]
+            {
+                new SqlParameter("@WorkOrderID", SqlDbType.Int) { Value = int.Parse(WorkOrderID.Text) },
+                new SqlParameter("@LastUsedTime", SqlDbType.DateTime) { Value = DateTime.Now }
+            };
+
+            try
+            {
+                int affectedRows3 = DBHelper.ExecuteNonQuery(query3, parameters3);
+                if (affectedRows3 > 0)
+                {
+                    MessageBox.Show("설비 가동 종료");
+                }
+                else
+                {
+                    MessageBox.Show("설비 가동 종료 실패");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("오류 발생: " + ex.Message);
+
+            }
+
         }
         
     }

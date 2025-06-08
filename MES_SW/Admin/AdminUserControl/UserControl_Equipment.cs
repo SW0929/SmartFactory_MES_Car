@@ -31,13 +31,16 @@ namespace MES_SW.Admin
             // LastUsedTime 컬럼이 null인 경우 '미사용'으로 표기
             // TODO : 조인 통해서 프로세스 이름 표시
             string query = @"
-                            SELECT EquipmentID, Name, Type, Status, ProcessID, ISNULL(CONVERT(VARCHAR, LastUsedTime, 23), '미사용') AS LastUsedTime 
+                            SELECT EquipmentID, Name, Type, Status, ProcessID, ISNULL(CONVERT(VARCHAR, LastUsedTime, 120), '미사용') AS LastUsedTime 
                             FROM Equipment
                             ORDER BY ProcessID
                             ";
             //Join Process ON Equipment.ProcessID = Process.ProcessID
             dataGridView1.DataSource = DBHelper.ExecuteDataTable(query);
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridView1.Columns["LastUsedTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            
 
         }
 
