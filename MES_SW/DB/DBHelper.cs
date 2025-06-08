@@ -147,7 +147,7 @@ namespace MES_SW.DB
 
             return equipmentId; // 없으면 0
         }
-
+        
 
     }
 }
