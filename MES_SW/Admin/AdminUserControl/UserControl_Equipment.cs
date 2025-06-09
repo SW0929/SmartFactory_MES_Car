@@ -21,7 +21,6 @@ namespace MES_SW.Admin
         {
 
             InitializeComponent();
-            
         }
 
         #region Load_Methods
