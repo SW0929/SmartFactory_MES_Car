@@ -39,6 +39,8 @@
             DeleteButton = new Button();
             dataGridView1 = new DataGridView();
             panel1 = new Panel();
+            EquipmentComboBox = new ComboBox();
+            EquipmentLabel = new Label();
             WorkOrderIDLabel = new Label();
             ProductNameComboBox = new ComboBox();
             DepartmentComboBox = new ComboBox();
@@ -46,8 +48,6 @@
             StatusColour = new Label();
             AdminNameLabel = new Label();
             StatusLabel = new Label();
-            EquipmentLabel = new Label();
-            EquipmentComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -167,6 +167,24 @@
             panel1.Size = new Size(314, 393);
             panel1.TabIndex = 16;
             // 
+            // EquipmentComboBox
+            // 
+            EquipmentComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            EquipmentComboBox.FormattingEnabled = true;
+            EquipmentComboBox.Location = new Point(100, 56);
+            EquipmentComboBox.Name = "EquipmentComboBox";
+            EquipmentComboBox.Size = new Size(121, 23);
+            EquipmentComboBox.TabIndex = 22;
+            // 
+            // EquipmentLabel
+            // 
+            EquipmentLabel.AutoSize = true;
+            EquipmentLabel.Location = new Point(36, 59);
+            EquipmentLabel.Name = "EquipmentLabel";
+            EquipmentLabel.Size = new Size(34, 15);
+            EquipmentLabel.TabIndex = 21;
+            EquipmentLabel.Text = "설비:";
+            // 
             // WorkOrderIDLabel
             // 
             WorkOrderIDLabel.AutoSize = true;
@@ -232,24 +250,6 @@
             StatusLabel.TabIndex = 12;
             StatusLabel.Text = "상태";
             // 
-            // EquipmentLabel
-            // 
-            EquipmentLabel.AutoSize = true;
-            EquipmentLabel.Location = new Point(36, 59);
-            EquipmentLabel.Name = "EquipmentLabel";
-            EquipmentLabel.Size = new Size(34, 15);
-            EquipmentLabel.TabIndex = 21;
-            EquipmentLabel.Text = "설비:";
-            // 
-            // EquipmentComboBox
-            // 
-            EquipmentComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            EquipmentComboBox.FormattingEnabled = true;
-            EquipmentComboBox.Location = new Point(100, 56);
-            EquipmentComboBox.Name = "EquipmentComboBox";
-            EquipmentComboBox.Size = new Size(121, 23);
-            EquipmentComboBox.TabIndex = 22;
-            // 
             // UserControl_WorkOrder
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -263,6 +263,7 @@
             Controls.Add(label1);
             Name = "UserControl_WorkOrder";
             Size = new Size(1098, 600);
+            Load += UserControl_WorkOrder_Load;
             Click += UserControl_WorkOrder_Click;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             panel1.ResumeLayout(false);

@@ -24,12 +24,18 @@ namespace MES_SW.Admin
             InitializeComponent();
             _adminID = AdminID; // 관리자 ID 설정
             AdminNameLabel.Text = _adminID; // 관리자 이름 설정 (예시로 EmployeeID로 설정, 실제로는 로그인 정보에서 가져와야 함) ******************수정 필요
-            LoadWorkOrders(); // 작업 지시 로드
-            LoadProductName(); // 제품 이름 로드
+            
             StartDateTimePicker.Value = DateTime.Now; // 시작 날짜를 현재 시간으로 설정
         }
 
         #region Load_Methods
+
+        private void UserControl_WorkOrder_Load(object sender, EventArgs e)
+        {
+            LoadWorkOrders(); // 작업 지시 로드
+            LoadProductName(); // 제품 이름 로드
+        }
+
         public void LoadWorkOrders()
         {
             string query = @"
@@ -237,14 +243,14 @@ namespace MES_SW.Admin
 
             // 1. 먼저 WorkOrderProcess에서 해당 작업지시 삭제
             string deleteProcessQuery = @"DELETE FROM WorkOrderProcess WHERE WorkOrderID = @WorkOrderID";
-            SqlParameter[] processParams = 
+            SqlParameter[] processParams =
             {
                 new SqlParameter("@WorkOrderID", workOrderId)
             };
 
             // 2. 그 다음 WorkOrders 삭제
             string deleteOrderQuery = @"DELETE FROM WorkOrders WHERE WorkOrderID = @WorkOrderID";
-            SqlParameter[] orderParams = 
+            SqlParameter[] orderParams =
             {
                 new SqlParameter("@WorkOrderID", workOrderId)
             };
@@ -280,5 +286,7 @@ namespace MES_SW.Admin
 
         }
         #endregion
+
+        
     }
 }
