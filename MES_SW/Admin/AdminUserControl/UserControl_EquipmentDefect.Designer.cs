@@ -32,7 +32,6 @@
             dataGridView1 = new DataGridView();
             EquipmentDefectInfoLabel = new Label();
             panel1 = new Panel();
-            ResolvedCheckBox = new CheckBox();
             DefectDateLabel = new Label();
             DefectDateTimePicker = new DateTimePicker();
             EquipmentIDLabel = new Label();
@@ -41,10 +40,9 @@
             EquipmentDefectDescriptionTextBox = new TextBox();
             EquipmentDefectDescriptionLabel = new Label();
             EquipmentNameTextBox = new TextBox();
-            DeleteButton = new Button();
-            UpdateButton = new Button();
             EquipmentName = new Label();
-            AddButton = new Button();
+            SolvedButton = new Button();
+            MaintenanceButton = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -84,7 +82,7 @@
             // panel1
             // 
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(ResolvedCheckBox);
+            panel1.Controls.Add(MaintenanceButton);
             panel1.Controls.Add(DefectDateLabel);
             panel1.Controls.Add(DefectDateTimePicker);
             panel1.Controls.Add(EquipmentIDLabel);
@@ -93,24 +91,12 @@
             panel1.Controls.Add(EquipmentDefectDescriptionTextBox);
             panel1.Controls.Add(EquipmentDefectDescriptionLabel);
             panel1.Controls.Add(EquipmentNameTextBox);
-            panel1.Controls.Add(DeleteButton);
-            panel1.Controls.Add(UpdateButton);
             panel1.Controls.Add(EquipmentName);
-            panel1.Controls.Add(AddButton);
+            panel1.Controls.Add(SolvedButton);
             panel1.Location = new Point(740, 68);
             panel1.Name = "panel1";
             panel1.Size = new Size(352, 522);
             panel1.TabIndex = 4;
-            // 
-            // ResolvedCheckBox
-            // 
-            ResolvedCheckBox.AutoSize = true;
-            ResolvedCheckBox.Location = new Point(30, 382);
-            ResolvedCheckBox.Name = "ResolvedCheckBox";
-            ResolvedCheckBox.Size = new Size(78, 19);
-            ResolvedCheckBox.TabIndex = 16;
-            ResolvedCheckBox.Text = "⚠ 미해결";
-            ResolvedCheckBox.UseVisualStyleBackColor = true;
             // 
             // DefectDateLabel
             // 
@@ -132,11 +118,11 @@
             // EquipmentIDLabel
             // 
             EquipmentIDLabel.AutoSize = true;
-            EquipmentIDLabel.Location = new Point(292, 0);
+            EquipmentIDLabel.Location = new Point(268, 13);
             EquipmentIDLabel.Name = "EquipmentIDLabel";
-            EquipmentIDLabel.Size = new Size(55, 15);
+            EquipmentIDLabel.Size = new Size(79, 15);
             EquipmentIDLabel.TabIndex = 11;
-            EquipmentIDLabel.Text = "설비번호";
+            EquipmentIDLabel.Text = "설비결함번호";
             EquipmentIDLabel.Visible = false;
             // 
             // EquipmentTypeTextBox
@@ -179,24 +165,6 @@
             EquipmentNameTextBox.Size = new Size(100, 23);
             EquipmentNameTextBox.TabIndex = 4;
             // 
-            // DeleteButton
-            // 
-            DeleteButton.Location = new Point(211, 461);
-            DeleteButton.Name = "DeleteButton";
-            DeleteButton.Size = new Size(75, 23);
-            DeleteButton.TabIndex = 3;
-            DeleteButton.Text = "삭제";
-            DeleteButton.UseVisualStyleBackColor = true;
-            // 
-            // UpdateButton
-            // 
-            UpdateButton.Location = new Point(130, 461);
-            UpdateButton.Name = "UpdateButton";
-            UpdateButton.Size = new Size(75, 23);
-            UpdateButton.TabIndex = 2;
-            UpdateButton.Text = "수정";
-            UpdateButton.UseVisualStyleBackColor = true;
-            // 
             // EquipmentName
             // 
             EquipmentName.AutoSize = true;
@@ -206,14 +174,25 @@
             EquipmentName.TabIndex = 1;
             EquipmentName.Text = "설비명";
             // 
-            // AddButton
+            // SolvedButton
             // 
-            AddButton.Location = new Point(49, 461);
-            AddButton.Name = "AddButton";
-            AddButton.Size = new Size(75, 23);
-            AddButton.TabIndex = 0;
-            AddButton.Text = "추가";
-            AddButton.UseVisualStyleBackColor = true;
+            SolvedButton.Location = new Point(30, 445);
+            SolvedButton.Name = "SolvedButton";
+            SolvedButton.Size = new Size(296, 39);
+            SolvedButton.TabIndex = 0;
+            SolvedButton.Text = "해결";
+            SolvedButton.UseVisualStyleBackColor = true;
+            SolvedButton.Click += SolvedButton_Click;
+            // 
+            // MaintenanceButton
+            // 
+            MaintenanceButton.Location = new Point(30, 378);
+            MaintenanceButton.Name = "MaintenanceButton";
+            MaintenanceButton.Size = new Size(296, 42);
+            MaintenanceButton.TabIndex = 16;
+            MaintenanceButton.Text = "점검";
+            MaintenanceButton.UseVisualStyleBackColor = true;
+            MaintenanceButton.Click += MaintenanceButton_Click;
             // 
             // UserControl_EquipmentDefect
             // 
@@ -245,12 +224,10 @@
         private TextBox EquipmentDefectDescriptionTextBox;
         private Label EquipmentDefectDescriptionLabel;
         private TextBox EquipmentNameTextBox;
-        private Button DeleteButton;
-        private Button UpdateButton;
         private Label EquipmentName;
-        private Button AddButton;
+        private Button SolvedButton;
         private Label DefectDateLabel;
         private DateTimePicker DefectDateTimePicker;
-        private CheckBox ResolvedCheckBox;
+        private Button MaintenanceButton;
     }
 }
