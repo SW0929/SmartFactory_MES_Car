@@ -103,7 +103,6 @@
             // ProcessIDComboBox
             // 
             ProcessIDComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            ProcessIDComboBox.Enabled = false;
             ProcessIDComboBox.FormattingEnabled = true;
             ProcessIDComboBox.Location = new Point(122, 195);
             ProcessIDComboBox.Name = "ProcessIDComboBox";
@@ -219,6 +218,7 @@
             Controls.Add(label1);
             Name = "UserControl_Equipment";
             Size = new Size(1098, 600);
+            Load += UserControl_Equipment_Load;
             Click += UserControl_Equipment_Click;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             panel1.ResumeLayout(false);

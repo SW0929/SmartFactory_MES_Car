@@ -22,10 +22,15 @@ namespace MES_SW.Admin
         {
 
             InitializeComponent();
-            LoadUserData();
+            
         }
 
         #region methods
+
+        private void UserControl_UserManager_Load(object sender, EventArgs e)
+        {
+            LoadUserData();
+        }
         // 작업자 조회
         private void LoadUserData()
         {
@@ -178,9 +183,6 @@ namespace MES_SW.Admin
             }
         }
 
-        private void UserControl_UserManager_Load(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }

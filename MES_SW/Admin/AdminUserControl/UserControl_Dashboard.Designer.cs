@@ -63,6 +63,7 @@
             Controls.Add(label1);
             Name = "UserControl_Dashboard";
             Size = new Size(1098, 600);
+            Load += UserControl_Dashboard_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }

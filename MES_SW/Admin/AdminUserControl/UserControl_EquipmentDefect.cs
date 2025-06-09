@@ -26,17 +26,26 @@ namespace MES_SW.Admin
         private void LoadEquipmentDefeectData()
         {
             string query = @"
-                            SELECT ed.DefectID, e.Name AS 설비명 , ed.DefectType AS 결함유형, ed.DefectTime AS 발생일시, ed.ReportedBy AS 보고자, ed.Resolved AS '해결 여부', ed.ResolvedTime AS 해결일시, ed.Description
+                            SELECT ed.DefectID, e.Name AS 설비명 , ed.DefectType AS 결함유형, ed.DefectTime AS 발생일시, u.UserName AS 보고자, ed.Resolved AS '해결 여부', ed.ResolvedTime AS 해결일시, ed.Description
                             FROM EquipmentDefect ed
                             JOIN Equipment e ON e.EquipmentID = ed.EquipmentID
+                            JOIN Users u ON u.EmployeeID = ed.ReportedBy
                             ";
 
             dataGridView1.DataSource = DBHelper.ExecuteDataTable(query);
             // 이거 안하면 날짜가 짤려서 나오고 초 단위 까지 안나옴
-            dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridView1.Columns[2].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss";
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            
+            dataGridView1.Columns["발생일시"].DefaultCellStyle.Format = "yyyy-MM-dd tt h:mm:ss";
+            dataGridView1.Columns["해결일시"].DefaultCellStyle.Format = "yyyy-MM-dd tt h:mm:ss";
+            
+            dataGridView1.Columns["발생일시"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView1.Columns["해결일시"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
             dataGridView1.Columns["DefectID"].Visible = false;
             dataGridView1.Columns["Description"].Visible = false;
+            
 
         }
 

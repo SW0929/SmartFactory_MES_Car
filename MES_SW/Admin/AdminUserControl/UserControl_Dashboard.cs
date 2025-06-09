@@ -18,9 +18,14 @@ namespace MES_SW.Admin
         public UserControl_Dashboard()
         {
             InitializeComponent();
+            
+
+        }
+
+        private void UserControl_Dashboard_Load(object sender, EventArgs e)
+        {
             LoadDashBoardData(); // 대시보드 데이터 로드
             //CreatePieChart();
-
         }
 
         private void LoadDashBoardData()
@@ -83,5 +88,7 @@ namespace MES_SW.Admin
         {
 
         }
+
+        
     }
 }
