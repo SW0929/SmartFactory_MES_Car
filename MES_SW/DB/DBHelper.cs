@@ -1,17 +1,16 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.VisualBasic.ApplicationServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace MES_SW.DB
 {
     public static class DBHelper
     {
-        private static string connectionString = "Server=DESKTOP-GE5IVD2; Database=MES; User Id = dev_user; Password=990929; TrustServerCertificate=True;";
+        private static string connectionString = "Data Source=localhost;Initial Catalog=MES;Integrated Security=True;TrustServerCertificate=True;";
         
         // DB 연결 열기
         public static  SqlConnection GetConnection()
