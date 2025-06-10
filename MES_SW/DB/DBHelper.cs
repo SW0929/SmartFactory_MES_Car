@@ -10,7 +10,7 @@ namespace MES_SW.DB
 {
     public static class DBHelper
     {
-        private static string connectionString = "Data Source=localhost;Initial Catalog=MES;Integrated Security=True;TrustServerCertificate=True;";
+        private static string connectionString = "DBCONNECTION";
         
         // DB 연결 열기
         public static  SqlConnection GetConnection()
