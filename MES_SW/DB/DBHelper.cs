@@ -72,7 +72,7 @@ namespace MES_SW.DB
 
         // 생산지시와 생산공정 흐름 등록하기 위해 트랜잭션으로 처리
         public static int InsertWorkOrderWithProcess(string workOrderQuery, SqlParameter[] workOrderParams,
-                                             string processQuery, SqlParameter[] processParams)
+                                             string processQuery, SqlParameter[] processParams, string equipmentQuery, SqlParameter[] equipmentParams)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -111,6 +111,13 @@ namespace MES_SW.DB
                         {
                             cmd2.Parameters.AddRange(processParams);
                             cmd2.ExecuteNonQuery();
+                        }
+
+                        //  4. 설비 자동 할당 (공정 흐름에 맞는 설비 ID 가져오기)
+                        using (SqlCommand cmd3 = new SqlCommand(equipmentQuery, conn, tran))
+                        {
+                            cmd3.Parameters.AddRange(equipmentParams);
+                            cmd3.ExecuteNonQuery();
                         }
 
                         tran.Commit();

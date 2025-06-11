@@ -157,7 +157,7 @@ namespace MES_SW.Worker.WorkerUserControl
         private void EndButton_Click(object sender, EventArgs e)
         {
             string query = @"UPDATE WorkOrderProcess
-                             SET EndTime = @EndTime, Status = '완료'
+                             SET EndTime = @EndTime, Status = '완료', ProcessID = ProcessID + 1
                              WHERE WorkOrderID = @WorkOrderID";
 
             SqlParameter[] parameters = new SqlParameter[]
