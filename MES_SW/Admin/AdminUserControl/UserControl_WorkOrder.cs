@@ -191,10 +191,16 @@ namespace MES_SW.Admin
                 new SqlParameter("@EquipmentID", selectedEquipmentId) // 선택된 설비 ID
                 
             };
+
+            string equipmentQuery = "UPDATE Equipment SET Status = '할당 대기' WHERE EquipmentID = @EquipmentID";
+            SqlParameter[] equipmentParameters = new SqlParameter[]
+            {
+                new SqlParameter("@EquipmentID", selectedEquipmentId)
+            };
             // 실행
             try
             {
-                int workOrderId = DBHelper.InsertWorkOrderWithProcess(workOrderQuery, workOrderParameters, workOrderProcessQuery, workOrderProcessParameters);
+                int workOrderId = DBHelper.InsertWorkOrderWithProcess(workOrderQuery, workOrderParameters, workOrderProcessQuery, workOrderProcessParameters, equipmentQuery, equipmentParameters);
                 LoadWorkOrders(); // 작업 지시 목록 새로 고침
                 MessageBox.Show($"작업지시 등록 성공! ID: {workOrderId}");
             }
@@ -202,6 +208,8 @@ namespace MES_SW.Admin
             {
                 MessageBox.Show("등록 실패: " + ex.Message);
             }
+
+            
 
         }
 
