@@ -42,6 +42,7 @@ namespace MES_SW.Admin
                 SELECT w.WorkOrderID, w.ProductID, w.OrderQty, w.StartDate, w.IssueBy, wop.Status
                 FROM WorkOrders w
                 JOIN WorkOrderProcess wop ON wop.WorkOrderID = w.WorkOrderID
+                --WHERE w.Status = '대기' OR w.Status = '진행 중'
                 ORDER BY StartDate ASC";
             dataGridView1.DataSource = DBHelper.ExecuteDataTable(query);
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;

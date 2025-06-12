@@ -19,6 +19,7 @@ namespace MES_SW.Worker.WorkerUserControl
     public partial class UserControl_WorkOrderList : UserControl
     {
         private string _userID;
+        private int _workOrderProcessID; // 작업 지시 공정 ID
         //private string _workOrderID;
         public UserControl_WorkOrderList(string UserID)
         {
@@ -35,14 +36,16 @@ namespace MES_SW.Worker.WorkerUserControl
              WHERE pc.Name = u.Department"
              */
 
-            string query = @"SELECT w.WorkOrderID, p.Name AS 제품명, w.OrderQty AS 주문수량, w.StartDate AS 지시날짜, u.UserName AS 지시자, wop.Status AS 진행상태
+            string query = @"SELECT wop.WorkOrderProcessID, w.WorkOrderID, p.Name AS 제품명, w.OrderQty AS 주문수량, w.StartDate AS 지시날짜, u.UserName AS 지시자, wop.Status AS 진행상태
                             FROM WorkOrders w
                             JOIN Product p ON p.ProductID = w.ProductID
                             JOIN WorkOrderProcess wop ON wop.WorkOrderID = w.WorkOrderID
-                            JOIN Users u ON u.EmployeeID = w.IssueBy";
+                            JOIN Users u ON u.EmployeeID = w.IssueBy
+                            ";
 
             dataGridView1.DataSource = DBHelper.ExecuteDataTable(query);
             dataGridView1.Columns["WorkOrderID"].Visible = false; // WorkOrderID 열 숨기기
+            dataGridView1.Columns["WorkOrderProcessID"].Visible = false; // WorkOrderProcessID 열 숨기기
         }
 
         #endregion
@@ -54,7 +57,9 @@ namespace MES_SW.Worker.WorkerUserControl
             if (rowIndex >= 0)
             {
                 DataGridViewRow row = dataGridView1.Rows[rowIndex];
-                WorkOrderID.Text = row.Cells["WorkOrderID"].Value.ToString();
+                // 전역 변수로 빼도 될듯
+                WorkOrderID.Text = row.Cells["WorkOrderID"].Value.ToString(); 
+                _workOrderProcessID = (int)row.Cells["WorkOrderProcessID"].Value;
             }
             else
             {
@@ -156,8 +161,10 @@ namespace MES_SW.Worker.WorkerUserControl
 
         private void EndButton_Click(object sender, EventArgs e)
         {
+
+            /*
             string query = @"UPDATE WorkOrderProcess
-                             SET EndTime = @EndTime, Status = '완료', ProcessID = ProcessID + 1
+                             SET EndTime = @EndTime, Status = '완료'
                              WHERE WorkOrderID = @WorkOrderID";
 
             SqlParameter[] parameters = new SqlParameter[]
@@ -183,6 +190,14 @@ namespace MES_SW.Worker.WorkerUserControl
             {
                 MessageBox.Show("오류 발생: " + ex.Message);
             }
+            */
+
+            // 해당 공정이 끝나면 로그를 남겨야 함.
+            // TODO : 예외 처리 필요
+            DBHelper.CompleteWorkOrderProcess(_workOrderProcessID, int.Parse(WorkOrderID.Text)); 
+            LoadWorkOrders(); // 작업 지시 목록 새로 고침
+
+            // TODO : 모든 공정이 완료되면 WorkOrders 테이블의 상태를 '완료'로 업데이트 해야 함.
             string query2 = @"UPDATE WorkOrders
                              SET Status = '완료'
                              WHERE WorkOrderID = @WorkOrderID";
