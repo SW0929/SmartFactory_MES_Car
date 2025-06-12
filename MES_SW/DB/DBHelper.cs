@@ -154,7 +154,65 @@ namespace MES_SW.DB
 
             return equipmentId; // 없으면 0
         }
-        
+
+        public static void CompleteWorkOrderProcess(int workOrderProcessId, int workOrderID)
+        {
+            string query = @"UPDATE WorkOrderProcess
+                             SET EndTime = @EndTime, Status = '완료'
+                             WHERE WorkOrderID = @WorkOrderID";
+
+            
+            string insertLogQuery = @"
+                                    INSERT INTO WorkOrderProcessLog
+                                    (WorkOrderProcessID, WorkOrderID, ProcessID, EquipmentID, AssignedUserID, StartTime, EndTime)
+                                    SELECT WorkOrderProcessID, WorkOrderID, ProcessID, EquipmentID, AssignedUserID, StartTime, EndTime
+                                    FROM WorkOrderProcess
+                                    WHERE WorkOrderProcessID = @WorkOrderProcessID";
+
+            string updateQuery = @"INSERT INTO WorkOrderProcess (WorkOrderID, ProcessID, Status)
+                                    SELECT WorkOrderID, ProcessID + 1, '대기'
+                                    FROM WorkOrderProcess
+                                    WHERE WorkOrderProcessID = @workOrderProcessID";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                using (SqlTransaction tran = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // 1. 작업 완료
+                        using (SqlCommand cmd = new SqlCommand(query, conn, tran))
+                        {
+                            cmd.Parameters.AddWithValue("@EndTime", DateTime.Now);
+                            cmd.Parameters.AddWithValue("@WorkOrderID", workOrderID);
+                            cmd.ExecuteNonQuery();
+                        }
+
+
+                        // 2. 로그 기록 -> Ex) 프레스 공정이 끝난 후 해당 공정의 로그를 기록
+                        using (SqlCommand insertCmd = new SqlCommand(insertLogQuery, conn, tran))
+                        {
+                            insertCmd.Parameters.AddWithValue("@WorkOrderProcessID", workOrderProcessId);
+                            insertCmd.ExecuteNonQuery();
+                        }
+                        // 3. 상태 변경 -> 다음 공정으로 이동
+                        using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn, tran))
+                        {
+                            updateCmd.Parameters.AddWithValue("@WorkOrderProcessID", workOrderProcessId);
+                            updateCmd.ExecuteNonQuery();
+                        }
+
+                        tran.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        tran.Rollback();
+                        throw new Exception("작업 종료 시 이상 있음: " + ex.Message, ex); ;
+                    }
+                }
+            }
+        }
 
     }
 }
