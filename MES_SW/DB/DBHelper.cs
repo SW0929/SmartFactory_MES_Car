@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
+using System.Drawing.Text;
 
 namespace MES_SW.DB
 {
@@ -70,7 +71,7 @@ namespace MES_SW.DB
             return dataTable;
         }
 
-        // 생산지시와 생산공정 흐름 등록하기 위해 트랜잭션으로 처리
+        // 생산지시와 생산공정 흐름 등록하기 위해 트랜잭션으로 처리 (관리자 쪽 작업지시에 있음)
         public static int InsertWorkOrderWithProcess(string workOrderQuery, SqlParameter[] workOrderParams,
                                              string processQuery, SqlParameter[] processParams, string equipmentQuery, SqlParameter[] equipmentParams)
         {
@@ -155,13 +156,18 @@ namespace MES_SW.DB
             return equipmentId; // 없으면 0
         }
 
-        public static void CompleteWorkOrderProcess(int workOrderProcessId, int workOrderID)
+        public static void CompleteWorkOrderProcess(int workOrderProcessId, int workOrderID, int processID)
         {
-            string query = @"UPDATE WorkOrderProcess
-                             SET EndTime = @EndTime, Status = '완료'
-                             WHERE WorkOrderID = @WorkOrderID";
-
+            int nextProcessID = processID + 1;
+            int nextEquipmentID = GetAvailableEquipmentId(nextProcessID); // 다음 공정에 할당할 설비 ID 가져오기
+            const int MAX_PROCESS_ID = 5; // ⚠️ 마지막 공정 번호. 필요시 DB에서 가져올 수도 있음.
             
+
+            string finishWOPQuery = @"UPDATE WorkOrderProcess
+                                     SET EndTime = @EndTime, Status = '완료'
+                                     WHERE WorkOrderProcessID = @WorkOrderProcessID";
+
+
             string insertLogQuery = @"
                                     INSERT INTO WorkOrderProcessLog
                                     (WorkOrderProcessID, WorkOrderID, ProcessID, EquipmentID, AssignedUserID, StartTime, EndTime)
@@ -169,24 +175,34 @@ namespace MES_SW.DB
                                     FROM WorkOrderProcess
                                     WHERE WorkOrderProcessID = @WorkOrderProcessID";
 
-            string updateQuery = @"INSERT INTO WorkOrderProcess (WorkOrderID, ProcessID, Status)
-                                    SELECT WorkOrderID, ProcessID + 1, '대기'
+            string equipmentQuery = @"UPDATE e
+                                    SET e.Status = '대기', e.LastUsedTime = @LastUsedTime
+                                    FROM Equipment e
+                                    JOIN WorkOrderProcess wop ON e.EquipmentID = wop.EquipmentID
+                                    JOIN WorkOrders wds ON wop.WorkOrderID = wds.WorkOrderID
+                                    WHERE wop.WorkOrderProcessID = @WorkOrderProcessID
+                                    ";
+
+            string updateQuery = @"INSERT INTO WorkOrderProcess (WorkOrderID, EquipmentID, ProcessID, Status, AssignedUserId, StartTime, EndTime)
+                                    SELECT WorkOrderID, @EquipmentID, @ProcessID,N'대기', NULL, NULL, NULL
                                     FROM WorkOrderProcess
                                     WHERE WorkOrderProcessID = @workOrderProcessID";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
+                
+
                 conn.Open();
                 using (SqlTransaction tran = conn.BeginTransaction())
                 {
                     try
                     {
                         // 1. 작업 완료
-                        using (SqlCommand cmd = new SqlCommand(query, conn, tran))
+                        using (SqlCommand FCmd = new SqlCommand(finishWOPQuery, conn, tran))
                         {
-                            cmd.Parameters.AddWithValue("@EndTime", DateTime.Now);
-                            cmd.Parameters.AddWithValue("@WorkOrderID", workOrderID);
-                            cmd.ExecuteNonQuery();
+                            FCmd.Parameters.AddWithValue("@EndTime", DateTime.Now);
+                            FCmd.Parameters.AddWithValue("@WorkOrderProcessID", workOrderProcessId);
+                            FCmd.ExecuteNonQuery();
                         }
 
 
@@ -196,17 +212,55 @@ namespace MES_SW.DB
                             insertCmd.Parameters.AddWithValue("@WorkOrderProcessID", workOrderProcessId);
                             insertCmd.ExecuteNonQuery();
                         }
-                        // 3. 상태 변경 -> 다음 공정으로 이동
-                        using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn, tran))
+
+                        // 3. 설비 상태 변경 -> 대기 상태로 변경
+                        using (SqlCommand equipmentCmd = new SqlCommand(equipmentQuery, conn, tran))
                         {
-                            updateCmd.Parameters.AddWithValue("@WorkOrderProcessID", workOrderProcessId);
-                            updateCmd.ExecuteNonQuery();
+                            equipmentCmd.Parameters.AddWithValue("@WorkOrderProcessID", workOrderProcessId);
+                            equipmentCmd.Parameters.AddWithValue("@LastUsedTime", DateTime.Now);
+                            equipmentCmd.ExecuteNonQuery();
+                        }
+
+                        // 4. 상태 변경 -> 다음 공정으로 이동
+                        // 4. 다음 공정이 남아 있는 경우에만 새 공정 추가
+                        if (processID < MAX_PROCESS_ID)
+                        {
+
+                            // 1. 다음 공정 INSERT, 다음 공정을 자동으로 할당 (프레스 -> 차체 -> 도장 -> 조립 -> 검사) 순서
+                            using (SqlCommand insertNextCmd = new SqlCommand(updateQuery, conn, tran))
+                            {
+                                insertNextCmd.Parameters.AddWithValue("@WorkOrderProcessID", workOrderProcessId);
+                                insertNextCmd.Parameters.AddWithValue("@ProcessID", nextProcessID);
+                                insertNextCmd.Parameters.AddWithValue("@EquipmentID", nextEquipmentID);
+                                insertNextCmd.ExecuteNonQuery();
+                            }
+
+                            // 2. 다음 공정에 할당된 설비 상태를 '할당 대기'로 업데이트
+                            string updateEquipmentStatusQuery = @"
+                                                                UPDATE Equipment
+                                                                SET Status = N'할당 대기'
+                                                                WHERE EquipmentID = @EquipmentID
+                                                                ";
+                            if (nextEquipmentID == 0)
+                            {
+                                throw new Exception("다음 공정에 할당할 설비가 없습니다.");
+                            }
+                            else
+                            {
+                                using (SqlCommand updateEquipCmd = new SqlCommand(updateEquipmentStatusQuery, conn, tran))
+                                {
+                                    updateEquipCmd.Parameters.AddWithValue("@EquipmentID", nextEquipmentID);
+                                    updateEquipCmd.ExecuteNonQuery();
+                                }
+                            }
+                                
                         }
 
                         tran.Commit();
                     }
                     catch (Exception ex)
                     {
+                        // TODO : 현재 설비가 모두 사용 중인 경우에 예외 처리 필요
                         tran.Rollback();
                         throw new Exception("작업 종료 시 이상 있음: " + ex.Message, ex); ;
                     }
