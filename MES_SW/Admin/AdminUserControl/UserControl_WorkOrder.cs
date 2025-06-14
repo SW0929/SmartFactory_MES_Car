@@ -39,11 +39,11 @@ namespace MES_SW.Admin
         public void LoadWorkOrders()
         {
             string query = @"
-                SELECT w.WorkOrderID, w.ProductID, w.OrderQty, w.StartDate, w.IssueBy, wop.Status
+                SELECT w.WorkOrderID, w.ProductID, w.OrderQty, w.StartDate, w.IssueBy, w.Status
                 FROM WorkOrders w
-                JOIN WorkOrderProcess wop ON wop.WorkOrderID = w.WorkOrderID
-                --WHERE w.Status = '대기' OR w.Status = '진행 중'
-                ORDER BY StartDate ASC";
+                --JOIN WorkOrderProcess wop ON wop.WorkOrderID = w.WorkOrderID
+                --WHERE wop.Status = '대기' OR wop.Status = '진행 중'
+                ORDER BY w.StartDate ASC";
             dataGridView1.DataSource = DBHelper.ExecuteDataTable(query);
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
