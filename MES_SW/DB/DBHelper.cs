@@ -223,7 +223,7 @@ namespace MES_SW.DB
 
                         // 4. 상태 변경 -> 다음 공정으로 이동
                         // 4. 다음 공정이 남아 있는 경우에만 새 공정 추가
-                        if (processID < MAX_PROCESS_ID)
+                        if (processID <= MAX_PROCESS_ID - 1)
                         {
 
                             // 1. 다음 공정 INSERT, 다음 공정을 자동으로 할당 (프레스 -> 차체 -> 도장 -> 조립 -> 검사) 순서
@@ -253,10 +253,21 @@ namespace MES_SW.DB
                                     updateEquipCmd.ExecuteNonQuery();
                                 }
                             }
-                                
+
+                        }
+                        else
+                        {
+                            string LastQuery = @"UPDATE WorkOrders
+                                             SET Status = '완료'
+                                             WHERE WorkOrderID = @WorkOrderID";
+                            using (SqlCommand LastCommand = new SqlCommand(LastQuery, conn, tran))
+                            {
+                                LastCommand.Parameters.AddWithValue("@WorkOrderID", workOrderID);
+                                LastCommand.ExecuteNonQuery();
+                            }
                         }
 
-                        tran.Commit();
+                            tran.Commit();
                     }
                     catch (Exception ex)
                     {

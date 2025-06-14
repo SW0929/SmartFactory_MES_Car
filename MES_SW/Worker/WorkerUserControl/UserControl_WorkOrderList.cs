@@ -203,6 +203,7 @@ namespace MES_SW.Worker.WorkerUserControl
             LoadWorkOrders(); // 작업 지시 목록 새로 고침
 
             // TODO : 모든 공정이 완료되면 WorkOrders 테이블의 상태를 '완료'로 업데이트 해야 함.
+            /*
             string query2 = @"UPDATE WorkOrders
                              SET Status = '완료'
                              WHERE WorkOrderID = @WorkOrderID";
@@ -225,6 +226,8 @@ namespace MES_SW.Worker.WorkerUserControl
             {
                 MessageBox.Show("오류 발생: " + ex.Message);
             }
+            */
+
             /* 설비 가동 종료 쿼리문 작성
             string query3 = @"UPDATE e
                             SET e.Status = '대기', e.LastUsedTime = @LastUsedTime
