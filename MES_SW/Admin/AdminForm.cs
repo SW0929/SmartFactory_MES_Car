@@ -13,10 +13,10 @@ namespace mes
 {
     public partial class AdminForm : Form
     {
-        private string _UserID;
+        private int _UserID;
         private string _UserName;
         // TODO : 로그인 한 사용자 이름, 사번 좌측 상단에 표시
-        public AdminForm(string UserID, string UserName)
+        public AdminForm(int UserID, string UserName)
         {
 
             InitializeComponent();

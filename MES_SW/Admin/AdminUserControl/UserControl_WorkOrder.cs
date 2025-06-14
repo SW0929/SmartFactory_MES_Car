@@ -17,13 +17,13 @@ namespace MES_SW.Admin
     public partial class UserControl_WorkOrder : UserControl
     {
         // 사용자 ID와 이름을 로그인한 정보를 가져오기 위해 생성자에 파라미터 추가
-        private string _adminID; // 관리자 ID
-        public UserControl_WorkOrder(string AdminID, string AdminName)
+        private int _adminID; // 관리자 ID
+        public UserControl_WorkOrder(int AdminID, string AdminName)
         {
 
             InitializeComponent();
             _adminID = AdminID; // 관리자 ID 설정
-            AdminNameLabel.Text = _adminID; // 관리자 이름 설정 (예시로 EmployeeID로 설정, 실제로는 로그인 정보에서 가져와야 함) ******************수정 필요
+            AdminNameLabel.Text = _adminID.ToString(); // 관리자 이름 설정 (예시로 EmployeeID로 설정, 실제로는 로그인 정보에서 가져와야 함) ******************수정 필요
             
             StartDateTimePicker.Value = DateTime.Now; // 시작 날짜를 현재 시간으로 설정
         }
@@ -169,7 +169,7 @@ namespace MES_SW.Admin
                 new SqlParameter("@ProductID", ((ProductItem)ProductNameComboBox.SelectedItem).ProductID),
                 new SqlParameter("@OrderQty", QuantityTextBox.Text),
                 new SqlParameter("@StartDate", StartDateTimePicker.Value),
-                new SqlParameter("@IssueBy", int.Parse(_adminID))
+                new SqlParameter("@IssueBy", _adminID)
             };
 
             //TODO : 현재 설비가 중복으로 선택되는 문제가 발생 해결 필요****************************************************

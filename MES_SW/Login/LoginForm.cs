@@ -12,7 +12,7 @@ namespace mes
         C#이 내부적으로 필드를 자동으로 생성해주는 속성
         값을 수정하는 것은 LoginForm 클래스 내부에서만 가능하고 값을 읽는 것은 외부에서 가능하도록 설정함.
          */
-        public string LoggedInUserID { get; private set; }
+        public int LoggedInUserID { get; private set; } // int 로 타입 변환 해야함.***************************************
         public string LoggedInUserName { get; private set; } // 로그인한 사용자 이름
         public string LoggedInUserRole { get; private set; }
 
@@ -24,7 +24,7 @@ namespace mes
         #region Event_Handlers
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            LoggedInUserID = EmployeeNumText.Text; // EmployeeId 다른 폼에 전달하기 위해 수정 필요함**************************************
+            LoggedInUserID = int.Parse(EmployeeNumText.Text); // EmployeeId 다른 폼에 전달하기 위해 수정 필요함**************************************
             // 바인딩 설명
             string query = "SELECT * FROM Users WHERE EmployeeId = @id";
             // @id 는 파라미터

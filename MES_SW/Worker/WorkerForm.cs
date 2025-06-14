@@ -13,9 +13,9 @@ namespace mes
 {
     public partial class WorkerForm : Form
     {
-        private string _UserID;
+        private int _UserID;
         private string _UserName;
-        public WorkerForm(string UserID, string UserName)
+        public WorkerForm(int UserID, string UserName)
         {
             InitializeComponent();
             timer1.Start(); // 타이머 시작

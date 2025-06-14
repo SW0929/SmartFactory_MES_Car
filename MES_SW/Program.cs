@@ -27,7 +27,7 @@ namespace mes
                     break;
                 }
                 string userRole = loginForm.LoggedInUserRole; //로그인한 사용자 역할
-                string userId = loginForm.LoggedInUserID; // 로그인한 사용자 ID
+                int userId = loginForm.LoggedInUserID; // 로그인한 사용자 ID
                 string userName = loginForm.LoggedInUserName; // 로그인한 사용자 이름
                 Form nextForm;
 
