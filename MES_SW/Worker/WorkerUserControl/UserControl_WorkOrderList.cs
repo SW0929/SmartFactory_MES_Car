@@ -18,19 +18,19 @@ namespace MES_SW.Worker.WorkerUserControl
 {
     public partial class UserControl_WorkOrderList : UserControl
     {
-        private string _userID;
+        private int _userID;
         private int _workOrderProcessID; // 작업 지시 공정 ID
         private int _processID; // 공정 ID
         
         //private string _workOrderID;
-        public UserControl_WorkOrderList(string UserID)
+        public UserControl_WorkOrderList(int UserID)
         {
             InitializeComponent();
             _userID = UserID;
-            LoadWorkOrders();
+            LoadWorkOrders(_userID);
         }
         #region Load_Methods
-        private void LoadWorkOrders()
+        private void LoadWorkOrders(int _userID)
         {
             // 작업 지시 불러올 때 해당 부서에 맞게 불러오게 하기, 부서 처리는 나중에 꼭 추가하기
             /*
@@ -43,10 +43,17 @@ namespace MES_SW.Worker.WorkerUserControl
                             JOIN Product p ON p.ProductID = w.ProductID
                             JOIN WorkOrderProcess wop ON wop.WorkOrderID = w.WorkOrderID
                             JOIN Users u ON u.EmployeeID = w.IssueBy
+                            JOIN Users uu ON uu.EmployeeID = @EmployeeID
                             JOIN Process pc ON pc.ProcessID = wop.ProcessID
+                            WHERE uu.Department = pc.Name AND wop.Status IN ('대기', '진행 중')
                             ";
+            // 작업자 EmployeeID
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@EmployeeID", SqlDbType.Int) { Value = _userID }
+            };
 
-            dataGridView1.DataSource = DBHelper.ExecuteDataTable(query);
+            dataGridView1.DataSource = DBHelper.ExecuteDataTable(query, parameters);
             dataGridView1.Columns["WorkOrderID"].Visible = false; // WorkOrderID 열 숨기기
             //dataGridView1.Columns["WorkOrderProcessID"].Visible = false; // WorkOrderProcessID 열 숨기기
             dataGridView1.Columns["ProcessID"].Visible = false; // ProcessID 열 숨기기
@@ -84,7 +91,7 @@ namespace MES_SW.Worker.WorkerUserControl
 
             SqlParameter[] parameters = new SqlParameter[]
             {
-                new SqlParameter("@AssignedUserID", SqlDbType.Int) { Value = int.Parse(_userID) },
+                new SqlParameter("@AssignedUserID", SqlDbType.Int) { Value = _userID },
                 new SqlParameter("@StartTime", SqlDbType.DateTime) { Value = DateTime.Now },
                 new SqlParameter("@WorkOrderProcessID", SqlDbType.Int) { Value = _workOrderProcessID }
             };
@@ -94,7 +101,7 @@ namespace MES_SW.Worker.WorkerUserControl
                 if (affectedRows > 0)
                 {
                     MessageBox.Show("작업 지시가 시작되었습니다.");
-                    LoadWorkOrders(); // 작업 지시 목록 새로 고침
+                    LoadWorkOrders(_userID); // 작업 지시 목록 새로 고침
                 }
                 else
                 {
@@ -200,7 +207,7 @@ namespace MES_SW.Worker.WorkerUserControl
             // 해당 공정이 끝나면 로그를 남겨야 함.
             // TODO : 예외 처리 필요
             DBHelper.CompleteWorkOrderProcess(_workOrderProcessID, int.Parse(WorkOrderID.Text), _processID); 
-            LoadWorkOrders(); // 작업 지시 목록 새로 고침
+            LoadWorkOrders(_userID); // 작업 지시 목록 새로 고침
 
             // TODO : 모든 공정이 완료되면 WorkOrders 테이블의 상태를 '완료'로 업데이트 해야 함.
             /*

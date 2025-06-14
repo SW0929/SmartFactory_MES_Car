@@ -14,8 +14,8 @@ namespace MES_SW.Worker.WorkerUserControl
 {
     public partial class UserControl_EquipmentList : UserControl
     {
-        private string _UserID;
-        public UserControl_EquipmentList(string UserID)
+        private int _UserID;
+        public UserControl_EquipmentList(int UserID)
         {
             InitializeComponent();
             _UserID = UserID; // 작업자 ID 설정
