@@ -85,9 +85,10 @@ namespace MES_SW.Worker.WorkerUserControl
         */
         private void StartButton_Click(object sender, EventArgs e)
         {
+            // 대기 상태의 작업만 가능
             string query = @"UPDATE WorkOrderProcess
                              SET AssignedUserID = @AssignedUserID, StartTime = @StartTime, Status = '진행 중'
-                             WHERE WorkOrderProcessID = @WorkOrderProcessID";
+                             WHERE WorkOrderProcessID = @WorkOrderProcessID AND Status = '대기'";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
