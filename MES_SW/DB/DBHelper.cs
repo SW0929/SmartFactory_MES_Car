@@ -162,10 +162,10 @@ namespace MES_SW.DB
             int nextEquipmentID = GetAvailableEquipmentId(nextProcessID); // 다음 공정에 할당할 설비 ID 가져오기
             const int MAX_PROCESS_ID = 5; // ⚠️ 마지막 공정 번호. 필요시 DB에서 가져올 수도 있음.
             
-
+            // TODO : 작업이 끝나면 다음 공정으로 자동으로 넘어가기 때문에 '진행 중'은 필요한지 확인 필요함.
             string finishWOPQuery = @"UPDATE WorkOrderProcess
                                      SET EndTime = @EndTime, Status = '완료'
-                                     WHERE WorkOrderProcessID = @WorkOrderProcessID";
+                                     WHERE WorkOrderProcessID = @WorkOrderProcessID AND Status = '진행 중'";
 
 
             string insertLogQuery = @"
@@ -225,28 +225,28 @@ namespace MES_SW.DB
                         // 4. 다음 공정이 남아 있는 경우에만 새 공정 추가
                         if (processID <= MAX_PROCESS_ID - 1)
                         {
-
-                            // 1. 다음 공정 INSERT, 다음 공정을 자동으로 할당 (프레스 -> 차체 -> 도장 -> 조립 -> 검사) 순서
-                            using (SqlCommand insertNextCmd = new SqlCommand(updateQuery, conn, tran))
+                            if (nextEquipmentID == 0)
                             {
-                                insertNextCmd.Parameters.AddWithValue("@WorkOrderProcessID", workOrderProcessId);
-                                insertNextCmd.Parameters.AddWithValue("@ProcessID", nextProcessID);
-                                insertNextCmd.Parameters.AddWithValue("@EquipmentID", nextEquipmentID);
-                                insertNextCmd.ExecuteNonQuery();
+                                throw new Exception("다음 공정에 할당할 설비가 없습니다.\n잠시만 기다려주세요.");
                             }
+                            else
+                            {
+                                // 1. 다음 공정 INSERT, 다음 공정을 자동으로 할당 (프레스 -> 차체 -> 도장 -> 조립 -> 검사) 순서
+                                using (SqlCommand insertNextCmd = new SqlCommand(updateQuery, conn, tran))
+                                {
+                                    insertNextCmd.Parameters.AddWithValue("@WorkOrderProcessID", workOrderProcessId);
+                                    insertNextCmd.Parameters.AddWithValue("@ProcessID", nextProcessID);
+                                    insertNextCmd.Parameters.AddWithValue("@EquipmentID", nextEquipmentID);
+                                    insertNextCmd.ExecuteNonQuery();
+                                }
 
-                            // 2. 다음 공정에 할당된 설비 상태를 '할당 대기'로 업데이트
-                            string updateEquipmentStatusQuery = @"
+                                // 2. 다음 공정에 할당된 설비 상태를 '할당 대기'로 업데이트
+                                string updateEquipmentStatusQuery = @"
                                                                 UPDATE Equipment
                                                                 SET Status = N'할당 대기'
                                                                 WHERE EquipmentID = @EquipmentID
                                                                 ";
-                            if (nextEquipmentID == 0)
-                            {
-                                throw new Exception("다음 공정에 할당할 설비가 없습니다.");
-                            }
-                            else
-                            {
+
                                 using (SqlCommand updateEquipCmd = new SqlCommand(updateEquipmentStatusQuery, conn, tran))
                                 {
                                     updateEquipCmd.Parameters.AddWithValue("@EquipmentID", nextEquipmentID);
@@ -273,7 +273,7 @@ namespace MES_SW.DB
                     {
                         // TODO : 현재 설비가 모두 사용 중인 경우에 예외 처리 필요
                         tran.Rollback();
-                        throw new Exception("작업 종료 시 이상 있음: " + ex.Message, ex); ;
+                        MessageBox.Show(ex.Message); ;
                     }
                 }
             }
