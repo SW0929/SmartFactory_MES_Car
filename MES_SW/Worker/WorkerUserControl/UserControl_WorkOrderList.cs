@@ -18,11 +18,11 @@ namespace MES_SW.Worker.WorkerUserControl
 {
     public partial class UserControl_WorkOrderList : UserControl
     {
-        private int _userID;
+        private int _userID; // 작업자 ID
         private int _workOrderProcessID; // 작업 지시 공정 ID
         private int _processID; // 공정 ID
-        
-        //private string _workOrderID;
+        private int _workOrderID; // 작업 지시 ID
+
         public UserControl_WorkOrderList(int UserID)
         {
             InitializeComponent();
@@ -32,12 +32,6 @@ namespace MES_SW.Worker.WorkerUserControl
         #region Load_Methods
         private void LoadWorkOrders(int _userID)
         {
-            // 작업 지시 불러올 때 해당 부서에 맞게 불러오게 하기, 부서 처리는 나중에 꼭 추가하기
-            /*
-             JOIN Process pc ON pc.Name = u.Department
-             WHERE pc.Name = u.Department"
-             */
-
             string query = @"SELECT pc.Name, wop.ProcessID, wop.WorkOrderProcessID, w.WorkOrderID, p.Name AS 제품명, w.OrderQty AS 주문수량, w.StartDate AS 지시날짜, u.UserName AS 지시자, wop.Status AS 진행상태
                             FROM WorkOrders w
                             JOIN Product p ON p.ProductID = w.ProductID
@@ -61,6 +55,10 @@ namespace MES_SW.Worker.WorkerUserControl
 
         #endregion
 
+
+
+        #region Event_Methods
+        // DataGridView 셀 클릭 이벤트 핸들러
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
@@ -69,9 +67,11 @@ namespace MES_SW.Worker.WorkerUserControl
             {
                 DataGridViewRow row = dataGridView1.Rows[rowIndex];
                 // 전역 변수로 빼도 될듯
-                WorkOrderID.Text = row.Cells["WorkOrderID"].Value.ToString(); 
+                _workOrderID = (int)row.Cells["WorkOrderID"].Value; // 작업 지시 ID
                 _workOrderProcessID = (int)row.Cells["WorkOrderProcessID"].Value;
                 _processID = (int)row.Cells["ProcessID"].Value;
+
+                WorkOrderID.Text = _workOrderID.ToString(); // TextBox에 작업 지시 ID 표시
             }
             else
             {
@@ -79,13 +79,29 @@ namespace MES_SW.Worker.WorkerUserControl
                 return;
             }
         }
-        /*
-        쿼리문에서 조인을 사용하면 DB에 저장된 값들을 활용하는 것이고
-        parameter를 사용하면 Form이나 UserControl에서 입력한 값을 활용하는 것이다.
-        */
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            WorkPerformanceForm workReportForm = new WorkPerformanceForm();
+            workReportForm.ShowDialog(); // 작업 보고서 폼을 모달로 표시
+        }
+
+
+
+
+        // 작업 시작
         private void StartButton_Click(object sender, EventArgs e)
         {
+            DialogResult result = MessageBox.Show("작업을 시작하시겠습니까?", "확인", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                DBHelper.StartWorkOrderProcess(_userID, _workOrderID, _workOrderProcessID);
+                LoadWorkOrders(_userID); // 작업 지시 목록 새로 고침
+            }
+
+
+
             // 대기 상태의 작업만 가능
+            /*생산흐름 상태 업데이트
             string query = @"UPDATE WorkOrderProcess
                              SET AssignedUserID = @AssignedUserID, StartTime = @StartTime, Status = '진행 중'
                              WHERE WorkOrderProcessID = @WorkOrderProcessID AND Status = '대기'";
@@ -113,7 +129,8 @@ namespace MES_SW.Worker.WorkerUserControl
             {
                 MessageBox.Show("오류 발생: " + ex.Message);
             }
-
+            */
+            /*생산지시 상태 업데이트
             string query2 = @"UPDATE WorkOrders
                              SET Status = '진행 중'
                              WHERE WorkOrderID = @WorkOrderID";
@@ -138,7 +155,8 @@ namespace MES_SW.Worker.WorkerUserControl
                 MessageBox.Show("오류 발생: " + ex.Message);
 
             }
-
+            */
+            /* 설비상태 업데이트
             string query3 = @"UPDATE e
                             SET e.Status = '가동'
                             FROM Equipment e
@@ -168,14 +186,21 @@ namespace MES_SW.Worker.WorkerUserControl
                 MessageBox.Show("오류 발생: " + ex.Message);
 
             }
-
+            */
 
         }
-
+        //작업 종료
         private void EndButton_Click(object sender, EventArgs e)
         {
+            DialogResult result = MessageBox.Show("작업을 종료하시겠습니까?", "확인", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                DBHelper.CompleteWorkOrderProcess(_workOrderProcessID, int.Parse(WorkOrderID.Text), _processID);
+                LoadWorkOrders(_userID); // 작업 지시 목록 새로 고침
+            }
 
-            /*
+
+            /* 현재 공정 작업 완료
             string query = @"UPDATE WorkOrderProcess
                              SET EndTime = @EndTime, Status = '완료'
                              WHERE WorkOrderID = @WorkOrderID";
@@ -204,14 +229,7 @@ namespace MES_SW.Worker.WorkerUserControl
                 MessageBox.Show("오류 발생: " + ex.Message);
             }
             */
-
-            // 해당 공정이 끝나면 로그를 남겨야 함.
-            // TODO : 예외 처리 필요
-            DBHelper.CompleteWorkOrderProcess(_workOrderProcessID, int.Parse(WorkOrderID.Text), _processID); 
-            LoadWorkOrders(_userID); // 작업 지시 목록 새로 고침
-
-            // TODO : 모든 공정이 완료되면 WorkOrders 테이블의 상태를 '완료'로 업데이트 해야 함.
-            /*
+            /* 생산지시 상태 업데이트 쿼리문 작성
             string query2 = @"UPDATE WorkOrders
                              SET Status = '완료'
                              WHERE WorkOrderID = @WorkOrderID";
@@ -235,7 +253,6 @@ namespace MES_SW.Worker.WorkerUserControl
                 MessageBox.Show("오류 발생: " + ex.Message);
             }
             */
-
             /* 설비 가동 종료 쿼리문 작성
             string query3 = @"UPDATE e
                             SET e.Status = '대기', e.LastUsedTime = @LastUsedTime
@@ -270,6 +287,9 @@ namespace MES_SW.Worker.WorkerUserControl
             */
 
         }
+        #endregion
+
+
         
     }
 }

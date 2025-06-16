@@ -43,9 +43,10 @@
             dataGridView1.Location = new Point(50, 58);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
-            dataGridView1.Size = new Size(1003, 408);
+            dataGridView1.Size = new Size(993, 124);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellClick += dataGridView1_CellClick;
+            dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             // 
             // StartButton
             // 

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Drawing.Text;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MES_SW.DB
 {
@@ -40,6 +41,7 @@ namespace MES_SW.DB
                 }
             }
         }
+
         // SELECT 쿼리 실행 (DataReader 반환)
         public static SqlDataReader ExecuteReader(string query, SqlParameter[] parameters = null)
         {
@@ -53,6 +55,7 @@ namespace MES_SW.DB
                 return command.ExecuteReader(CommandBehavior.CloseConnection);
             }
         }
+
         // SELECT 쿼리 실행 (DataTable 반환)
         public static DataTable ExecuteDataTable(string query, SqlParameter[] parameters = null)
         {
@@ -75,7 +78,7 @@ namespace MES_SW.DB
         public static int InsertWorkOrderWithProcess(string workOrderQuery, SqlParameter[] workOrderParams,
                                              string processQuery, SqlParameter[] processParams, string equipmentQuery, SqlParameter[] equipmentParams)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = GetConnection())
             {
                 conn.Open();
                 using (SqlTransaction tran = conn.BeginTransaction())
@@ -143,7 +146,7 @@ namespace MES_SW.DB
                             WHERE ProcessID = @ProcessID AND Status = '대기'
                             "; // 혹은 다른 기준
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = GetConnection())
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@ProcessID", processId);
@@ -156,6 +159,92 @@ namespace MES_SW.DB
             return equipmentId; // 없으면 0
         }
 
+        /*
+        쿼리문에서 조인을 사용하면 DB에 저장된 값들을 활용하는 것이고
+        parameter를 사용하면 Form이나 UserControl에서 입력한 값을 활용하는 것이다.
+        */
+        // 생산 시작 후 데이터 업데이트(작업자)
+        public static void StartWorkOrderProcess(int userID, int workOrderID, int workOrderProcessID)
+        {
+            // 대기 상태의 작업만 가능
+            string wopUpdateQ = @"UPDATE WorkOrderProcess
+                             SET AssignedUserID = @AssignedUserID, StartTime = @StartTime, Status = '진행 중'
+                             WHERE WorkOrderProcessID = @WorkOrderProcessID AND Status = '대기'";
+
+            string woUpdateQ = @"UPDATE WorkOrders
+                             SET Status = '진행 중'
+                             WHERE WorkOrderID = @WorkOrderID";
+
+            string equipUpdateQ = @"UPDATE e
+                            SET e.Status = '가동'
+                            FROM Equipment e
+                            JOIN WorkOrderProcess wop ON e.EquipmentID = wop.EquipmentID
+                            JOIN WorkOrders wds ON wop.WorkOrderID = wds.WorkOrderID
+                            WHERE wop.WorkOrderProcessID = @WorkOrderProcessID
+                            ";
+
+            using (SqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                using (SqlTransaction tran = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        using (SqlCommand wopCmd = new SqlCommand(wopUpdateQ, conn, tran))
+                        {
+                            wopCmd.Parameters.AddWithValue("@AssignedUserID", userID);
+                            wopCmd.Parameters.AddWithValue("@StartTime", DateTime.Now);
+                            wopCmd.Parameters.AddWithValue("@WorkOrderProcessID", workOrderProcessID);
+                            int affectedRows = wopCmd.ExecuteNonQuery();
+                            if (affectedRows > 0)
+                            {
+                                MessageBox.Show("작업 지시가 시작되었습니다.");
+                            }
+                            else
+                            {
+                                throw new Exception("작업 지시 시작에 실패했습니다. 다시 시도해주세요.");
+                            }
+                        }
+                        using (SqlCommand woCmd = new SqlCommand(woUpdateQ, conn, tran))
+                        {
+                            woCmd.Parameters.AddWithValue("@WorkOrderID", workOrderID);
+                            int affectedRows2 = woCmd.ExecuteNonQuery();
+                            if (affectedRows2 > 0)
+                            {
+                                MessageBox.Show("작업 지시 상태가 '진행 중'으로 업데이트되었습니다.");
+                            }
+                            else
+                            {
+                                throw new Exception("작업 지시 상태 업데이트에 실패했습니다. 다시 시도해주세요.");
+                            }
+                        }
+
+                        using (SqlCommand equipCmd = new SqlCommand(equipUpdateQ, conn, tran))
+                        {
+                            equipCmd.Parameters.AddWithValue("@WorkOrderProcessID", workOrderProcessID);
+                            int affectedRows3 = equipCmd.ExecuteNonQuery();
+                            if (affectedRows3 > 0)
+                            {
+                                MessageBox.Show("설비 가동");
+                            }
+                            else
+                            {
+                                throw new Exception("설비 상태 업데이트에 실패했습니다. 설비가 대기 상태인지 확인해주세요.");
+                            }
+                        }
+                        tran.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        tran.Rollback();
+                        MessageBox.Show("오류 발생: " + ex.Message);
+                        return; // 오류 발생 시 메서드 종료
+                    }
+                }
+            }
+        }
+
+        //생산 종료 후 데이터 업데이트(작업자)
         public static void CompleteWorkOrderProcess(int workOrderProcessId, int workOrderID, int processID)
         {
             int nextProcessID = processID + 1;
@@ -188,8 +277,8 @@ namespace MES_SW.DB
                                     FROM WorkOrderProcess
                                     WHERE WorkOrderProcessID = @workOrderProcessID";
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
+            using (SqlConnection conn = GetConnection())
+            { 
                 
 
                 conn.Open();
