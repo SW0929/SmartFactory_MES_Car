@@ -245,7 +245,8 @@ namespace MES_SW.DB
         }
 
         //생산 종료 후 데이터 업데이트(작업자)
-        public static void CompleteWorkOrderProcess(int workOrderProcessId, int workOrderID, int processID)
+        // TODO : 메서드 타입 변경해서 오류 메시지 출력 추가하기 AND DTO 만들어서 처리해야 함 매개변수가 너무 많음
+        public static void CompleteWorkOrderProcess(int workOrderProcessId, int workOrderID, int processID, int userID, int goodQty, int badQty, string badReason, int productID, int equipmentID)
         {
             int nextProcessID = processID + 1;
             int nextEquipmentID = GetAvailableEquipmentId(nextProcessID); // 다음 공정에 할당할 설비 ID 가져오기
@@ -276,6 +277,10 @@ namespace MES_SW.DB
                                     SELECT WorkOrderID, @EquipmentID, @ProcessID,N'대기', NULL, NULL, NULL
                                     FROM WorkOrderProcess
                                     WHERE WorkOrderProcessID = @workOrderProcessID";
+
+            string insertPerformanceQuery = @"INSERT
+                                              INTO WorkPerformance (OrderID, ProcessID, ProductID, RegisteredBy, EquipmentID, GoodQty, DefectQty, Reason, RegDate)
+                                              VALUES (@WorkOrderID, @ProcessID, @ProductID, @RegiseredBy, @EquipmentID, @GoodQty, @DefectQTy, @Reason, @RegDate)";
 
             using (SqlConnection conn = GetConnection())
             { 
@@ -355,8 +360,22 @@ namespace MES_SW.DB
                                 LastCommand.ExecuteNonQuery();
                             }
                         }
+                        // 5. 작업 성과 등록
+                        using (SqlCommand performanceCommand = new SqlCommand(insertPerformanceQuery, conn, tran))
+                        {
+                            performanceCommand.Parameters.AddWithValue("@WorkOrderID", workOrderID);
+                            performanceCommand.Parameters.AddWithValue("@ProcessID", processID);
+                            performanceCommand.Parameters.AddWithValue("@ProductID", productID);
+                            performanceCommand.Parameters.AddWithValue("@RegiseredBy", userID); // 현재 사용자 이름
+                            performanceCommand.Parameters.AddWithValue("@EquipmentID", equipmentID);
+                            performanceCommand.Parameters.AddWithValue("@GoodQty", goodQty);
+                            performanceCommand.Parameters.AddWithValue("@DefectQTy", badQty);
+                            performanceCommand.Parameters.AddWithValue("@Reason", badReason);
+                            performanceCommand.Parameters.AddWithValue("@RegDate", DateTime.Now);
+                            performanceCommand.ExecuteNonQuery();
+                        }
 
-                            tran.Commit();
+                        tran.Commit();
                     }
                     catch (Exception ex)
                     {

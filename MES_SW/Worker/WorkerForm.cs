@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace mes
 {
@@ -21,7 +22,7 @@ namespace mes
             timer1.Start(); // 타이머 시작
             _UserName = UserName;
             _UserID = UserID; // 작업자 ID 설정
-            WorkerName.Text = UserName; // 작업자 이름 설정
+            WorkerName.Text = _UserName; // 작업자 이름 설정
         }
         private void LoadControl(UserControl control)
         {
@@ -29,13 +30,18 @@ namespace mes
             PanelMain.Controls.Clear();
             control.Dock = DockStyle.Fill;
             PanelMain.Controls.Add(control);
-
+            
 
         }
 
         private void WorkOdersButton_Click(object sender, EventArgs e)
         {
             LoadControl(new UserControl_WorkOrderList(_UserID));
+        }
+
+        private void WorkPerformanceButton_Click(object sender, EventArgs e)
+        {
+            LoadControl(new UserControl_WorkPerformance(_UserID));
         }
 
         private void EquipmentStatusButton_Click(object sender, EventArgs e)
@@ -65,5 +71,7 @@ namespace mes
             this.Tag = "Logout";  // Logout임을 표시
             this.Close();         // 폼 닫기 → 다시 LoginForm 띄움
         }
+
+        
     }
 }

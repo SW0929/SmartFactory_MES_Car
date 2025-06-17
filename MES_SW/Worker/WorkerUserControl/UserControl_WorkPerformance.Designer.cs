@@ -1,16 +1,16 @@
 ﻿namespace MES_SW.Worker.WorkerUserControl
 {
-    partial class WorkPerformanceForm
+    partial class UserControl_WorkPerformance
     {
-        /// <summary>
-        /// Required designer variable.
+        /// <summary> 
+        /// 필수 디자이너 변수입니다.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
+        /// <summary> 
+        /// 사용 중인 모든 리소스를 정리합니다.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">관리되는 리소스를 삭제해야 하면 true이고, 그렇지 않으면 false입니다.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,18 +20,15 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region 구성 요소 디자이너에서 생성한 코드
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
+        /// <summary> 
+        /// 디자이너 지원에 필요한 메서드입니다. 
+        /// 이 메서드의 내용을 코드 편집기로 수정하지 마세요.
         /// </summary>
         private void InitializeComponent()
         {
-            WorkOrderNumLabel = new Label();
-            ProcessNameLabel = new Label();
-            EquipmentNameLabel = new Label();
-            GQtyLabel = new Label();
+            dataGridView1 = new DataGridView();
             panel1 = new Panel();
             ProductNameLabel = new Label();
             EndButton = new Button();
@@ -41,44 +38,22 @@
             GQtyTextBox = new TextBox();
             BQtyReasonLabel = new Label();
             BQtyLabel = new Label();
+            GQtyLabel = new Label();
+            EquipmentNameLabel = new Label();
+            ProcessNameLabel = new Label();
+            WorkOrderNumLabel = new Label();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // WorkOrderNumLabel
+            // dataGridView1
             // 
-            WorkOrderNumLabel.AutoSize = true;
-            WorkOrderNumLabel.Location = new Point(6, 12);
-            WorkOrderNumLabel.Name = "WorkOrderNumLabel";
-            WorkOrderNumLabel.Size = new Size(101, 15);
-            WorkOrderNumLabel.TabIndex = 0;
-            WorkOrderNumLabel.Text = "생산지시 번호 : 1";
-            // 
-            // ProcessNameLabel
-            // 
-            ProcessNameLabel.AutoSize = true;
-            ProcessNameLabel.Location = new Point(6, 46);
-            ProcessNameLabel.Name = "ProcessNameLabel";
-            ProcessNameLabel.Size = new Size(49, 15);
-            ProcessNameLabel.TabIndex = 1;
-            ProcessNameLabel.Text = "공정 : 1";
-            // 
-            // EquipmentNameLabel
-            // 
-            EquipmentNameLabel.AutoSize = true;
-            EquipmentNameLabel.Location = new Point(6, 83);
-            EquipmentNameLabel.Name = "EquipmentNameLabel";
-            EquipmentNameLabel.Size = new Size(98, 15);
-            EquipmentNameLabel.TabIndex = 2;
-            EquipmentNameLabel.Text = "설비명 : 프레스A";
-            // 
-            // GQtyLabel
-            // 
-            GQtyLabel.AutoSize = true;
-            GQtyLabel.Location = new Point(12, 172);
-            GQtyLabel.Name = "GQtyLabel";
-            GQtyLabel.Size = new Size(59, 15);
-            GQtyLabel.TabIndex = 4;
-            GQtyLabel.Text = "양품 수량";
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(70, 60);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(970, 171);
+            dataGridView1.TabIndex = 0;
+            dataGridView1.CellClick += dataGridView1_CellClick;
             // 
             // panel1
             // 
@@ -94,15 +69,15 @@
             panel1.Controls.Add(EquipmentNameLabel);
             panel1.Controls.Add(ProcessNameLabel);
             panel1.Controls.Add(WorkOrderNumLabel);
-            panel1.Location = new Point(25, 17);
+            panel1.Location = new Point(105, 237);
             panel1.Name = "panel1";
-            panel1.Size = new Size(388, 516);
-            panel1.TabIndex = 5;
+            panel1.Size = new Size(871, 326);
+            panel1.TabIndex = 6;
             // 
             // ProductNameLabel
             // 
             ProductNameLabel.AutoSize = true;
-            ProductNameLabel.Location = new Point(6, 120);
+            ProductNameLabel.Location = new Point(435, 12);
             ProductNameLabel.Name = "ProductNameLabel";
             ProductNameLabel.Size = new Size(78, 15);
             ProductNameLabel.TabIndex = 12;
@@ -110,54 +85,48 @@
             // 
             // EndButton
             // 
-            EndButton.Location = new Point(268, 471);
+            EndButton.Location = new Point(544, 290);
             EndButton.Name = "EndButton";
             EndButton.Size = new Size(75, 23);
             EndButton.TabIndex = 11;
             EndButton.Text = "작업 종료";
             EndButton.UseVisualStyleBackColor = true;
-            EndButton.Click += EndButton_Click;
             // 
             // ReportStoreButton
             // 
-            ReportStoreButton.Location = new Point(29, 471);
+            ReportStoreButton.Location = new Point(372, 290);
             ReportStoreButton.Name = "ReportStoreButton";
             ReportStoreButton.Size = new Size(75, 23);
             ReportStoreButton.TabIndex = 10;
             ReportStoreButton.Text = "실적 저장";
             ReportStoreButton.UseVisualStyleBackColor = true;
-            ReportStoreButton.Click += ReportStoreButton_Click;
             // 
             // BadReasonTextBox
             // 
-            BadReasonTextBox.Location = new Point(12, 275);
+            BadReasonTextBox.Location = new Point(12, 155);
             BadReasonTextBox.Multiline = true;
             BadReasonTextBox.Name = "BadReasonTextBox";
-            BadReasonTextBox.Size = new Size(361, 158);
+            BadReasonTextBox.Size = new Size(232, 158);
             BadReasonTextBox.TabIndex = 9;
             // 
             // BQtyTextBox
             // 
-            BQtyTextBox.Location = new Point(108, 211);
+            BQtyTextBox.Location = new Point(372, 79);
             BQtyTextBox.Name = "BQtyTextBox";
             BQtyTextBox.Size = new Size(100, 23);
             BQtyTextBox.TabIndex = 8;
-            BQtyTextBox.TextAlign = HorizontalAlignment.Right;
-            BQtyTextBox.KeyPress += BQtyTextBox_KeyPress;
             // 
             // GQtyTextBox
             // 
-            GQtyTextBox.Location = new Point(108, 169);
+            GQtyTextBox.Location = new Point(108, 76);
             GQtyTextBox.Name = "GQtyTextBox";
             GQtyTextBox.Size = new Size(100, 23);
             GQtyTextBox.TabIndex = 7;
-            GQtyTextBox.TextAlign = HorizontalAlignment.Right;
-            GQtyTextBox.KeyPress += GQtyTextBox_KeyPress;
             // 
             // BQtyReasonLabel
             // 
             BQtyReasonLabel.AutoSize = true;
-            BQtyReasonLabel.Location = new Point(12, 248);
+            BQtyReasonLabel.Location = new Point(12, 136);
             BQtyReasonLabel.Name = "BQtyReasonLabel";
             BQtyReasonLabel.Size = new Size(59, 15);
             BQtyReasonLabel.TabIndex = 6;
@@ -166,21 +135,57 @@
             // BQtyLabel
             // 
             BQtyLabel.AutoSize = true;
-            BQtyLabel.Location = new Point(12, 214);
+            BQtyLabel.Location = new Point(276, 82);
             BQtyLabel.Name = "BQtyLabel";
             BQtyLabel.Size = new Size(59, 15);
             BQtyLabel.TabIndex = 5;
             BQtyLabel.Text = "불량 수량";
             // 
-            // WorkPerformanceForm
+            // GQtyLabel
+            // 
+            GQtyLabel.AutoSize = true;
+            GQtyLabel.Location = new Point(12, 79);
+            GQtyLabel.Name = "GQtyLabel";
+            GQtyLabel.Size = new Size(59, 15);
+            GQtyLabel.TabIndex = 4;
+            GQtyLabel.Text = "양품 수량";
+            // 
+            // EquipmentNameLabel
+            // 
+            EquipmentNameLabel.AutoSize = true;
+            EquipmentNameLabel.Location = new Point(268, 12);
+            EquipmentNameLabel.Name = "EquipmentNameLabel";
+            EquipmentNameLabel.Size = new Size(98, 15);
+            EquipmentNameLabel.TabIndex = 2;
+            EquipmentNameLabel.Text = "설비명 : 프레스A";
+            // 
+            // ProcessNameLabel
+            // 
+            ProcessNameLabel.AutoSize = true;
+            ProcessNameLabel.Location = new Point(147, 12);
+            ProcessNameLabel.Name = "ProcessNameLabel";
+            ProcessNameLabel.Size = new Size(49, 15);
+            ProcessNameLabel.TabIndex = 1;
+            ProcessNameLabel.Text = "공정 : 1";
+            // 
+            // WorkOrderNumLabel
+            // 
+            WorkOrderNumLabel.AutoSize = true;
+            WorkOrderNumLabel.Location = new Point(6, 12);
+            WorkOrderNumLabel.Name = "WorkOrderNumLabel";
+            WorkOrderNumLabel.Size = new Size(101, 15);
+            WorkOrderNumLabel.TabIndex = 0;
+            WorkOrderNumLabel.Text = "생산지시 번호 : 1";
+            // 
+            // UserControl_WorkPerformance
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(471, 545);
             Controls.Add(panel1);
-            Name = "WorkPerformanceForm";
-            Text = "WorkPerformanceForm";
-            FormClosing += WorkReportForm_FormClosing;
+            Controls.Add(dataGridView1);
+            Name = "UserControl_WorkPerformance";
+            Size = new Size(1113, 580);
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
@@ -188,18 +193,19 @@
 
         #endregion
 
-        private Label WorkOrderNumLabel;
-        private Label ProcessNameLabel;
-        private Label EquipmentNameLabel;
-        private Label GQtyLabel;
+        private DataGridView dataGridView1;
         private Panel panel1;
-        private Label BQtyReasonLabel;
-        private Label BQtyLabel;
+        private Label ProductNameLabel;
         private Button EndButton;
         private Button ReportStoreButton;
         private TextBox BadReasonTextBox;
         private TextBox BQtyTextBox;
         private TextBox GQtyTextBox;
-        private Label ProductNameLabel;
+        private Label BQtyReasonLabel;
+        private Label BQtyLabel;
+        private Label GQtyLabel;
+        private Label EquipmentNameLabel;
+        private Label ProcessNameLabel;
+        private Label WorkOrderNumLabel;
     }
 }
