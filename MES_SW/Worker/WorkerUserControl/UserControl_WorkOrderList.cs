@@ -22,6 +22,9 @@ namespace MES_SW.Worker.WorkerUserControl
         private int _workOrderProcessID; // 작업 지시 공정 ID
         private int _processID; // 공정 ID
         private int _workOrderID; // 작업 지시 ID
+        private int _equipmentID; // 설비 ID
+        private int _productID; // 제품 ID
+        //private string _status = null; // 진행 상태
 
         public UserControl_WorkOrderList(int UserID)
         {
@@ -32,7 +35,7 @@ namespace MES_SW.Worker.WorkerUserControl
         #region Load_Methods
         private void LoadWorkOrders(int _userID)
         {
-            string query = @"SELECT pc.Name, wop.ProcessID, wop.WorkOrderProcessID, w.WorkOrderID, p.Name AS 제품명, w.OrderQty AS 주문수량, w.StartDate AS 지시날짜, u.UserName AS 지시자, wop.Status AS 진행상태
+            string query = @"SELECT pc.Name, w.productID, wop.ProcessID, wop.EquipmentID, wop.WorkOrderProcessID, w.WorkOrderID, p.Name AS 제품명, w.OrderQty AS 주문수량, w.StartDate AS 지시날짜, u.UserName AS 지시자, wop.Status AS 진행상태
                             FROM WorkOrders w
                             JOIN Product p ON p.ProductID = w.ProductID
                             JOIN WorkOrderProcess wop ON wop.WorkOrderID = w.WorkOrderID
@@ -51,6 +54,8 @@ namespace MES_SW.Worker.WorkerUserControl
             dataGridView1.Columns["WorkOrderID"].Visible = false; // WorkOrderID 열 숨기기
             //dataGridView1.Columns["WorkOrderProcessID"].Visible = false; // WorkOrderProcessID 열 숨기기
             dataGridView1.Columns["ProcessID"].Visible = false; // ProcessID 열 숨기기
+            dataGridView1.Columns["ProductID"].Visible = false; // ProductID 열 숨기기
+            dataGridView1.Columns["EquipmentID"].Visible = false; // EquipmentID 열 숨기기
         }
 
         #endregion
@@ -70,7 +75,9 @@ namespace MES_SW.Worker.WorkerUserControl
                 _workOrderID = (int)row.Cells["WorkOrderID"].Value; // 작업 지시 ID
                 _workOrderProcessID = (int)row.Cells["WorkOrderProcessID"].Value;
                 _processID = (int)row.Cells["ProcessID"].Value;
-
+                _productID = (int)row.Cells["ProductID"].Value; // 제품 ID
+                _equipmentID = (int)row.Cells["EquipmentID"].Value; // 설비 ID
+                //_status = row.Cells["진행상태"].Value.ToString(); // 진행 상태
                 WorkOrderID.Text = _workOrderID.ToString(); // TextBox에 작업 지시 ID 표시
             }
             else
@@ -81,8 +88,20 @@ namespace MES_SW.Worker.WorkerUserControl
         }
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            WorkPerformanceForm workReportForm = new WorkPerformanceForm();
-            workReportForm.ShowDialog(); // 작업 보고서 폼을 모달로 표시
+            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+            int rowIndex = e.RowIndex;
+            if (rowIndex >= 0)
+            {
+                // 선택한 행의 상태가 '진행 중' 인 경우에만 작업 보고서 폼을 표시
+                if (row.Cells["진행상태"].Value.Equals("진행 중"))
+                {
+                    WorkPerformanceForm workReportForm = new WorkPerformanceForm(_workOrderProcessID, _workOrderID, _processID, _userID, _equipmentID, _productID);
+                    workReportForm.ShowDialog(); // 작업 보고서 폼을 모달로 표시
+                }
+            }
+            
+
+            
         }
 
 
@@ -192,13 +211,8 @@ namespace MES_SW.Worker.WorkerUserControl
         //작업 종료
         private void EndButton_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("작업을 종료하시겠습니까?", "확인", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                DBHelper.CompleteWorkOrderProcess(_workOrderProcessID, int.Parse(WorkOrderID.Text), _processID);
-                LoadWorkOrders(_userID); // 작업 지시 목록 새로 고침
-            }
-
+            
+            LoadWorkOrders(_userID); // 작업 지시 목록 새로 고침
 
             /* 현재 공정 작업 완료
             string query = @"UPDATE WorkOrderProcess

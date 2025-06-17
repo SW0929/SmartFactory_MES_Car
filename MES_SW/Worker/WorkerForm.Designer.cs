@@ -35,7 +35,7 @@
             DashboardButton = new Button();
             QualityCheckButton = new Button();
             WorkOdersButton = new Button();
-            ProductionResultsButton = new Button();
+            WorkPerformanceButton = new Button();
             DefectReportButton = new Button();
             EquipmentStatusButton = new Button();
             PanelMain = new Panel();
@@ -64,7 +64,7 @@
             tableLayoutPanel1.Controls.Add(DashboardButton, 0, 5);
             tableLayoutPanel1.Controls.Add(QualityCheckButton, 0, 4);
             tableLayoutPanel1.Controls.Add(WorkOdersButton, 0, 0);
-            tableLayoutPanel1.Controls.Add(ProductionResultsButton, 0, 1);
+            tableLayoutPanel1.Controls.Add(WorkPerformanceButton, 0, 1);
             tableLayoutPanel1.Controls.Add(DefectReportButton, 0, 2);
             tableLayoutPanel1.Controls.Add(EquipmentStatusButton, 0, 3);
             tableLayoutPanel1.Dock = DockStyle.Fill;
@@ -124,15 +124,16 @@
             WorkOdersButton.UseVisualStyleBackColor = true;
             WorkOdersButton.Click += WorkOdersButton_Click;
             // 
-            // ProductionResultsButton
+            // WorkPerformanceButton
             // 
-            ProductionResultsButton.Dock = DockStyle.Fill;
-            ProductionResultsButton.Location = new Point(3, 86);
-            ProductionResultsButton.Name = "ProductionResultsButton";
-            ProductionResultsButton.Size = new Size(261, 77);
-            ProductionResultsButton.TabIndex = 1;
-            ProductionResultsButton.Text = "작업실적 등록(추후 개발)";
-            ProductionResultsButton.UseVisualStyleBackColor = true;
+            WorkPerformanceButton.Dock = DockStyle.Fill;
+            WorkPerformanceButton.Location = new Point(3, 86);
+            WorkPerformanceButton.Name = "WorkPerformanceButton";
+            WorkPerformanceButton.Size = new Size(261, 77);
+            WorkPerformanceButton.TabIndex = 1;
+            WorkPerformanceButton.Text = "작업실적";
+            WorkPerformanceButton.UseVisualStyleBackColor = true;
+            WorkPerformanceButton.Click += WorkPerformanceButton_Click;
             // 
             // DefectReportButton
             // 
@@ -223,7 +224,7 @@
         private Button ExitButton;
         private Button DashboardButton;
         private Button QualityCheckButton;
-        private Button ProductionResultsButton;
+        private Button WorkPerformanceButton;
         private Button DefectReportButton;
         private Button EquipmentStatusButton;
         private Panel PanelMain;
