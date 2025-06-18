@@ -255,7 +255,7 @@ namespace MES_SW.DB
             // TODO : 작업이 끝나면 다음 공정으로 자동으로 넘어가기 때문에 '진행 중'은 필요한지 확인 필요함.
             string finishWOPQuery = @"UPDATE WorkOrderProcess
                                      SET EndTime = @EndTime, Status = '완료'
-                                     WHERE WorkOrderProcessID = @WorkOrderProcessID AND Status = '진행 중'";
+                                     WHERE WorkOrderProcessID = @WorkOrderProcessID AND Status = '진행 중';";
 
 
             string insertLogQuery = @"
@@ -263,24 +263,24 @@ namespace MES_SW.DB
                                     (WorkOrderProcessID, WorkOrderID, ProcessID, EquipmentID, AssignedUserID, StartTime, EndTime)
                                     SELECT WorkOrderProcessID, WorkOrderID, ProcessID, EquipmentID, AssignedUserID, StartTime, EndTime
                                     FROM WorkOrderProcess
-                                    WHERE WorkOrderProcessID = @WorkOrderProcessID";
+                                    WHERE WorkOrderProcessID = @WorkOrderProcessID;";
 
             string equipmentQuery = @"UPDATE e
                                     SET e.Status = '대기', e.LastUsedTime = @LastUsedTime
                                     FROM Equipment e
                                     JOIN WorkOrderProcess wop ON e.EquipmentID = wop.EquipmentID
                                     JOIN WorkOrders wds ON wop.WorkOrderID = wds.WorkOrderID
-                                    WHERE wop.WorkOrderProcessID = @WorkOrderProcessID
+                                    WHERE wop.WorkOrderProcessID = @WorkOrderProcessID;
                                     ";
 
             string updateQuery = @"INSERT INTO WorkOrderProcess (WorkOrderID, EquipmentID, ProcessID, Status, AssignedUserId, StartTime, EndTime)
                                     SELECT WorkOrderID, @EquipmentID, @ProcessID,N'대기', NULL, NULL, NULL
                                     FROM WorkOrderProcess
-                                    WHERE WorkOrderProcessID = @workOrderProcessID";
+                                    WHERE WorkOrderProcessID = @workOrderProcessID;";
 
             string insertPerformanceQuery = @"INSERT
                                               INTO WorkPerformance (OrderID, ProcessID, ProductID, RegisteredBy, EquipmentID, GoodQty, DefectQty, Reason, RegDate)
-                                              VALUES (@WorkOrderID, @ProcessID, @ProductID, @RegiseredBy, @EquipmentID, @GoodQty, @DefectQTy, @Reason, @RegDate)";
+                                              VALUES (@WorkOrderID, @ProcessID, @ProductID, @RegiseredBy, @EquipmentID, @GoodQty, @DefectQTy, @Reason, @RegDate);";
 
             using (SqlConnection conn = GetConnection())
             { 

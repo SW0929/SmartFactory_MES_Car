@@ -28,6 +28,7 @@ namespace MES_SW.Worker.WorkerUserControl
         public WorkPerformanceForm(int workOrderProcessID, int workOrderID, int processID, int employeeID, int equipmentID, int productID)
         {
             InitializeComponent();
+            _workOrderProcessID = workOrderProcessID;
             _workOrderID = workOrderID;
             _processID = processID;
             _employeeID = employeeID;
@@ -61,6 +62,7 @@ namespace MES_SW.Worker.WorkerUserControl
             DataTable dt = DBHelper.ExecuteDataTable(query, parameters);
             if (dt.Rows.Count > 0)
             {
+                WorkOrderNumLabel.Text = "생산지시 번호 : " + _workOrderID.ToString();
                 ProcessNameLabel.Text = "공정명 : " + dt.Rows[0]["ProcessName"].ToString();
                 EquipmentNameLabel.Text = "설비명 : " + dt.Rows[0]["EquipmentName"].ToString();
                 ProductNameLabel.Text = "제품명 : " + dt.Rows[0]["ProductName"].ToString();
@@ -120,7 +122,8 @@ namespace MES_SW.Worker.WorkerUserControl
                 if (result == DialogResult.Yes)
                 {
                     DBHelper.CompleteWorkOrderProcess(_workOrderProcessID, _workOrderID, _processID, _employeeID, _GoodQty, _BadQty, _Reason, _productID, _equipmentID);
-
+                    this.Close(); // 작업 종료 후 폼 닫기
+                    
                 }
             }
             
