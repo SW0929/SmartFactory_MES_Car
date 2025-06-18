@@ -30,76 +30,54 @@
         {
             dataGridView1 = new DataGridView();
             panel1 = new Panel();
-            ProductNameLabel = new Label();
-            EndButton = new Button();
-            ReportStoreButton = new Button();
+            UpdateButton = new Button();
             BadReasonTextBox = new TextBox();
             BQtyTextBox = new TextBox();
             GQtyTextBox = new TextBox();
             BQtyReasonLabel = new Label();
             BQtyLabel = new Label();
             GQtyLabel = new Label();
-            EquipmentNameLabel = new Label();
-            ProcessNameLabel = new Label();
-            WorkOrderNumLabel = new Label();
+            DeleteButton = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // dataGridView1
             // 
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(70, 60);
             dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
             dataGridView1.Size = new Size(970, 171);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellClick += dataGridView1_CellClick;
             // 
             // panel1
             // 
-            panel1.Controls.Add(ProductNameLabel);
-            panel1.Controls.Add(EndButton);
-            panel1.Controls.Add(ReportStoreButton);
+            panel1.Controls.Add(DeleteButton);
+            panel1.Controls.Add(UpdateButton);
             panel1.Controls.Add(BadReasonTextBox);
             panel1.Controls.Add(BQtyTextBox);
             panel1.Controls.Add(GQtyTextBox);
             panel1.Controls.Add(BQtyReasonLabel);
             panel1.Controls.Add(BQtyLabel);
             panel1.Controls.Add(GQtyLabel);
-            panel1.Controls.Add(EquipmentNameLabel);
-            panel1.Controls.Add(ProcessNameLabel);
-            panel1.Controls.Add(WorkOrderNumLabel);
             panel1.Location = new Point(105, 237);
             panel1.Name = "panel1";
             panel1.Size = new Size(871, 326);
             panel1.TabIndex = 6;
             // 
-            // ProductNameLabel
+            // UpdateButton
             // 
-            ProductNameLabel.AutoSize = true;
-            ProductNameLabel.Location = new Point(435, 12);
-            ProductNameLabel.Name = "ProductNameLabel";
-            ProductNameLabel.Size = new Size(78, 15);
-            ProductNameLabel.TabIndex = 12;
-            ProductNameLabel.Text = "제품명 : 투싼";
-            // 
-            // EndButton
-            // 
-            EndButton.Location = new Point(544, 290);
-            EndButton.Name = "EndButton";
-            EndButton.Size = new Size(75, 23);
-            EndButton.TabIndex = 11;
-            EndButton.Text = "작업 종료";
-            EndButton.UseVisualStyleBackColor = true;
-            // 
-            // ReportStoreButton
-            // 
-            ReportStoreButton.Location = new Point(372, 290);
-            ReportStoreButton.Name = "ReportStoreButton";
-            ReportStoreButton.Size = new Size(75, 23);
-            ReportStoreButton.TabIndex = 10;
-            ReportStoreButton.Text = "실적 저장";
-            ReportStoreButton.UseVisualStyleBackColor = true;
+            UpdateButton.Location = new Point(372, 290);
+            UpdateButton.Name = "UpdateButton";
+            UpdateButton.Size = new Size(75, 23);
+            UpdateButton.TabIndex = 10;
+            UpdateButton.Text = "실적 수정";
+            UpdateButton.UseVisualStyleBackColor = true;
+            UpdateButton.Click += UpdateButton_Click;
             // 
             // BadReasonTextBox
             // 
@@ -150,32 +128,15 @@
             GQtyLabel.TabIndex = 4;
             GQtyLabel.Text = "양품 수량";
             // 
-            // EquipmentNameLabel
+            // DeleteButton
             // 
-            EquipmentNameLabel.AutoSize = true;
-            EquipmentNameLabel.Location = new Point(268, 12);
-            EquipmentNameLabel.Name = "EquipmentNameLabel";
-            EquipmentNameLabel.Size = new Size(98, 15);
-            EquipmentNameLabel.TabIndex = 2;
-            EquipmentNameLabel.Text = "설비명 : 프레스A";
-            // 
-            // ProcessNameLabel
-            // 
-            ProcessNameLabel.AutoSize = true;
-            ProcessNameLabel.Location = new Point(147, 12);
-            ProcessNameLabel.Name = "ProcessNameLabel";
-            ProcessNameLabel.Size = new Size(49, 15);
-            ProcessNameLabel.TabIndex = 1;
-            ProcessNameLabel.Text = "공정 : 1";
-            // 
-            // WorkOrderNumLabel
-            // 
-            WorkOrderNumLabel.AutoSize = true;
-            WorkOrderNumLabel.Location = new Point(6, 12);
-            WorkOrderNumLabel.Name = "WorkOrderNumLabel";
-            WorkOrderNumLabel.Size = new Size(101, 15);
-            WorkOrderNumLabel.TabIndex = 0;
-            WorkOrderNumLabel.Text = "생산지시 번호 : 1";
+            DeleteButton.Location = new Point(543, 239);
+            DeleteButton.Name = "DeleteButton";
+            DeleteButton.Size = new Size(187, 74);
+            DeleteButton.TabIndex = 11;
+            DeleteButton.Text = "실적 삭제";
+            DeleteButton.UseVisualStyleBackColor = true;
+            DeleteButton.Click += DeleteButton_Click;
             // 
             // UserControl_WorkPerformance
             // 
@@ -195,17 +156,13 @@
 
         private DataGridView dataGridView1;
         private Panel panel1;
-        private Label ProductNameLabel;
-        private Button EndButton;
-        private Button ReportStoreButton;
+        private Button UpdateButton;
         private TextBox BadReasonTextBox;
         private TextBox BQtyTextBox;
         private TextBox GQtyTextBox;
         private Label BQtyReasonLabel;
         private Label BQtyLabel;
         private Label GQtyLabel;
-        private Label EquipmentNameLabel;
-        private Label ProcessNameLabel;
-        private Label WorkOrderNumLabel;
+        private Button DeleteButton;
     }
 }

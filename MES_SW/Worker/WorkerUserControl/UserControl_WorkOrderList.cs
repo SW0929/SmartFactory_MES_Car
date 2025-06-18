@@ -99,9 +99,9 @@ namespace MES_SW.Worker.WorkerUserControl
                     workReportForm.ShowDialog(); // 작업 보고서 폼을 모달로 표시
                 }
             }
-            
+            LoadWorkOrders(_userID); // 작업 지시 목록 새로 고침
 
-            
+
         }
 
 
