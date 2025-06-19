@@ -30,6 +30,7 @@
         {
             label1 = new Label();
             dataGridView1 = new DataGridView();
+            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -50,15 +51,23 @@
             dataGridView1.Location = new Point(58, 70);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
-            dataGridView1.Size = new Size(969, 345);
+            dataGridView1.Size = new Size(954, 267);
             dataGridView1.TabIndex = 1;
             dataGridView1.CellClick += dataGridView1_CellClick;
+            // 
+            // panel1
+            // 
+            panel1.Location = new Point(26, 362);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(213, 186);
+            panel1.TabIndex = 2;
             // 
             // UserControl_Dashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
+            Controls.Add(panel1);
             Controls.Add(dataGridView1);
             Controls.Add(label1);
             Name = "UserControl_Dashboard";
@@ -72,5 +81,6 @@
 
         private Label label1;
         private DataGridView dataGridView1;
+        private Panel panel1;
     }
 }
