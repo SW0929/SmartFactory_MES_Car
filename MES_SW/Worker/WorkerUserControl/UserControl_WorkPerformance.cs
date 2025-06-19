@@ -16,6 +16,7 @@ namespace MES_SW.Worker.WorkerUserControl
     {
         private int _userID;
         private int _performanceID;
+        private int _totalQty; // 총 생산량`
         public UserControl_WorkPerformance(int userID)
         {
             InitializeComponent();
@@ -49,9 +50,10 @@ namespace MES_SW.Worker.WorkerUserControl
             {
                 DataGridViewRow row = dataGridView1.Rows[rowAffected];
                 GQtyTextBox.Text = row.Cells["GoodQty"].Value.ToString();
-                BQtyTextBox.Text = row.Cells["DefectQty"].Value.ToString();
+                //BQtyTextBox.Text = row.Cells["DefectQty"].Value.ToString();
                 BadReasonTextBox.Text = row.Cells["Reason"].Value.ToString();
                 _performanceID = Convert.ToInt32(row.Cells["PerformanceID"].Value.ToString());
+                _totalQty = Convert.ToInt32(row.Cells["GoodQty"].Value) + Convert.ToInt32(row.Cells["DefectQty"].Value);
             }
         }
 
@@ -119,6 +121,27 @@ namespace MES_SW.Worker.WorkerUserControl
             {
                 MessageBox.Show("오류 발생: " + ex.Message, "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
+        }
+
+        private void GQtyTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (_totalQty == 0) return;
+
+            if (int.TryParse(GQtyTextBox.Text, out int goodQty) )
+            {
+                if (goodQty > _totalQty || goodQty < 0)
+                {
+                    MessageBox.Show("수량을 제대로 입력하세요.");
+                    GQtyTextBox.Text = _totalQty.ToString();
+                    return;
+                }
+                int defectQty = _totalQty - goodQty;
+                BQtyTextBox.Text = defectQty.ToString();
+            }
+            else
+            {
+                BQtyTextBox.Text = string.Empty;
             }
         }
     }

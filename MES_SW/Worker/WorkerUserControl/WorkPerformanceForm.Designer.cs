@@ -33,6 +33,7 @@
             EquipmentNameLabel = new Label();
             GQtyLabel = new Label();
             panel1 = new Panel();
+            TotalOrderLabel = new Label();
             ProductNameLabel = new Label();
             EndButton = new Button();
             ReportStoreButton = new Button();
@@ -82,6 +83,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(TotalOrderLabel);
             panel1.Controls.Add(ProductNameLabel);
             panel1.Controls.Add(EndButton);
             panel1.Controls.Add(ReportStoreButton);
@@ -98,6 +100,15 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(388, 516);
             panel1.TabIndex = 5;
+            // 
+            // TotalOrderLabel
+            // 
+            TotalOrderLabel.AutoSize = true;
+            TotalOrderLabel.Location = new Point(12, 147);
+            TotalOrderLabel.Name = "TotalOrderLabel";
+            TotalOrderLabel.Size = new Size(100, 15);
+            TotalOrderLabel.TabIndex = 13;
+            TotalOrderLabel.Text = "총 주문 수량 : 10";
             // 
             // ProductNameLabel
             // 
@@ -140,8 +151,10 @@
             // 
             BQtyTextBox.Location = new Point(108, 211);
             BQtyTextBox.Name = "BQtyTextBox";
+            BQtyTextBox.ReadOnly = true;
             BQtyTextBox.Size = new Size(100, 23);
             BQtyTextBox.TabIndex = 8;
+            BQtyTextBox.Text = "0";
             BQtyTextBox.TextAlign = HorizontalAlignment.Right;
             BQtyTextBox.KeyPress += BQtyTextBox_KeyPress;
             // 
@@ -151,7 +164,9 @@
             GQtyTextBox.Name = "GQtyTextBox";
             GQtyTextBox.Size = new Size(100, 23);
             GQtyTextBox.TabIndex = 7;
+            GQtyTextBox.Text = "0";
             GQtyTextBox.TextAlign = HorizontalAlignment.Right;
+            GQtyTextBox.TextChanged += GQtyTextBox_TextChanged;
             GQtyTextBox.KeyPress += GQtyTextBox_KeyPress;
             // 
             // BQtyReasonLabel
@@ -178,6 +193,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(471, 545);
             Controls.Add(panel1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "WorkPerformanceForm";
             Text = "WorkPerformanceForm";
             FormClosing += WorkReportForm_FormClosing;
@@ -201,5 +217,6 @@
         private TextBox BQtyTextBox;
         private TextBox GQtyTextBox;
         private Label ProductNameLabel;
+        private Label TotalOrderLabel;
     }
 }

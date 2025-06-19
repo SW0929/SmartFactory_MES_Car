@@ -24,6 +24,7 @@ namespace MES_SW.Worker.WorkerUserControl
         private int _workOrderID; // 작업 지시 ID
         private int _equipmentID; // 설비 ID
         private int _productID; // 제품 ID
+        private int _orderQty = 0; // 수량
         //private string _status = null; // 진행 상태
 
         public UserControl_WorkOrderList(int UserID)
@@ -77,6 +78,7 @@ namespace MES_SW.Worker.WorkerUserControl
                 _processID = (int)row.Cells["ProcessID"].Value;
                 _productID = (int)row.Cells["ProductID"].Value; // 제품 ID
                 _equipmentID = (int)row.Cells["EquipmentID"].Value; // 설비 ID
+                _orderQty = (int)row.Cells["주문수량"].Value; // 주문 수량
                 //_status = row.Cells["진행상태"].Value.ToString(); // 진행 상태
                 WorkOrderID.Text = _workOrderID.ToString(); // TextBox에 작업 지시 ID 표시
             }
@@ -95,7 +97,7 @@ namespace MES_SW.Worker.WorkerUserControl
                 // 선택한 행의 상태가 '진행 중' 인 경우에만 작업 보고서 폼을 표시
                 if (row.Cells["진행상태"].Value.Equals("진행 중"))
                 {
-                    WorkPerformanceForm workReportForm = new WorkPerformanceForm(_workOrderProcessID, _workOrderID, _processID, _userID, _equipmentID, _productID);
+                    WorkPerformanceForm workReportForm = new WorkPerformanceForm(_workOrderProcessID, _workOrderID, _processID, _userID, _equipmentID, _productID, _orderQty);
                     workReportForm.ShowDialog(); // 작업 보고서 폼을 모달로 표시
                 }
             }

@@ -30,6 +30,7 @@
         {
             dataGridView1 = new DataGridView();
             panel1 = new Panel();
+            DeleteButton = new Button();
             UpdateButton = new Button();
             BadReasonTextBox = new TextBox();
             BQtyTextBox = new TextBox();
@@ -37,7 +38,6 @@
             BQtyReasonLabel = new Label();
             BQtyLabel = new Label();
             GQtyLabel = new Label();
-            DeleteButton = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -69,6 +69,16 @@
             panel1.Size = new Size(871, 326);
             panel1.TabIndex = 6;
             // 
+            // DeleteButton
+            // 
+            DeleteButton.Location = new Point(543, 239);
+            DeleteButton.Name = "DeleteButton";
+            DeleteButton.Size = new Size(187, 74);
+            DeleteButton.TabIndex = 11;
+            DeleteButton.Text = "실적 삭제";
+            DeleteButton.UseVisualStyleBackColor = true;
+            DeleteButton.Click += DeleteButton_Click;
+            // 
             // UpdateButton
             // 
             UpdateButton.Location = new Point(372, 290);
@@ -91,8 +101,10 @@
             // 
             BQtyTextBox.Location = new Point(372, 79);
             BQtyTextBox.Name = "BQtyTextBox";
+            BQtyTextBox.ReadOnly = true;
             BQtyTextBox.Size = new Size(100, 23);
             BQtyTextBox.TabIndex = 8;
+            BQtyTextBox.Text = "0";
             // 
             // GQtyTextBox
             // 
@@ -100,6 +112,8 @@
             GQtyTextBox.Name = "GQtyTextBox";
             GQtyTextBox.Size = new Size(100, 23);
             GQtyTextBox.TabIndex = 7;
+            GQtyTextBox.Text = "0";
+            GQtyTextBox.TextChanged += GQtyTextBox_TextChanged;
             // 
             // BQtyReasonLabel
             // 
@@ -128,20 +142,11 @@
             GQtyLabel.TabIndex = 4;
             GQtyLabel.Text = "양품 수량";
             // 
-            // DeleteButton
-            // 
-            DeleteButton.Location = new Point(543, 239);
-            DeleteButton.Name = "DeleteButton";
-            DeleteButton.Size = new Size(187, 74);
-            DeleteButton.TabIndex = 11;
-            DeleteButton.Text = "실적 삭제";
-            DeleteButton.UseVisualStyleBackColor = true;
-            DeleteButton.Click += DeleteButton_Click;
-            // 
             // UserControl_WorkPerformance
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.Control;
             Controls.Add(panel1);
             Controls.Add(dataGridView1);
             Name = "UserControl_WorkPerformance";

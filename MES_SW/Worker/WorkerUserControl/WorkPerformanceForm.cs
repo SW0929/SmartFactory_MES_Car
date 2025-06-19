@@ -24,8 +24,9 @@ namespace MES_SW.Worker.WorkerUserControl
         private int _GoodQty = 0;
         private int _BadQty = 0;
         private string _Reason = string.Empty;
+        private int _orderQty = 0;
 
-        public WorkPerformanceForm(int workOrderProcessID, int workOrderID, int processID, int employeeID, int equipmentID, int productID)
+        public WorkPerformanceForm(int workOrderProcessID, int workOrderID, int processID, int employeeID, int equipmentID, int productID, int orderQty)
         {
             InitializeComponent();
             _workOrderProcessID = workOrderProcessID;
@@ -34,7 +35,9 @@ namespace MES_SW.Worker.WorkerUserControl
             _employeeID = employeeID;
             _equipmentID = equipmentID;
             _productID = productID;
+            _orderQty = orderQty;
             LoadWorkPerformanceForm();
+            GQtyTextBox.MaxLength = _orderQty.ToString().Length;
         }
 
         private void LoadWorkPerformanceForm()
@@ -63,6 +66,7 @@ namespace MES_SW.Worker.WorkerUserControl
             if (dt.Rows.Count > 0)
             {
                 WorkOrderNumLabel.Text = "생산지시 번호 : " + _workOrderID.ToString();
+                TotalOrderLabel.Text = string.Format("총 생산 수량 : {0}", _orderQty);
                 ProcessNameLabel.Text = "공정명 : " + dt.Rows[0]["ProcessName"].ToString();
                 EquipmentNameLabel.Text = "설비명 : " + dt.Rows[0]["EquipmentName"].ToString();
                 ProductNameLabel.Text = "제품명 : " + dt.Rows[0]["ProductName"].ToString();
@@ -86,7 +90,7 @@ namespace MES_SW.Worker.WorkerUserControl
 
         private void ReportStoreButton_Click(object sender, EventArgs e)
         {
-            
+
             // TODO : 실적 등록 로직 구현
             if (string.IsNullOrWhiteSpace(GQtyTextBox.Text) || string.IsNullOrWhiteSpace(BQtyTextBox.Text))
             {
@@ -106,7 +110,7 @@ namespace MES_SW.Worker.WorkerUserControl
                 isSaved = true; // 저장이 완료되었음을 표시
                 MessageBox.Show("실적 등록이 완료되었습니다.", "실적 등록");
             }
-            
+
         }
 
         private void EndButton_Click(object sender, EventArgs e)
@@ -123,10 +127,10 @@ namespace MES_SW.Worker.WorkerUserControl
                 {
                     DBHelper.CompleteWorkOrderProcess(_workOrderProcessID, _workOrderID, _processID, _employeeID, _GoodQty, _BadQty, _Reason, _productID, _equipmentID);
                     this.Close(); // 작업 종료 후 폼 닫기
-                    
+
                 }
             }
-            
+
         }
 
         private void GQtyTextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -142,6 +146,26 @@ namespace MES_SW.Worker.WorkerUserControl
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
                 e.Handled = true; // 숫자와 백스페이스 외의 키 입력을 무시
+            }
+        }
+
+        private void GQtyTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (int.TryParse(GQtyTextBox.Text, out int goodQty))
+            {
+                if (goodQty > _orderQty || goodQty < 0)
+                {
+                    MessageBox.Show("양품 수량이 총 수량보다 많을 수 없습니다.");
+                    GQtyTextBox.Text = _orderQty.ToString();
+                    return;
+                }
+
+                int defectQty = _orderQty - goodQty;
+                BQtyTextBox.Text = defectQty.ToString();
+            }
+            else
+            {
+                BQtyTextBox.Text = string.Empty;
             }
         }
     }
