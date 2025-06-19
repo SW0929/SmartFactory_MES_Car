@@ -44,8 +44,10 @@
             groupBox1 = new GroupBox();
             DepartmentTextBox = new TextBox();
             DepartmentLabel = new Label();
+            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -103,7 +105,7 @@
             // EmployeeIdLabel
             // 
             EmployeeIdLabel.AutoSize = true;
-            EmployeeIdLabel.Location = new Point(795, 74);
+            EmployeeIdLabel.Location = new Point(7, 15);
             EmployeeIdLabel.Name = "EmployeeIdLabel";
             EmployeeIdLabel.Size = new Size(80, 15);
             EmployeeIdLabel.TabIndex = 5;
@@ -112,7 +114,7 @@
             // 
             // EmployeeIdTextBox
             // 
-            EmployeeIdTextBox.Location = new Point(883, 71);
+            EmployeeIdTextBox.Location = new Point(95, 12);
             EmployeeIdTextBox.Name = "EmployeeIdTextBox";
             EmployeeIdTextBox.Size = new Size(100, 23);
             EmployeeIdTextBox.TabIndex = 6;
@@ -120,7 +122,7 @@
             // 
             // UserNameTextBox
             // 
-            UserNameTextBox.Location = new Point(883, 125);
+            UserNameTextBox.Location = new Point(95, 66);
             UserNameTextBox.Name = "UserNameTextBox";
             UserNameTextBox.Size = new Size(100, 23);
             UserNameTextBox.TabIndex = 8;
@@ -128,7 +130,7 @@
             // UserNameLabel
             // 
             UserNameLabel.AutoSize = true;
-            UserNameLabel.Location = new Point(795, 133);
+            UserNameLabel.Location = new Point(7, 74);
             UserNameLabel.Name = "UserNameLabel";
             UserNameLabel.Size = new Size(50, 15);
             UserNameLabel.TabIndex = 7;
@@ -138,7 +140,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(795, 310);
+            label4.Location = new Point(7, 251);
             label4.Name = "label4";
             label4.Size = new Size(51, 15);
             label4.TabIndex = 11;
@@ -170,7 +172,7 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(881, 310);
+            checkBox1.Location = new Point(93, 251);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(69, 19);
             checkBox1.TabIndex = 15;
@@ -181,7 +183,7 @@
             // 
             groupBox1.Controls.Add(AdminRadioButton);
             groupBox1.Controls.Add(WorkerRadioButton);
-            groupBox1.Location = new Point(795, 238);
+            groupBox1.Location = new Point(7, 179);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(220, 50);
             groupBox1.TabIndex = 16;
@@ -190,7 +192,7 @@
             // 
             // DepartmentTextBox
             // 
-            DepartmentTextBox.Location = new Point(883, 179);
+            DepartmentTextBox.Location = new Point(95, 120);
             DepartmentTextBox.Name = "DepartmentTextBox";
             DepartmentTextBox.Size = new Size(100, 23);
             DepartmentTextBox.TabIndex = 18;
@@ -198,27 +200,35 @@
             // DepartmentLabel
             // 
             DepartmentLabel.AutoSize = true;
-            DepartmentLabel.Location = new Point(795, 182);
+            DepartmentLabel.Location = new Point(7, 123);
             DepartmentLabel.Name = "DepartmentLabel";
             DepartmentLabel.Size = new Size(82, 15);
             DepartmentLabel.TabIndex = 17;
             DepartmentLabel.Text = "Department : ";
             DepartmentLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // panel1
+            // 
+            panel1.Controls.Add(DepartmentTextBox);
+            panel1.Controls.Add(DepartmentLabel);
+            panel1.Controls.Add(groupBox1);
+            panel1.Controls.Add(checkBox1);
+            panel1.Controls.Add(label4);
+            panel1.Controls.Add(UserNameTextBox);
+            panel1.Controls.Add(UserNameLabel);
+            panel1.Controls.Add(EmployeeIdTextBox);
+            panel1.Controls.Add(EmployeeIdLabel);
+            panel1.Location = new Point(788, 59);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(243, 297);
+            panel1.TabIndex = 19;
+            // 
             // UserControl_UserManager
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            Controls.Add(DepartmentTextBox);
-            Controls.Add(DepartmentLabel);
-            Controls.Add(groupBox1);
-            Controls.Add(checkBox1);
-            Controls.Add(label4);
-            Controls.Add(UserNameTextBox);
-            Controls.Add(UserNameLabel);
-            Controls.Add(EmployeeIdTextBox);
-            Controls.Add(EmployeeIdLabel);
+            Controls.Add(panel1);
             Controls.Add(DeleteUserButton);
             Controls.Add(UpdateUserButton);
             Controls.Add(AddUserButton);
@@ -231,8 +241,9 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -253,5 +264,6 @@
         private GroupBox groupBox1;
         private TextBox DepartmentTextBox;
         private Label DepartmentLabel;
+        private Panel panel1;
     }
 }

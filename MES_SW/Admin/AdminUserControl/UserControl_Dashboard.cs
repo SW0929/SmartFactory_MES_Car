@@ -25,6 +25,7 @@ namespace MES_SW.Admin
         private void UserControl_Dashboard_Load(object sender, EventArgs e)
         {
             LoadDashBoardData(); // 대시보드 데이터 로드
+            LoadPerformanceChart();
             //CreatePieChart();
         }
 
@@ -89,6 +90,62 @@ namespace MES_SW.Admin
 
         }
 
-        
+        private void LoadPerformanceChart()
+        {
+           
+            string query = @"
+                            SELECT 
+                            p.ProcessID,
+                            p.Name AS ProcessName,
+                            ISNULL(SUM(wp.GoodQty), 0) AS TotalGood,
+                            ISNULL(SUM(wp.DefectQty), 0) AS TotalDefect
+                            FROM Process p
+                            LEFT JOIN WorkPerformance wp ON wp.ProcessID = p.ProcessID
+                            GROUP BY p.ProcessID, p.Name
+                            ORDER BY p.ProcessID;";
+
+            Chart chart = new Chart();
+            chart.Dock = DockStyle.Fill;
+            chart.ChartAreas.Add(new ChartArea("MainArea"));
+
+            Series goodSeries = new Series("양품 수량")
+            {
+                ChartType = SeriesChartType.Column,
+                Color = Color.Green
+            };
+
+            Series defectSeries = new Series("불량 수량")
+            {
+                ChartType = SeriesChartType.Column,
+                Color = Color.Red
+            };
+
+            using (SqlConnection conn = DBHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string processName = reader["ProcessName"].ToString();
+                        int goodQty = Convert.ToInt32(reader["TotalGood"]);
+                        int defectQty = Convert.ToInt32(reader["TotalDefect"]);
+
+                        goodSeries.Points.AddXY(processName, goodQty);
+                        defectSeries.Points.AddXY(processName, defectQty);
+                    }
+                }
+            }
+
+            chart.Series.Add(goodSeries);
+            chart.Series.Add(defectSeries);
+            chart.Legends.Add(new Legend("Legend"));
+
+            //panel1.Controls.Clear(); // 차트 표시할 패널에 그리기
+            panel1.Controls.Add(chart);
+        }
+
+
     }
 }

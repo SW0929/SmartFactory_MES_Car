@@ -148,7 +148,7 @@
             panelMain.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelMain.Location = new Point(338, 93);
             panelMain.Name = "panelMain";
-            panelMain.Size = new Size(1097, 568);
+            panelMain.Size = new Size(1097, 595);
             panelMain.TabIndex = 6;
             // 
             // timer1
@@ -190,7 +190,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1447, 673);
+            ClientSize = new Size(1447, 700);
             Controls.Add(LogOutButton);
             Controls.Add(AdminName);
             Controls.Add(CurrentTime);

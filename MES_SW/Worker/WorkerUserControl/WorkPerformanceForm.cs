@@ -168,5 +168,10 @@ namespace MES_SW.Worker.WorkerUserControl
                 BQtyTextBox.Text = string.Empty;
             }
         }
+
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            this.Close(); // 뒤로가기 버튼 클릭 시 폼 닫기
+        }
     }
 }
