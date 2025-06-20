@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MES_SW.DB;
+using MES_SW.Data;
 using Microsoft.Data.SqlClient;
 
 namespace MES_SW.Admin

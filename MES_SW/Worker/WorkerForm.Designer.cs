@@ -33,10 +33,8 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             ExitButton = new Button();
             DashboardButton = new Button();
-            QualityCheckButton = new Button();
             WorkOdersButton = new Button();
             WorkPerformanceButton = new Button();
-            DefectReportButton = new Button();
             EquipmentStatusButton = new Button();
             PanelMain = new Panel();
             WorkerName = new Label();
@@ -62,10 +60,8 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Controls.Add(ExitButton, 0, 6);
             tableLayoutPanel1.Controls.Add(DashboardButton, 0, 5);
-            tableLayoutPanel1.Controls.Add(QualityCheckButton, 0, 4);
             tableLayoutPanel1.Controls.Add(WorkOdersButton, 0, 0);
             tableLayoutPanel1.Controls.Add(WorkPerformanceButton, 0, 1);
-            tableLayoutPanel1.Controls.Add(DefectReportButton, 0, 2);
             tableLayoutPanel1.Controls.Add(EquipmentStatusButton, 0, 3);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
@@ -103,16 +99,6 @@
             DashboardButton.UseVisualStyleBackColor = true;
             DashboardButton.Click += DashboardButton_Click;
             // 
-            // QualityCheckButton
-            // 
-            QualityCheckButton.Dock = DockStyle.Fill;
-            QualityCheckButton.Location = new Point(3, 335);
-            QualityCheckButton.Name = "QualityCheckButton";
-            QualityCheckButton.Size = new Size(261, 77);
-            QualityCheckButton.TabIndex = 4;
-            QualityCheckButton.Text = "검사 결과(추후 개발)";
-            QualityCheckButton.UseVisualStyleBackColor = true;
-            // 
             // WorkOdersButton
             // 
             WorkOdersButton.Dock = DockStyle.Fill;
@@ -134,16 +120,6 @@
             WorkPerformanceButton.Text = "작업실적";
             WorkPerformanceButton.UseVisualStyleBackColor = true;
             WorkPerformanceButton.Click += WorkPerformanceButton_Click;
-            // 
-            // DefectReportButton
-            // 
-            DefectReportButton.Dock = DockStyle.Fill;
-            DefectReportButton.Location = new Point(3, 169);
-            DefectReportButton.Name = "DefectReportButton";
-            DefectReportButton.Size = new Size(261, 77);
-            DefectReportButton.TabIndex = 2;
-            DefectReportButton.Text = "불량 입력(추후 개발)";
-            DefectReportButton.UseVisualStyleBackColor = true;
             // 
             // EquipmentStatusButton
             // 
@@ -223,9 +199,7 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Button ExitButton;
         private Button DashboardButton;
-        private Button QualityCheckButton;
         private Button WorkPerformanceButton;
-        private Button DefectReportButton;
         private Button EquipmentStatusButton;
         private Panel PanelMain;
         private Label WorkerName;

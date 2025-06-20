@@ -1,4 +1,4 @@
-﻿using MES_SW.DB;
+﻿using MES_SW.Data;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ using System.Windows.Forms;
 
 namespace MES_SW.Worker.WorkerUserControl
 {
+    // TODO : 실적 입력 할 때 맨앞에 0이 들어가는 것 예외처리 해야함. ex) 0001, 0112 
     public partial class WorkPerformanceForm : Form
     {
         private bool isSaved = false; // 저장 여부를 추적하는 변수
