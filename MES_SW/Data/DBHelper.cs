@@ -8,7 +8,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MES_SW.DB
+namespace MES_SW.Data
 {
     public static class DBHelper
     {
