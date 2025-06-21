@@ -30,7 +30,6 @@
         {
             dataGridView1 = new DataGridView();
             panel1 = new Panel();
-            DeleteButton = new Button();
             UpdateButton = new Button();
             BadReasonTextBox = new TextBox();
             BQtyTextBox = new TextBox();
@@ -56,7 +55,6 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(DeleteButton);
             panel1.Controls.Add(UpdateButton);
             panel1.Controls.Add(BadReasonTextBox);
             panel1.Controls.Add(BQtyTextBox);
@@ -69,21 +67,11 @@
             panel1.Size = new Size(871, 326);
             panel1.TabIndex = 6;
             // 
-            // DeleteButton
-            // 
-            DeleteButton.Location = new Point(543, 239);
-            DeleteButton.Name = "DeleteButton";
-            DeleteButton.Size = new Size(187, 74);
-            DeleteButton.TabIndex = 11;
-            DeleteButton.Text = "실적 삭제";
-            DeleteButton.UseVisualStyleBackColor = true;
-            DeleteButton.Click += DeleteButton_Click;
-            // 
             // UpdateButton
             // 
-            UpdateButton.Location = new Point(372, 290);
+            UpdateButton.Location = new Point(600, 209);
             UpdateButton.Name = "UpdateButton";
-            UpdateButton.Size = new Size(75, 23);
+            UpdateButton.Size = new Size(181, 75);
             UpdateButton.TabIndex = 10;
             UpdateButton.Text = "실적 수정";
             UpdateButton.UseVisualStyleBackColor = true;
@@ -168,6 +156,5 @@
         private Label BQtyReasonLabel;
         private Label BQtyLabel;
         private Label GQtyLabel;
-        private Button DeleteButton;
     }
 }

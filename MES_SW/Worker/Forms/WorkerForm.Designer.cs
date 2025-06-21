@@ -48,41 +48,41 @@
             // panel1
             // 
             panel1.Controls.Add(tableLayoutPanel1);
-            panel1.Location = new Point(22, 78);
+            panel1.Location = new Point(25, 78);
             panel1.Name = "panel1";
             panel1.Size = new Size(267, 583);
             panel1.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.AutoSize = true;
             tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Controls.Add(ExitButton, 0, 6);
-            tableLayoutPanel1.Controls.Add(DashboardButton, 0, 5);
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel1.Controls.Add(ExitButton, 0, 4);
+            tableLayoutPanel1.Controls.Add(DashboardButton, 0, 3);
             tableLayoutPanel1.Controls.Add(WorkOdersButton, 0, 0);
             tableLayoutPanel1.Controls.Add(WorkPerformanceButton, 0, 1);
-            tableLayoutPanel1.Controls.Add(EquipmentStatusButton, 0, 3);
+            tableLayoutPanel1.Controls.Add(EquipmentStatusButton, 0, 2);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 7;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(267, 583);
             tableLayoutPanel1.TabIndex = 1;
             // 
             // ExitButton
             // 
             ExitButton.Dock = DockStyle.Fill;
-            ExitButton.Location = new Point(3, 501);
+            ExitButton.Location = new Point(3, 467);
             ExitButton.Name = "ExitButton";
-            ExitButton.Size = new Size(261, 79);
+            ExitButton.Size = new Size(261, 113);
             ExitButton.TabIndex = 6;
             ExitButton.Text = "종료";
             ExitButton.UseVisualStyleBackColor = true;
@@ -91,9 +91,9 @@
             // DashboardButton
             // 
             DashboardButton.Dock = DockStyle.Fill;
-            DashboardButton.Location = new Point(3, 418);
+            DashboardButton.Location = new Point(3, 351);
             DashboardButton.Name = "DashboardButton";
-            DashboardButton.Size = new Size(261, 77);
+            DashboardButton.Size = new Size(261, 110);
             DashboardButton.TabIndex = 5;
             DashboardButton.Text = "생산현황 대시보드";
             DashboardButton.UseVisualStyleBackColor = true;
@@ -104,7 +104,7 @@
             WorkOdersButton.Dock = DockStyle.Fill;
             WorkOdersButton.Location = new Point(3, 3);
             WorkOdersButton.Name = "WorkOdersButton";
-            WorkOdersButton.Size = new Size(261, 77);
+            WorkOdersButton.Size = new Size(261, 110);
             WorkOdersButton.TabIndex = 0;
             WorkOdersButton.Text = "생산지시 목록";
             WorkOdersButton.UseVisualStyleBackColor = true;
@@ -113,9 +113,9 @@
             // WorkPerformanceButton
             // 
             WorkPerformanceButton.Dock = DockStyle.Fill;
-            WorkPerformanceButton.Location = new Point(3, 86);
+            WorkPerformanceButton.Location = new Point(3, 119);
             WorkPerformanceButton.Name = "WorkPerformanceButton";
-            WorkPerformanceButton.Size = new Size(261, 77);
+            WorkPerformanceButton.Size = new Size(261, 110);
             WorkPerformanceButton.TabIndex = 1;
             WorkPerformanceButton.Text = "작업실적";
             WorkPerformanceButton.UseVisualStyleBackColor = true;
@@ -124,9 +124,9 @@
             // EquipmentStatusButton
             // 
             EquipmentStatusButton.Dock = DockStyle.Fill;
-            EquipmentStatusButton.Location = new Point(3, 252);
+            EquipmentStatusButton.Location = new Point(3, 235);
             EquipmentStatusButton.Name = "EquipmentStatusButton";
-            EquipmentStatusButton.Size = new Size(261, 77);
+            EquipmentStatusButton.Size = new Size(261, 110);
             EquipmentStatusButton.TabIndex = 3;
             EquipmentStatusButton.Text = "설비상태";
             EquipmentStatusButton.UseVisualStyleBackColor = true;
@@ -185,8 +185,10 @@
             Controls.Add(PanelMain);
             Controls.Add(panel1);
             Name = "WorkerForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "작업자";
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -195,16 +197,16 @@
         #endregion
 
         private Panel panel1;
-        private Button WorkOdersButton;
-        private TableLayoutPanel tableLayoutPanel1;
-        private Button ExitButton;
-        private Button DashboardButton;
-        private Button WorkPerformanceButton;
-        private Button EquipmentStatusButton;
         private Panel PanelMain;
         private Label WorkerName;
         private System.Windows.Forms.Timer timer1;
         private Label CurrentTime;
         private Button LogOutButton;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Button ExitButton;
+        private Button DashboardButton;
+        private Button WorkOdersButton;
+        private Button WorkPerformanceButton;
+        private Button EquipmentStatusButton;
     }
 }

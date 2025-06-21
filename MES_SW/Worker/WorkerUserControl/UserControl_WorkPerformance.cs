@@ -93,7 +93,28 @@ namespace MES_SW.Worker.WorkerUserControl
             }
 
         }
+        private void GQtyTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (_totalQty == 0) return;
 
+            if (int.TryParse(GQtyTextBox.Text, out int goodQty))
+            {
+                if (goodQty > _totalQty || goodQty < 0)
+                {
+                    MessageBox.Show("수량을 제대로 입력하세요.");
+                    GQtyTextBox.Text = _totalQty.ToString();
+                    return;
+                }
+                int defectQty = _totalQty - goodQty;
+                BQtyTextBox.Text = defectQty.ToString();
+            }
+            else
+            {
+                BQtyTextBox.Text = string.Empty;
+            }
+        }
+
+        /*
         private void DeleteButton_Click(object sender, EventArgs e)
         {
             string query = @"DELETE FROM WorkPerformance WHERE PerformanceID = @PerformanceID";
@@ -123,26 +144,6 @@ namespace MES_SW.Worker.WorkerUserControl
                 return;
             }
         }
-
-        private void GQtyTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (_totalQty == 0) return;
-
-            if (int.TryParse(GQtyTextBox.Text, out int goodQty) )
-            {
-                if (goodQty > _totalQty || goodQty < 0)
-                {
-                    MessageBox.Show("수량을 제대로 입력하세요.");
-                    GQtyTextBox.Text = _totalQty.ToString();
-                    return;
-                }
-                int defectQty = _totalQty - goodQty;
-                BQtyTextBox.Text = defectQty.ToString();
-            }
-            else
-            {
-                BQtyTextBox.Text = string.Empty;
-            }
-        }
+        */
     }
 }

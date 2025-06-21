@@ -2,6 +2,7 @@
 using MES_SW.Data;
 using MES_SW.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection.Metadata.Ecma335;
 
 namespace mes
@@ -24,15 +25,20 @@ namespace mes
             public LoginForm()
             {
                 InitializeComponent();
-            }
+            this.ActiveControl = EmployeeNumText; // 폼이 열리면 사번 입력란에 포커스가 가도록 설정
+        }
             #region Event_Handlers
             private void LoginButton_Click(object sender, EventArgs e)
             {
                 try
                 {
-                    if (!int.TryParse(EmployeeNumText.Text, out int employeeId))
+                    if (EmployeeNumText.Text.IsNullOrEmpty())
+                        throw new Exception("사번을 입력해야 합니다.");
+
+                if (!int.TryParse(EmployeeNumText.Text, out int employeeId))
                         throw new Exception("사번은 숫자만 입력해야 합니다.");
 
+                    // ? 는 null을 허용하는 Nullable 타입
                     User? user = _userRepo.GetUserById(employeeId);
                     if (user == null)
                         throw new Exception("등록되지 않은 사번입니다.");
@@ -52,7 +58,7 @@ namespace mes
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"오류: {ex.Message}", "로그인 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{ex.Message}", "로그인 실패", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
