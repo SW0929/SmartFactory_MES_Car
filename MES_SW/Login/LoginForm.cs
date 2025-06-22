@@ -35,7 +35,7 @@ namespace mes
                     if (EmployeeNumText.Text.IsNullOrEmpty())
                         throw new Exception("사번을 입력해야 합니다.");
 
-                if (!int.TryParse(EmployeeNumText.Text, out int employeeId))
+                    if (!int.TryParse(EmployeeNumText.Text, out int employeeId))
                         throw new Exception("사번은 숫자만 입력해야 합니다.");
 
                     // ? 는 null을 허용하는 Nullable 타입

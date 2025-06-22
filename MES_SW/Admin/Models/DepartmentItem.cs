@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MES_SW.Admin.AdminUserControl
+namespace MES_SW.Admin.Models
 {
     public class DepartmentItem
     {

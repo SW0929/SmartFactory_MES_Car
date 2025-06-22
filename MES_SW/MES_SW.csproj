@@ -28,4 +28,9 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Admin\" />
+    <Folder Include="Services\Worker\" />
+  </ItemGroup>
+
 </Project>

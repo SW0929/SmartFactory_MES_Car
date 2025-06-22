@@ -12,7 +12,7 @@ namespace MES_SW.Data
 {
     public static class DBHelper
     {
-        private static string connectionString = "DBCONNECTION";
+        private static string connectionString = "CONNECTION";
         
         // DB 연결 열기
         public static  SqlConnection GetConnection()
