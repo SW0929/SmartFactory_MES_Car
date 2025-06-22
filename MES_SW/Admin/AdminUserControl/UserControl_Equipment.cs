@@ -1,4 +1,5 @@
-﻿using MES_SW.Data;
+﻿using MES_SW.Admin.Models;
+using MES_SW.Data;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
