@@ -106,9 +106,6 @@ namespace MES_SW.Worker.WorkerUserControl
 
         }
 
-
-
-
         // 작업 시작
         private void StartButton_Click(object sender, EventArgs e)
         {

@@ -1,4 +1,5 @@
 ﻿using MES_SW.Data;
+using MES_SW.Services.Common;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -14,28 +15,20 @@ namespace MES_SW.Worker.WorkerUserControl
 {
     public partial class UserControl_EquipmentList : UserControl
     {
+        private EquipmentService _equipmentService;
         private int _UserID;
         public UserControl_EquipmentList(int UserID)
         {
             InitializeComponent();
             _UserID = UserID; // 작업자 ID 설정
+            _equipmentService = new EquipmentService();
             LoadEquipment();
         }
 
         private void LoadEquipment()
         {
-            // LastUsedTime 컬럼이 null인 경우 '미사용'으로 표기
-            // TODO : 조인 통해서 프로세스 이름 표시
-            string query = @"
-                            SELECT EquipmentID, Name, Type, Status, ProcessID, ISNULL(CONVERT(VARCHAR, LastUsedTime, 23), '미사용') AS LastUsedTime 
-                            FROM Equipment
-                            WHERE Status = '가동'
-                            ORDER BY ProcessID
-                            ";
-            //Join Process ON Equipment.ProcessID = Process.ProcessID
-            dataGridView1.DataSource = DBHelper.ExecuteDataTable(query);
+            dataGridView1.DataSource = _equipmentService.GetUsingEquipment();
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -57,57 +50,37 @@ namespace MES_SW.Worker.WorkerUserControl
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            string query = @"INSERT INTO EquipmentDefect(EquipmentID, DefectType, DefectTime, ReportedBy, Description)
-                             VALUES (@EquipmentID, @DefectType, @DefectTime, @ReportedBy, @Description) ";
-            SqlParameter[] parameters = new SqlParameter[]
+            if (int.TryParse(EquipmentIDTextBox.Text, out int equipmentID))
             {
-                new SqlParameter("@EquipmentID", EquipmentIDTextBox.Text),
-                new SqlParameter("@DefectType", DefectTypeTextBox.Text),
-                new SqlParameter("@DefectTime", DateTime.Now),
-                new SqlParameter("@ReportedBy", _UserID),
-                new SqlParameter("@Description", DescriptionTextBox.Text)
-            };
-            try
-            {
-                int rowsAffected = DBHelper.ExecuteNonQuery(query, parameters);
-                if (rowsAffected > 0)
+                try
                 {
-                    MessageBox.Show("장비 결함이 성공적으로 등록되었습니다.");
-                    LoadEquipment(); // 장비 목록 새로 고침
-                }
-                else
-                {
-                    MessageBox.Show("장비 결함 등록에 실패했습니다.");
+                    bool success = _equipmentService.ReportDefectWithTransaction(
+                        equipmentID,
+                        DefectTypeTextBox.Text,
+                        _UserID,
+                        DescriptionTextBox.Text
+                    );
 
+                    if (success)
+                    {
+                        MessageBox.Show("장비 결함이 성공적으로 등록되었습니다.");
+                        LoadEquipment(); // 장비 목록 새로 고침
+                    }
+                    else
+                    {
+                        MessageBox.Show("장비 결함 등록에 실패했습니다.");
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("장비 결함 등록 중 오류가 발생했습니다: " + ex.Message);
-            }
-            string query2 = @"UPDATE Equipment SET Status = '고장' WHERE EquipmentID = @EquipmentID";
-            SqlParameter[] parameters2 = new SqlParameter[]
-            {
-                new SqlParameter("@EquipmentID", EquipmentIDTextBox.Text)
-            };
-            try
-            {
-                int rowsAffected2 = DBHelper.ExecuteNonQuery(query2, parameters2);
-                if (rowsAffected2 > 0)
+                catch (Exception ex)
                 {
-                    MessageBox.Show("장비 상태가 '고장'으로 업데이트되었습니다.");
-                    LoadEquipment(); // 장비 목록 새로 고침
-                }
-                else
-                {
-                    MessageBox.Show("장비 상태 업데이트에 실패했습니다.");
+                    // Service 계층에서 발생한 예외 메시지를 사용자에게 표시
+                    MessageBox.Show("오류 발생: " + ex.Message, "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("장비 상태 업데이트 중 오류가 발생했습니다: " + ex.Message);
+                MessageBox.Show("유효한 장비 ID를 입력하세요.");
             }
-
         }
 
         

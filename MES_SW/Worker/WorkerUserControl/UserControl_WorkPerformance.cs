@@ -1,4 +1,7 @@
 ﻿using MES_SW.Data;
+using MES_SW.Data.Worker;
+using MES_SW.Services.Worker;
+using MES_SW.Worker.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -14,6 +17,9 @@ namespace MES_SW.Worker.WorkerUserControl
 {
     public partial class UserControl_WorkPerformance : UserControl
     {
+
+        private WorkPerformanceService _workPerformanceService;
+
         private int _userID;
         private int _performanceID;
         private int _totalQty; // 총 생산량`
@@ -21,75 +27,63 @@ namespace MES_SW.Worker.WorkerUserControl
         {
             InitializeComponent();
             _userID = userID;
+            _workPerformanceService = new WorkPerformanceService(new WorkOrderPerformanceRepository());
             LoadWorkPerformanceForm();
         }
 
         private void LoadWorkPerformanceForm()
         {
-            string query = @"SELECT wpf.PerformanceID, wpf.OrderID AS 주문번호, pr.Name AS 제품, p.Name AS 공정, e.Name AS 설비, wpf.RegisteredBy AS 작업자, wpf.GoodQty, wpf.DefectQty, wpf.Reason
-                            FROM WorkPerformance wpf
-                            JOIN Process p ON p.ProcessID = wpf.ProcessID
-                            JOIN Product pr ON pr.ProductID = wpf.ProductID
-                            JOIN Equipment e ON e.EquipmentID = wpf.EquipmentID
-                            WHERE wpf.RegisteredBy = @UserID;";
-            SqlParameter[] parameters = new SqlParameter[]
-            {
-                new SqlParameter("@UserID", _userID)
-            };
-
-            dataGridView1.DataSource = DBHelper.ExecuteDataTable(query, parameters);
+            dataGridView1.DataSource = _workPerformanceService.GetUserPerformances(_userID);
             dataGridView1.Columns["Reason"].Visible = false; // Hide the Reason column
-            //dataGridView1.Columns["PerformanceID"].Visible = false; // Hide the PerformanceID column
-
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            int rowAffected = e.RowIndex;
-            if (rowAffected >= 0)
+            int rowIndex = e.RowIndex;
+            if (rowIndex < 0) return;
+
+            DataGridViewRow row = dataGridView1.Rows[rowIndex];
+
+            string goodQtyStr = row.Cells["GoodQty"].Value?.ToString() ?? "0";
+            string defectQtyStr = row.Cells["DefectQty"].Value?.ToString() ?? "0";
+            string performanceIDStr = row.Cells["PerformanceID"].Value?.ToString() ?? "";
+            string reasonStr = row.Cells["Reason"].Value?.ToString() ?? "";
+
+            bool goodQtyOk = int.TryParse(goodQtyStr, out int goodQty);
+            bool defectQtyOk = int.TryParse(defectQtyStr, out int defectQty);
+            bool performanceIDOk = int.TryParse(performanceIDStr, out int performanceID);
+
+            if (goodQtyOk && defectQtyOk && performanceIDOk)
             {
-                DataGridViewRow row = dataGridView1.Rows[rowAffected];
-                GQtyTextBox.Text = row.Cells["GoodQty"].Value.ToString();
-                //BQtyTextBox.Text = row.Cells["DefectQty"].Value.ToString();
-                BadReasonTextBox.Text = row.Cells["Reason"].Value.ToString();
-                _performanceID = Convert.ToInt32(row.Cells["PerformanceID"].Value.ToString());
-                _totalQty = Convert.ToInt32(row.Cells["GoodQty"].Value) + Convert.ToInt32(row.Cells["DefectQty"].Value);
+                _performanceID = performanceID;
+                _totalQty = goodQty + defectQty;
+                
+                GQtyTextBox.Text = goodQtyStr;
+                BQtyTextBox.Text = defectQtyStr;
+                BadReasonTextBox.Text = reasonStr;
+
+               
+            }
+            else
+            {
+                MessageBox.Show("숫자 형식이 잘못되었습니다.");
             }
         }
 
         private void UpdateButton_Click(object sender, EventArgs e)
         {
-            string query = @"
-                            UPDATE WorkPerformance
-                            Set GoodQty = @GoodQty, DefectQty = @DefectQty, Reason = @Reason, UpdateDate = @UpdateDate
-                            Where PerformanceID = @PerformanceID";
+            int goodQty = int.Parse(GQtyTextBox.Text);
+            int defectQty = int.Parse(BQtyTextBox.Text);
+            string reason = BadReasonTextBox.Text;
 
-            SqlParameter[] parameters = new SqlParameter[]
+            if (_workPerformanceService.UpdatePerformance(_performanceID, goodQty, defectQty, reason))
             {
-                new SqlParameter("@GoodQty", int.Parse(GQtyTextBox.Text)),
-                new SqlParameter("@DefectQty", int.Parse(BQtyTextBox.Text)),
-                new SqlParameter("@Reason", BadReasonTextBox.Text), //불량이 없으면 안적어도 되는데 어떻게 처리해야 할지 고민 중...
-                new SqlParameter("@UpdateDate", DateTime.Now),
-                new SqlParameter("@PerformanceID", _performanceID)
-            };
-            try
-            {
-                int rowsAffected = DBHelper.ExecuteNonQuery(query, parameters);
-                if (rowsAffected > 0)
-                {
-                    MessageBox.Show("작업 성과가 성공적으로 업데이트되었습니다.", "성공", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadWorkPerformanceForm(); // Refresh the data grid view
-                }
-                else
-                {
-                    MessageBox.Show("작업 성과 업데이트에 실패했습니다.", "실패", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-
+                MessageBox.Show("작업 성과가 성공적으로 업데이트되었습니다.");
+                LoadWorkPerformanceForm();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("오류 발생: " + ex.Message, "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                MessageBox.Show("작업 성과 업데이트에 실패했습니다.");
             }
 
         }
@@ -113,8 +107,16 @@ namespace MES_SW.Worker.WorkerUserControl
                 BQtyTextBox.Text = string.Empty;
             }
         }
+        // 숫자만 입력 가능
+        private void GQtyTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true; // 숫자와 백스페이스 외의 키 입력을 무시
+            }
+        }
 
-        /*
+        /* 실적 삭제 (필요 없음)
         private void DeleteButton_Click(object sender, EventArgs e)
         {
             string query = @"DELETE FROM WorkPerformance WHERE PerformanceID = @PerformanceID";
