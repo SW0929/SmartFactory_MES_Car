@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MES_SW.Admin.Models
+namespace MES_SW.Admin.Models.Items
 {
     
     public class ProcessItem

@@ -33,6 +33,7 @@
             EquipmentNameLabel = new Label();
             GQtyLabel = new Label();
             panel1 = new Panel();
+            BackButton = new Button();
             TotalOrderLabel = new Label();
             ProductNameLabel = new Label();
             EndButton = new Button();
@@ -42,7 +43,6 @@
             GQtyTextBox = new TextBox();
             BQtyReasonLabel = new Label();
             BQtyLabel = new Label();
-            backButton = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -84,7 +84,7 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(backButton);
+            panel1.Controls.Add(BackButton);
             panel1.Controls.Add(TotalOrderLabel);
             panel1.Controls.Add(ProductNameLabel);
             panel1.Controls.Add(EndButton);
@@ -102,6 +102,16 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(388, 516);
             panel1.TabIndex = 5;
+            // 
+            // BackButton
+            // 
+            BackButton.Location = new Point(151, 471);
+            BackButton.Name = "BackButton";
+            BackButton.Size = new Size(75, 23);
+            BackButton.TabIndex = 14;
+            BackButton.Text = "취소";
+            BackButton.UseVisualStyleBackColor = true;
+            BackButton.Click += BackButton_Click;
             // 
             // TotalOrderLabel
             // 
@@ -189,16 +199,6 @@
             BQtyLabel.TabIndex = 5;
             BQtyLabel.Text = "불량 수량";
             // 
-            // backButton
-            // 
-            backButton.Location = new Point(151, 471);
-            backButton.Name = "backButton";
-            backButton.Size = new Size(75, 23);
-            backButton.TabIndex = 14;
-            backButton.Text = "취소";
-            backButton.UseVisualStyleBackColor = true;
-            backButton.Click += backButton_Click;
-            // 
             // WorkPerformanceForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -230,6 +230,6 @@
         private TextBox GQtyTextBox;
         private Label ProductNameLabel;
         private Label TotalOrderLabel;
-        private Button backButton;
+        private Button BackButton;
     }
 }
