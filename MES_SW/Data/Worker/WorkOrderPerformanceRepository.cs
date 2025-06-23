@@ -45,6 +45,7 @@ namespace MES_SW.Data.Worker
         }
 
         //생산 종료 후 데이터 업데이트(작업자)
+        // 여기서는 쿼리만 만들고 트랜잭션은 서비스에서 처리하도록 수정해야함.***********************************
         // TODO : 메서드 타입 변경해서 오류 메시지 출력 추가하기 AND DTO 만들어서 처리해야 함 매개변수가 너무 많음
         public void CompleteWorkOrderTransaction(WorkOrderPerformance perf)
         {
@@ -187,6 +188,42 @@ namespace MES_SW.Data.Worker
                     }
                 }
             }
+        }
+
+        // 사용자별 실적 조회 (사용자가 입력한 실적을 조회하는 메서드)
+        public DataTable GetPerformancesByUser(int EmployeeID)
+        {
+            string query = @"SELECT wpf.PerformanceID, wpf.OrderID AS 주문번호, pr.Name AS 제품, p.Name AS 공정, e.Name AS 설비, wpf.RegisteredBy AS 작업자, wpf.GoodQty, wpf.DefectQty, wpf.Reason
+                            FROM WorkPerformance wpf
+                            JOIN Process p ON p.ProcessID = wpf.ProcessID
+                            JOIN Product pr ON pr.ProductID = wpf.ProductID
+                            JOIN Equipment e ON e.EquipmentID = wpf.EquipmentID
+                            WHERE wpf.RegisteredBy = @UserID;";
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@UserID", EmployeeID)
+            };
+
+            return DBHelper.ExecuteDataTable(query, parameters);
+        }
+
+        // 실적 업데이트 메서드 (작업자가 실적을 수정하는 경우)
+        public int UpdatePerformance(int performanceId, int goodQty, int defectQty, string reason)
+        {
+            string query = @"UPDATE WorkPerformance
+                         SET GoodQty = @GoodQty, DefectQty = @DefectQty, Reason = @Reason, UpdateDate = @UpdateDate
+                         WHERE PerformanceID = @PerformanceID";
+
+            SqlParameter[] parameters =
+            {
+            new SqlParameter("@GoodQty", goodQty),
+            new SqlParameter("@DefectQty", defectQty),
+            new SqlParameter("@Reason", reason),
+            new SqlParameter("@UpdateDate", DateTime.Now),
+            new SqlParameter("@PerformanceID", performanceId)
+            };
+
+            return DBHelper.ExecuteNonQuery(query, parameters);
         }
     }
 }

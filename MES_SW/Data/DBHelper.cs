@@ -22,7 +22,7 @@ namespace MES_SW.Data
 
         // INSERT, UPDATE, DELETE 쿼리 실행 (NonQuery)
         // 이 메서드는 SELECT가 아닌 쿼리(예: INSERT, UPDATE, DELETE)에서 사용
-        public static int ExecuteNonQuery(string query, SqlParameter[] parameters = null)
+        public static int ExecuteNonQuery(string query, SqlParameter[]? parameters = null)
         {
             // GetConnection()을 통해 DB 연결 객체(SqlConnection) 생성
             // using을 사용하면 connection이 작업 끝나면 자동으로 닫힘
@@ -43,7 +43,7 @@ namespace MES_SW.Data
         }
 
         // SELECT 쿼리 실행 (DataReader 반환)
-        public static SqlDataReader ExecuteReader(string query, SqlParameter[] parameters = null)
+        public static SqlDataReader ExecuteReader(string query, SqlParameter[]? parameters = null)
         {
             SqlConnection connection = GetConnection();
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -57,7 +57,7 @@ namespace MES_SW.Data
         }
 
         // SELECT 쿼리 실행 (DataTable 반환)
-        public static DataTable ExecuteDataTable(string query, SqlParameter[] parameters = null)
+        public static DataTable ExecuteDataTable(string query, SqlParameter[]? parameters = null)
         {
             DataTable dataTable = new DataTable();
             using (SqlConnection connection = GetConnection())
@@ -136,34 +136,6 @@ namespace MES_SW.Data
             }
         }
 
-        // 공정 흐름에 맞는 설비 자동 부여하기 위한 메서드
-        /* EquipmentService로 이동
-        public static int GetAvailableEquipmentId(int processId)
-        {
-            int equipmentId = 0;
-            string query = @"
-                            SELECT TOP 1 EquipmentID
-                            FROM Equipment
-                            WHERE ProcessID = @ProcessID AND Status = '대기'
-                            "; // 혹은 다른 기준
-
-            using (SqlConnection conn = GetConnection())
-            using (SqlCommand cmd = new SqlCommand(query, conn))
-            {
-                cmd.Parameters.AddWithValue("@ProcessID", processId);
-                conn.Open();
-                var result = cmd.ExecuteScalar();
-                if (result != null)
-                    equipmentId = Convert.ToInt32(result);
-            }
-
-            return equipmentId; // 없으면 0
-        }
-        */
-        /*
-        쿼리문에서 조인을 사용하면 DB에 저장된 값들을 활용하는 것이고
-        parameter를 사용하면 Form이나 UserControl에서 입력한 값을 활용하는 것이다.
-        */
         // 생산 시작 후 데이터 업데이트(작업자)
         public static void StartWorkOrderProcess(int userID, int workOrderID, int workOrderProcessID)
         {
@@ -244,6 +216,36 @@ namespace MES_SW.Data
                 }
             }
         }
+
+
+        // 공정 흐름에 맞는 설비 자동 부여하기 위한 메서드
+        /* EquipmentService로 이동
+        public static int GetAvailableEquipmentId(int processId)
+        {
+            int equipmentId = 0;
+            string query = @"
+                            SELECT TOP 1 EquipmentID
+                            FROM Equipment
+                            WHERE ProcessID = @ProcessID AND Status = '대기'
+                            "; // 혹은 다른 기준
+
+            using (SqlConnection conn = GetConnection())
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@ProcessID", processId);
+                conn.Open();
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    equipmentId = Convert.ToInt32(result);
+            }
+
+            return equipmentId; // 없으면 0
+        }
+        */
+        /*
+        쿼리문에서 조인을 사용하면 DB에 저장된 값들을 활용하는 것이고
+        parameter를 사용하면 Form이나 UserControl에서 입력한 값을 활용하는 것이다.
+        */
 
         //생산 종료 후 데이터 업데이트(작업자)
         // TODO : 메서드 타입 변경해서 오류 메시지 출력 추가하기 AND DTO 만들어서 처리해야 함 매개변수가 너무 많음

@@ -102,6 +102,7 @@
             GQtyTextBox.TabIndex = 7;
             GQtyTextBox.Text = "0";
             GQtyTextBox.TextChanged += GQtyTextBox_TextChanged;
+            GQtyTextBox.KeyPress += GQtyTextBox_KeyPress;
             // 
             // BQtyReasonLabel
             // 
