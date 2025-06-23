@@ -1,6 +1,7 @@
 ﻿using mes;
-using MES_SW.Admin.Models;
+using MES_SW.Admin.Models.Items;
 using MES_SW.Data;
+using MES_SW.Services.Common;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -156,7 +157,7 @@ namespace MES_SW.Admin
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-
+            var equipmentService = new EquipmentService();
             /*
             OUTPUT INSERTED.ID는 SCOPE_IDENTITY()와 같은 역할을 하지만, 더 안전하고 강력한 방식으로 INSERT 시 생성된 ID 값을 바로 반환받을 수 있게 해주는 SQL 문법입니다. 
             특히 **트리거(trigger)**가 있는 테이블에서 SCOPE_IDENTITY()가 의도대로 동작하지 않는 경우에도 안전하게 사용할 수 있어요.
@@ -175,7 +176,7 @@ namespace MES_SW.Admin
 
             //TODO : 현재 설비가 중복으로 선택되는 문제가 발생 해결 필요****************************************************
             int __processId = 1; // 실제 공정에 맞게 동적으로 결정
-            int selectedEquipmentId = DBHelper.GetAvailableEquipmentId(__processId);
+            int selectedEquipmentId = equipmentService.GetAvailableEquipmentID(__processId);
 
             if (selectedEquipmentId == 0)
             {

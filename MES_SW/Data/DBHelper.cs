@@ -12,7 +12,7 @@ namespace MES_SW.Data
 {
     public static class DBHelper
     {
-        private static string connectionString = "CONNECTION";
+        private static string connectionString = "DBCONNECTION";
         
         // DB 연결 열기
         public static  SqlConnection GetConnection()
@@ -137,6 +137,7 @@ namespace MES_SW.Data
         }
 
         // 공정 흐름에 맞는 설비 자동 부여하기 위한 메서드
+        /* EquipmentService로 이동
         public static int GetAvailableEquipmentId(int processId)
         {
             int equipmentId = 0;
@@ -158,7 +159,7 @@ namespace MES_SW.Data
 
             return equipmentId; // 없으면 0
         }
-
+        */
         /*
         쿼리문에서 조인을 사용하면 DB에 저장된 값들을 활용하는 것이고
         parameter를 사용하면 Form이나 UserControl에서 입력한 값을 활용하는 것이다.
@@ -246,6 +247,7 @@ namespace MES_SW.Data
 
         //생산 종료 후 데이터 업데이트(작업자)
         // TODO : 메서드 타입 변경해서 오류 메시지 출력 추가하기 AND DTO 만들어서 처리해야 함 매개변수가 너무 많음
+        /* WorkOrderPerformanceService로 이동
         public static void CompleteWorkOrderProcess(int workOrderProcessId, int workOrderID, int processID, int userID, int goodQty, int badQty, string badReason, int productID, int equipmentID)
         {
             int nextProcessID = processID + 1;
@@ -386,6 +388,6 @@ namespace MES_SW.Data
                 }
             }
         }
-
+        */
     }
 }
