@@ -209,6 +209,7 @@
             Name = "WorkPerformanceForm";
             Text = "WorkPerformanceForm";
             FormClosing += WorkReportForm_FormClosing;
+            Load += WorkPerformanceForm_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);

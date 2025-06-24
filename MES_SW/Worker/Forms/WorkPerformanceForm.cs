@@ -37,14 +37,18 @@ namespace MES_SW.Worker.WorkerUserControl
                 ProductID = productID,
                 OrderQty = orderQty
             };
-            _workPerformanceService = new WorkPerformanceService(new WorkOrderPerformanceRepository());
+            _workPerformanceService = new WorkPerformanceService();
+        }
+
+        private void WorkPerformanceForm_Load(object sender, EventArgs e)
+        {
             LoadWorkPerformanceForm();
             GQtyTextBox.MaxLength = _workOrderPerformance.OrderQty.ToString().Length;
         }
 
         private void LoadWorkPerformanceForm()
         {
-            
+
             var info = _workPerformanceService.GetPerformanceLabelInfo(_workOrderPerformance);
 
             WorkOrderNumLabel.Text = "생산지시 번호 : " + _workOrderPerformance.WorkOrderID.ToString();
@@ -154,5 +158,7 @@ namespace MES_SW.Worker.WorkerUserControl
         {
             this.Close(); // 뒤로가기 버튼 클릭 시 폼 닫기
         }
+
+        
     }
 }

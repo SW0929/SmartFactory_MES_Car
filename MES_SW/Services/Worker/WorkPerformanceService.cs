@@ -13,17 +13,17 @@ namespace MES_SW.Services.Worker
 {
     public class WorkPerformanceService
     {
-        private readonly WorkOrderPerformanceRepository _repository;
+        private WorkOrderPerformanceRepository _repository;
 
-        public WorkPerformanceService(WorkOrderPerformanceRepository repository)
+        public WorkPerformanceService()
         {
-            _repository = repository;
+            _repository = new WorkOrderPerformanceRepository();
         }
 
         // 생산지시 정보 가져오는 메서드
         public Dictionary<string, string> GetPerformanceLabelInfo(WorkOrderPerformance perf)
         {
-            return _repository.GetDisplayInfo(perf.ProcessID, perf.EquipmentID, perf.ProductID);
+            return _repository.GetDisplayInfo(perf.EquipmentID, perf.ProductID, perf.ProcessID);
         }
 
         // 실적 등록 및 작업 종료 메서드

@@ -137,6 +137,7 @@ namespace MES_SW.Data
         }
 
         // 생산 시작 후 데이터 업데이트(작업자)
+        /* StartWorkOrder
         public static void StartWorkOrderProcess(int userID, int workOrderID, int workOrderProcessID)
         {
             // 대기 상태의 작업만 가능
@@ -216,7 +217,7 @@ namespace MES_SW.Data
                 }
             }
         }
-
+        */
 
         // 공정 흐름에 맞는 설비 자동 부여하기 위한 메서드
         /* EquipmentService로 이동

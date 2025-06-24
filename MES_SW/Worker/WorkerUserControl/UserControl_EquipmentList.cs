@@ -48,6 +48,7 @@ namespace MES_SW.Worker.WorkerUserControl
 
         }
 
+        // 설비 결함 등록 및 설비 상태 업데이트
         private void AddButton_Click(object sender, EventArgs e)
         {
             if (int.TryParse(EquipmentIDTextBox.Text, out int equipmentID))
