@@ -58,7 +58,7 @@ namespace MES_SW.Services.Common
                     catch (Exception ex)
                     {
                         tran.Rollback();
-                        throw new Exception("설비 결함 등록 중 오류 발생", ex);
+                        throw new Exception($"설비 결함 등록 중 오류 발생: {ex.Message}", ex);
                     }
                 }
             }

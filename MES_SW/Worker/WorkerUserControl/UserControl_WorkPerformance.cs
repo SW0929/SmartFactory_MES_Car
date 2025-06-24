@@ -27,7 +27,7 @@ namespace MES_SW.Worker.WorkerUserControl
         {
             InitializeComponent();
             _userID = userID;
-            _workPerformanceService = new WorkPerformanceService(new WorkOrderPerformanceRepository());
+            _workPerformanceService = new WorkPerformanceService();
             LoadWorkPerformanceForm();
         }
 
@@ -61,8 +61,6 @@ namespace MES_SW.Worker.WorkerUserControl
                 GQtyTextBox.Text = goodQtyStr;
                 BQtyTextBox.Text = defectQtyStr;
                 BadReasonTextBox.Text = reasonStr;
-
-               
             }
             else
             {
