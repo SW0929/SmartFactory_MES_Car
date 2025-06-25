@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using MES_SW.Admin.Models.Items;
+using MES_SW.Models;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -90,6 +92,60 @@ namespace MES_SW.Data
                 cmd.Parameters.AddRange(parameters);
                 return cmd.ExecuteNonQuery();
             }
+        }
+
+        public DataTable GetEquipmentListFromDB()
+        {
+            // LastUsedTime 컬럼이 null인 경우 '미사용'으로 표기
+            // TODO : 조인 통해서 프로세스 이름 표시
+            string query = @"
+                            SELECT EquipmentID, Name, Type, Status, ProcessID, ISNULL(CONVERT(NVARCHAR, LastUsedTime, 120), '미사용') AS LastUsedTime 
+                            FROM Equipment
+                            ORDER BY ProcessID
+                            ";
+
+            return DBHelper.ExecuteDataTable(query);
+        }
+
+        public int InsertEquipmentToDB(Equipment equipment)
+        {
+            string query = "INSERT INTO Equipment (Name, Type, Status, ProcessID) Values(@Name, @Type, @Status, @ProcessID)";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter ("@Name", equipment.Name),
+                new SqlParameter ("@Type", equipment.Type),
+                new SqlParameter ("@Status", equipment.Status),
+                new SqlParameter ("@ProcessID", equipment.ProcessID)
+            };
+
+            return DBHelper.ExecuteNonQuery(query, parameters);
+        }
+
+        public int UpdateEquipmentToDB(Equipment equipment)
+        {
+            string query = @"UPDATE Equipment
+                            Set Name = @Name, Type = @Type, Status = @Status, ProcessID = @ProcessId 
+                            WHERE EquipmentID = @EquipmentID";
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@EquipmentID", equipment.EquipmentID),
+                new SqlParameter("@Name", equipment.Name),
+                new SqlParameter("@Type", equipment.Type),
+                new SqlParameter("@Status", equipment.Status),
+                new SqlParameter("@ProcessId", equipment.ProcessID)
+            };
+            return DBHelper.ExecuteNonQuery (query, parameters);
+        }
+
+        public int DeleteEquipmentFromDB(Equipment equipment)
+        {
+            string query = "DELETE FROM Equipment WHERE EquipmentID = @EquipmentID";
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@EquipmentID", Convert.ToInt32(equipment.EquipmentID))
+            };
+            return DBHelper.ExecuteNonQuery(query, parameters);
         }
     }
 }
