@@ -77,7 +77,7 @@
             AddUserButton.Location = new Point(36, 399);
             AddUserButton.Name = "AddUserButton";
             AddUserButton.Size = new Size(157, 36);
-            AddUserButton.TabIndex = 2;
+            AddUserButton.TabIndex = 7;
             AddUserButton.Text = "추가";
             AddUserButton.UseVisualStyleBackColor = true;
             AddUserButton.Click += AddUserButton_Click;
@@ -87,7 +87,7 @@
             UpdateUserButton.Location = new Point(312, 399);
             UpdateUserButton.Name = "UpdateUserButton";
             UpdateUserButton.Size = new Size(157, 36);
-            UpdateUserButton.TabIndex = 3;
+            UpdateUserButton.TabIndex = 8;
             UpdateUserButton.Text = "수정";
             UpdateUserButton.UseVisualStyleBackColor = true;
             UpdateUserButton.Click += UpdateUserButton_Click;
@@ -97,7 +97,7 @@
             DeleteUserButton.Location = new Point(597, 399);
             DeleteUserButton.Name = "DeleteUserButton";
             DeleteUserButton.Size = new Size(157, 36);
-            DeleteUserButton.TabIndex = 4;
+            DeleteUserButton.TabIndex = 9;
             DeleteUserButton.Text = "삭제";
             DeleteUserButton.UseVisualStyleBackColor = true;
             DeleteUserButton.Click += DeleteUserButton_Click;
@@ -117,7 +117,7 @@
             EmployeeIdTextBox.Location = new Point(95, 12);
             EmployeeIdTextBox.Name = "EmployeeIdTextBox";
             EmployeeIdTextBox.Size = new Size(100, 23);
-            EmployeeIdTextBox.TabIndex = 6;
+            EmployeeIdTextBox.TabIndex = 0;
             EmployeeIdTextBox.KeyPress += EmployeeIdTextBox_KeyPress;
             // 
             // UserNameTextBox
@@ -125,7 +125,7 @@
             UserNameTextBox.Location = new Point(95, 66);
             UserNameTextBox.Name = "UserNameTextBox";
             UserNameTextBox.Size = new Size(100, 23);
-            UserNameTextBox.TabIndex = 8;
+            UserNameTextBox.TabIndex = 1;
             // 
             // UserNameLabel
             // 
@@ -153,7 +153,7 @@
             AdminRadioButton.Location = new Point(125, 22);
             AdminRadioButton.Name = "AdminRadioButton";
             AdminRadioButton.Size = new Size(61, 19);
-            AdminRadioButton.TabIndex = 13;
+            AdminRadioButton.TabIndex = 5;
             AdminRadioButton.Text = "Admin";
             AdminRadioButton.UseVisualStyleBackColor = true;
             // 
@@ -164,7 +164,7 @@
             WorkerRadioButton.Location = new Point(17, 22);
             WorkerRadioButton.Name = "WorkerRadioButton";
             WorkerRadioButton.Size = new Size(63, 19);
-            WorkerRadioButton.TabIndex = 14;
+            WorkerRadioButton.TabIndex = 4;
             WorkerRadioButton.TabStop = true;
             WorkerRadioButton.Text = "Worker";
             WorkerRadioButton.UseVisualStyleBackColor = true;
@@ -175,7 +175,7 @@
             checkBox1.Location = new Point(93, 251);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(69, 19);
-            checkBox1.TabIndex = 15;
+            checkBox1.TabIndex = 6;
             checkBox1.Text = "Activate";
             checkBox1.UseVisualStyleBackColor = true;
             // 
@@ -186,7 +186,7 @@
             groupBox1.Location = new Point(7, 179);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(220, 50);
-            groupBox1.TabIndex = 16;
+            groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "Role";
             // 
@@ -195,7 +195,7 @@
             DepartmentTextBox.Location = new Point(95, 120);
             DepartmentTextBox.Name = "DepartmentTextBox";
             DepartmentTextBox.Size = new Size(100, 23);
-            DepartmentTextBox.TabIndex = 18;
+            DepartmentTextBox.TabIndex = 2;
             // 
             // DepartmentLabel
             // 

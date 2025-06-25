@@ -94,6 +94,7 @@ namespace MES_SW.Data
             }
         }
 
+        // 현재 등록된 설비 목록
         public DataTable GetEquipmentListFromDB()
         {
             // LastUsedTime 컬럼이 null인 경우 '미사용'으로 표기
@@ -107,6 +108,7 @@ namespace MES_SW.Data
             return DBHelper.ExecuteDataTable(query);
         }
 
+        // 새로운 설비 추가
         public int InsertEquipmentToDB(Equipment equipment)
         {
             string query = "INSERT INTO Equipment (Name, Type, Status, ProcessID) Values(@Name, @Type, @Status, @ProcessID)";
@@ -122,6 +124,7 @@ namespace MES_SW.Data
             return DBHelper.ExecuteNonQuery(query, parameters);
         }
 
+        // 설비 정보 수정
         public int UpdateEquipmentToDB(Equipment equipment)
         {
             string query = @"UPDATE Equipment
@@ -138,6 +141,7 @@ namespace MES_SW.Data
             return DBHelper.ExecuteNonQuery (query, parameters);
         }
 
+        // 설비 삭제
         public int DeleteEquipmentFromDB(Equipment equipment)
         {
             string query = "DELETE FROM Equipment WHERE EquipmentID = @EquipmentID";

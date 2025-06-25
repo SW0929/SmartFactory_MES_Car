@@ -1,4 +1,5 @@
 ﻿using MES_SW.Data;
+using MES_SW.Services.Admin;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -12,27 +13,25 @@ using System.Windows.Forms;
 
 namespace MES_SW.Admin
 {
-    //TODO : 설비 결함 사유 연동 못함 해결 방법 생각하기. - 해결 완료
     //TODO : 조치 상태 변경 해야함.
     public partial class UserControl_EquipmentDefect : UserControl
     {
+        private EquipmentDefect _equipmentDefect;
+        private EquipmentDefectService _equipmentDefectService;
         public UserControl_EquipmentDefect()
         {
             InitializeComponent();
+            _equipmentDefect = new EquipmentDefect();
+            _equipmentDefectService = new EquipmentDefectService();
             LoadEquipmentDefeectData();
 
         }
         #region Load_Methods
+        // 현재 등록된 결함이 발생한 설비 목록
         private void LoadEquipmentDefeectData()
         {
-            string query = @"
-                            SELECT ed.DefectID, e.Name AS 설비명 , ed.DefectType AS 결함유형, ed.DefectTime AS 발생일시, u.UserName AS 보고자, ed.Resolved AS '해결 여부', ed.ResolvedTime AS 해결일시, ed.Description
-                            FROM EquipmentDefect ed
-                            JOIN Equipment e ON e.EquipmentID = ed.EquipmentID
-                            JOIN Users u ON u.EmployeeID = ed.ReportedBy
-                            ";
+            dataGridView1.DataSource = _equipmentDefectService.GetEquipmentDefect();
 
-            dataGridView1.DataSource = DBHelper.ExecuteDataTable(query);
             // 이거 안하면 날짜가 짤려서 나오고 초 단위 까지 안나옴
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
@@ -45,49 +44,31 @@ namespace MES_SW.Admin
 
             dataGridView1.Columns["DefectID"].Visible = false;
             dataGridView1.Columns["Description"].Visible = false;
-            
-
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            int rowIndex = e.RowIndex;
-
-            if (rowIndex >= 0)
+            
+            try
             {
-                DataGridViewRow row = dataGridView1.Rows[rowIndex];
-                EquipmentNameTextBox.Text = row.Cells["설비명"].Value.ToString();
-                EquipmentTypeTextBox.Text = row.Cells["결함유형"].Value.ToString();
-                DefectDateTimePicker.Value = Convert.ToDateTime(row.Cells["발생일시"].Value);
-                //ResolvedCheckBox.Checked = Convert.ToBoolean(row.Cells["해결 여부"].Value);
-                EquipmentIDLabel.Text = row.Cells["DefectID"].Value.ToString();
-                string description = row.Cells["Description"].Value?.ToString() ?? string.Empty;
-                EquipmentDefectDescriptionTextBox.Text = description;
+                if (e.RowIndex < 0) return;
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                SetDefectFormFieldsFromRow(row);
             }
-            else
+            catch (Exception ex)
             {
-                // 클릭한 셀이 유효하지 않으면 종료
-                return;
+                MessageBox.Show("데이터를 불러오는 중 오류 발생: " + ex.Message);
             }
         }
         #endregion
 
         #region Event_Handlers
-        private void MaintenanceButton_Click(object sender, EventArgs e)
+        private void InspectButton_Click(object sender, EventArgs e)
         {
-            string query = @"
-                            UPDATE e
-                            SET e.Status = '점검'
-                            From Equipment e
-                            JOIN EquipmentDefect ed ON ed.EquipmentID = e.EquipmentID
-                            WHERE ed.DefectID = @DefectID";
-            SqlParameter[] parameters = new SqlParameter[]
-            {
-                new SqlParameter("@DefectID", int.Parse(EquipmentIDLabel.Text))
-            };
+            _equipmentDefect = GetEquipmentFromInput();
             try
             {
-                int rowsAffected = DBHelper.ExecuteNonQuery(query, parameters);
+                int rowsAffected = _equipmentDefectService.UpdateEquipmentInspect(_equipmentDefect);
                 if (rowsAffected > 0)
                 {
                     MessageBox.Show("설비 상태가 '점검'으로 변경되었습니다.");
@@ -106,61 +87,51 @@ namespace MES_SW.Admin
 
         private void SolvedButton_Click(object sender, EventArgs e)
         {
-            string query = "UPDATE EquipmentDefect SET Resolved = 1, ResolvedTime = @ResolvedTime WHERE DefectID = @DefectID";
-            SqlParameter[] parameters = new SqlParameter[]
-            {
-                new SqlParameter("@ResolvedTime", DateTime.Now),
-                new SqlParameter("@DefectID", int.Parse(EquipmentIDLabel.Text))
-            };
-
+            _equipmentDefect = GetEquipmentFromInput();
             try
             {
-                int rowsAffected = DBHelper.ExecuteNonQuery(query, parameters);
-                if (rowsAffected > 0)
+                bool solvedCheck = _equipmentDefectService.TranDefectSolved(_equipmentDefect);
+
+                if (solvedCheck)
                 {
-                    MessageBox.Show("결함이 해결되었습니다.");
-                    LoadEquipmentDefeectData(); // 데이터 새로고침
+                    MessageBox.Show("결함이 해결되었습니다.\n설비가 다시 가동합니다.");
+                    LoadEquipmentDefeectData(); // 갱신까지
                 }
                 else
                 {
-                    MessageBox.Show("해결 상태 업데이트에 실패했습니다.");
+                    MessageBox.Show("결함 또는 설비 상태 업데이트에 실패했습니다.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"오류 발생: {ex.Message}");
-            }
-
-            string query2 = @"
-                            UPDATE e
-                            SET e.Status = '대기' 
-                            FROM Equipment e
-                            JOIN EquipmentDefect ed ON ed.EquipmentID = e.EquipmentID
-                            WHERE ed.DefectID = @DefectID";
-            SqlParameter[] parameters2 = new SqlParameter[]
-            {
-                new SqlParameter("@DefectID", int.Parse(EquipmentIDLabel.Text))
-            };
-
-            try
-            {
-                int rowsAffected2 = DBHelper.ExecuteNonQuery(query2, parameters2);
-                if (rowsAffected2 > 0)
-                {
-                    MessageBox.Show("설비 상태가 '대기'로 변경되었습니다.");
-                }
-                else
-                {
-                    MessageBox.Show("설비 상태 업데이트에 실패했습니다.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"오류 발생: {ex.Message}");
+                MessageBox.Show($"처리 중 오류 발생: {ex.Message}");
+                // 필요시 로그로 남기기
             }
         }
 
         #endregion
+        private EquipmentDefect GetEquipmentFromInput()
+        {
 
+            return new EquipmentDefect
+            {
+                // 지금 실질적으로 사용하는 변수는 DefectID 밖에 사용하지 않음.
+                DefectID = Convert.ToInt32(EquipmentIDLabel.Text),
+                EquipmentName = EquipmentNameTextBox.Text,
+                DefectTime = DefectDateTimePicker.Value,
+                DefectType = EquipmentTypeTextBox.Text,
+                Description = EquipmentDefectDescriptionTextBox.Text
+            };
+        }
+
+        private void SetDefectFormFieldsFromRow(DataGridViewRow row)
+        {
+
+            EquipmentIDLabel.Text = row.Cells["DefectID"].Value.ToString();
+            EquipmentNameTextBox.Text = row.Cells["설비명"].Value?.ToString() ?? string.Empty;
+            EquipmentTypeTextBox.Text = row.Cells["결함유형"].Value?.ToString() ?? string.Empty;
+            DefectDateTimePicker.Value = Convert.ToDateTime(row.Cells["발생일시"].Value);
+            EquipmentDefectDescriptionTextBox.Text = row.Cells["Description"].Value?.ToString() ?? string.Empty;
+        }
     }
 }
