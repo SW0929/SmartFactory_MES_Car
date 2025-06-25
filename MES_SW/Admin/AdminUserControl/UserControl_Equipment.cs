@@ -67,10 +67,17 @@ namespace MES_SW.Admin
         #region Event_Handlers
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            try
+            {
+                if (e.RowIndex < 0) return;
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                SetEquipmentFieldsFromRow(row);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("데이터를 불러오는 중 오류 발생: " + ex.Message);
+            }
             
-            if (e.RowIndex < 0) return;
-            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-            SetEquipmentFieldsFromRow(row);
         }
 
         private void AddButton_Click(object sender, EventArgs e)
@@ -173,7 +180,7 @@ namespace MES_SW.Admin
             };
         }
 
-        public bool CheckAllText()
+        private bool CheckAllText()
         {
             if (EquipmentNameTextBox.Text == "" || EquipmentTypeTextBox.Text == "" || EquipmentStatusTextBox.Text == "")
             {

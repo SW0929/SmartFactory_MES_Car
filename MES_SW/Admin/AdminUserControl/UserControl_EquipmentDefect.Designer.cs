@@ -32,6 +32,7 @@
             dataGridView1 = new DataGridView();
             EquipmentDefectInfoLabel = new Label();
             panel1 = new Panel();
+            InspectButton = new Button();
             DefectDateLabel = new Label();
             DefectDateTimePicker = new DateTimePicker();
             EquipmentIDLabel = new Label();
@@ -42,7 +43,6 @@
             EquipmentNameTextBox = new TextBox();
             EquipmentName = new Label();
             SolvedButton = new Button();
-            MaintenanceButton = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -82,7 +82,7 @@
             // panel1
             // 
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(MaintenanceButton);
+            panel1.Controls.Add(InspectButton);
             panel1.Controls.Add(DefectDateLabel);
             panel1.Controls.Add(DefectDateTimePicker);
             panel1.Controls.Add(EquipmentIDLabel);
@@ -97,6 +97,16 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(352, 522);
             panel1.TabIndex = 4;
+            // 
+            // InspectButton
+            // 
+            InspectButton.Location = new Point(30, 378);
+            InspectButton.Name = "InspectButton";
+            InspectButton.Size = new Size(296, 42);
+            InspectButton.TabIndex = 4;
+            InspectButton.Text = "점검";
+            InspectButton.UseVisualStyleBackColor = true;
+            InspectButton.Click += InspectButton_Click;
             // 
             // DefectDateLabel
             // 
@@ -113,7 +123,7 @@
             DefectDateTimePicker.Location = new Point(30, 151);
             DefectDateTimePicker.Name = "DefectDateTimePicker";
             DefectDateTimePicker.Size = new Size(193, 23);
-            DefectDateTimePicker.TabIndex = 14;
+            DefectDateTimePicker.TabIndex = 2;
             // 
             // EquipmentIDLabel
             // 
@@ -130,7 +140,7 @@
             EquipmentTypeTextBox.Location = new Point(107, 88);
             EquipmentTypeTextBox.Name = "EquipmentTypeTextBox";
             EquipmentTypeTextBox.Size = new Size(100, 23);
-            EquipmentTypeTextBox.TabIndex = 8;
+            EquipmentTypeTextBox.TabIndex = 1;
             // 
             // DefectTypeLabel
             // 
@@ -147,7 +157,7 @@
             EquipmentDefectDescriptionTextBox.Multiline = true;
             EquipmentDefectDescriptionTextBox.Name = "EquipmentDefectDescriptionTextBox";
             EquipmentDefectDescriptionTextBox.Size = new Size(296, 145);
-            EquipmentDefectDescriptionTextBox.TabIndex = 6;
+            EquipmentDefectDescriptionTextBox.TabIndex = 3;
             // 
             // EquipmentDefectDescriptionLabel
             // 
@@ -163,7 +173,7 @@
             EquipmentNameTextBox.Location = new Point(107, 41);
             EquipmentNameTextBox.Name = "EquipmentNameTextBox";
             EquipmentNameTextBox.Size = new Size(100, 23);
-            EquipmentNameTextBox.TabIndex = 4;
+            EquipmentNameTextBox.TabIndex = 0;
             // 
             // EquipmentName
             // 
@@ -179,20 +189,10 @@
             SolvedButton.Location = new Point(30, 445);
             SolvedButton.Name = "SolvedButton";
             SolvedButton.Size = new Size(296, 39);
-            SolvedButton.TabIndex = 0;
+            SolvedButton.TabIndex = 5;
             SolvedButton.Text = "해결";
             SolvedButton.UseVisualStyleBackColor = true;
             SolvedButton.Click += SolvedButton_Click;
-            // 
-            // MaintenanceButton
-            // 
-            MaintenanceButton.Location = new Point(30, 378);
-            MaintenanceButton.Name = "MaintenanceButton";
-            MaintenanceButton.Size = new Size(296, 42);
-            MaintenanceButton.TabIndex = 16;
-            MaintenanceButton.Text = "점검";
-            MaintenanceButton.UseVisualStyleBackColor = true;
-            MaintenanceButton.Click += MaintenanceButton_Click;
             // 
             // UserControl_EquipmentDefect
             // 
@@ -228,6 +228,6 @@
         private Button SolvedButton;
         private Label DefectDateLabel;
         private DateTimePicker DefectDateTimePicker;
-        private Button MaintenanceButton;
+        private Button InspectButton;
     }
 }

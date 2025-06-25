@@ -45,30 +45,17 @@ namespace MES_SW.Admin
         // 작업자 클릭 시 데이터 값들이 옆에 채워짐.
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            int rowIndex = e.RowIndex;
-
-            if (rowIndex >= 0)
+            
+            try
             {
-                DataGridViewRow row = dataGridView1.Rows[rowIndex];
-
-                EmployeeIdTextBox.Text = row.Cells["EmployeeID"].Value?.ToString() ?? "";
-                UserNameTextBox.Text = row.Cells["UserName"].Value?.ToString() ?? "";
-                DepartmentTextBox.Text = row.Cells["Department"].Value?.ToString() ?? "";
-
-                string userRole = row.Cells["UserRole"].Value?.ToString() ?? "";
-                AdminRadioButton.Checked = userRole == "Admin";
-                WorkerRadioButton.Checked = userRole == "Worker";
-
-                object? statusValue = row.Cells["UserStatus"].Value;
-                checkBox1.Checked = statusValue is bool b && b;
-
+                if (e.RowIndex < 0) return;
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                SetUserFieldsFromRow(row);
             }
-            else
+            catch (Exception ex)
             {
-                // 클릭한 셀이 유효하지 않으면 종료
-                return;
+                MessageBox.Show("데이터를 불러오는 중 오류 발생: " + ex.Message);
             }
-
         }
         // 빈 곳을 클릭하면 데이터 값 초기화
         private void UserControl_UserManager_Click(object sender, EventArgs e)
@@ -192,6 +179,20 @@ namespace MES_SW.Admin
                 return false;
             }
             return true;
+        }
+
+        private void SetUserFieldsFromRow(DataGridViewRow row)
+        {
+            EmployeeIdTextBox.Text = row.Cells["EmployeeID"].Value?.ToString() ?? "";
+            UserNameTextBox.Text = row.Cells["UserName"].Value?.ToString() ?? "";
+            DepartmentTextBox.Text = row.Cells["Department"].Value?.ToString() ?? "";
+
+            string userRole = row.Cells["UserRole"].Value?.ToString() ?? "";
+            AdminRadioButton.Checked = userRole == "Admin";
+            WorkerRadioButton.Checked = userRole == "Worker";
+
+            object? statusValue = row.Cells["UserStatus"].Value;
+            checkBox1.Checked = statusValue is bool b && b;
         }
 
     }
