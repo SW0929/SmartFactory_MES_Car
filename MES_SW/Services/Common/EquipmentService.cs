@@ -1,4 +1,5 @@
 ﻿using MES_SW.Data;
+using MES_SW.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,10 @@ namespace MES_SW.Services.Common
         {
             _equipmentRepository = new EquipmentRepository();
         }
+
+        // 추후에 파일을 나누어도 좋을 듯, 지금은 공통으로 사용 중.
+
+        #region 작업자
         // 공정 흐름에 맞는 설비 자동 부여하기 위한 메서드
         public int GetAvailableEquipmentID(int processId)
         {
@@ -63,5 +68,29 @@ namespace MES_SW.Services.Common
                 }
             }
         }
+        #endregion
+
+
+        public DataTable GetEquipmentList()
+        {
+            return _equipmentRepository.GetEquipmentListFromDB();
+        }
+
+        public int InsertNewEquipment(Equipment equipment)
+        {
+            return _equipmentRepository.InsertEquipmentToDB(equipment);
+        }
+
+        public int UpdateEquipment(Equipment equipment)
+        {
+            return _equipmentRepository.UpdateEquipmentToDB(equipment);
+        }
+
+        public int DeleteEquipment(Equipment equipment)
+        {
+            return _equipmentRepository.DeleteEquipmentFromDB(equipment);
+        }
+
+
     }
 }

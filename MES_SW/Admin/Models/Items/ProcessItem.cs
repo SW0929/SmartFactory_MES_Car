@@ -10,7 +10,7 @@ namespace MES_SW.Admin.Models.Items
     public class ProcessItem
     {
         public int ProcessValue { get; set; }
-        public string ProcessName { get; set; }
+        public required string ProcessName { get; set; }
 
         public override string ToString()
         {

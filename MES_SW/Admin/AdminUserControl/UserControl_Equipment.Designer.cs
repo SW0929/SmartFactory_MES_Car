@@ -107,7 +107,7 @@
             ProcessIDComboBox.Location = new Point(122, 195);
             ProcessIDComboBox.Name = "ProcessIDComboBox";
             ProcessIDComboBox.Size = new Size(121, 23);
-            ProcessIDComboBox.TabIndex = 10;
+            ProcessIDComboBox.TabIndex = 3;
             // 
             // ProcessIDLabel
             // 
@@ -123,7 +123,7 @@
             EquipmentTypeTextBox.Location = new Point(122, 84);
             EquipmentTypeTextBox.Name = "EquipmentTypeTextBox";
             EquipmentTypeTextBox.Size = new Size(100, 23);
-            EquipmentTypeTextBox.TabIndex = 8;
+            EquipmentTypeTextBox.TabIndex = 1;
             // 
             // EquipmentTypeLabel
             // 
@@ -139,7 +139,7 @@
             EquipmentStatusTextBox.Location = new Point(122, 136);
             EquipmentStatusTextBox.Name = "EquipmentStatusTextBox";
             EquipmentStatusTextBox.Size = new Size(100, 23);
-            EquipmentStatusTextBox.TabIndex = 6;
+            EquipmentStatusTextBox.TabIndex = 2;
             // 
             // EquipmentStatusLabel
             // 
@@ -155,14 +155,14 @@
             EquipmentNameTextBox.Location = new Point(122, 37);
             EquipmentNameTextBox.Name = "EquipmentNameTextBox";
             EquipmentNameTextBox.Size = new Size(100, 23);
-            EquipmentNameTextBox.TabIndex = 4;
+            EquipmentNameTextBox.TabIndex = 0;
             // 
             // DeleteButton
             // 
             DeleteButton.Location = new Point(203, 408);
             DeleteButton.Name = "DeleteButton";
             DeleteButton.Size = new Size(75, 23);
-            DeleteButton.TabIndex = 3;
+            DeleteButton.TabIndex = 6;
             DeleteButton.Text = "삭제";
             DeleteButton.UseVisualStyleBackColor = true;
             DeleteButton.Click += DeleteButton_Click;
@@ -172,7 +172,7 @@
             UpdateButton.Location = new Point(122, 408);
             UpdateButton.Name = "UpdateButton";
             UpdateButton.Size = new Size(75, 23);
-            UpdateButton.TabIndex = 2;
+            UpdateButton.TabIndex = 5;
             UpdateButton.Text = "수정";
             UpdateButton.UseVisualStyleBackColor = true;
             UpdateButton.Click += UpdateButton_Click;
@@ -191,7 +191,7 @@
             AddButton.Location = new Point(41, 408);
             AddButton.Name = "AddButton";
             AddButton.Size = new Size(75, 23);
-            AddButton.TabIndex = 0;
+            AddButton.TabIndex = 4;
             AddButton.Text = "추가";
             AddButton.UseVisualStyleBackColor = true;
             AddButton.Click += AddButton_Click;
