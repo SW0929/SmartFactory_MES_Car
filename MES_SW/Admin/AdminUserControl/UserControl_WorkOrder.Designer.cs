@@ -39,12 +39,8 @@
             DeleteButton = new Button();
             dataGridView1 = new DataGridView();
             panel1 = new Panel();
-            EquipmentComboBox = new ComboBox();
-            EquipmentLabel = new Label();
             WorkOrderIDLabel = new Label();
             ProductNameComboBox = new ComboBox();
-            DepartmentComboBox = new ComboBox();
-            DepartmentNameLabel = new Label();
             StatusColour = new Label();
             AdminNameLabel = new Label();
             StatusLabel = new Label();
@@ -148,12 +144,8 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(EquipmentComboBox);
-            panel1.Controls.Add(EquipmentLabel);
             panel1.Controls.Add(WorkOrderIDLabel);
             panel1.Controls.Add(ProductNameComboBox);
-            panel1.Controls.Add(DepartmentComboBox);
-            panel1.Controls.Add(DepartmentNameLabel);
             panel1.Controls.Add(StatusColour);
             panel1.Controls.Add(AdminNameLabel);
             panel1.Controls.Add(StatusLabel);
@@ -166,24 +158,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(314, 393);
             panel1.TabIndex = 16;
-            // 
-            // EquipmentComboBox
-            // 
-            EquipmentComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            EquipmentComboBox.FormattingEnabled = true;
-            EquipmentComboBox.Location = new Point(100, 56);
-            EquipmentComboBox.Name = "EquipmentComboBox";
-            EquipmentComboBox.Size = new Size(121, 23);
-            EquipmentComboBox.TabIndex = 22;
-            // 
-            // EquipmentLabel
-            // 
-            EquipmentLabel.AutoSize = true;
-            EquipmentLabel.Location = new Point(36, 59);
-            EquipmentLabel.Name = "EquipmentLabel";
-            EquipmentLabel.Size = new Size(34, 15);
-            EquipmentLabel.TabIndex = 21;
-            EquipmentLabel.Text = "설비:";
             // 
             // WorkOrderIDLabel
             // 
@@ -202,25 +176,6 @@
             ProductNameComboBox.Name = "ProductNameComboBox";
             ProductNameComboBox.Size = new Size(121, 23);
             ProductNameComboBox.TabIndex = 19;
-            // 
-            // DepartmentComboBox
-            // 
-            DepartmentComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            DepartmentComboBox.FormattingEnabled = true;
-            DepartmentComboBox.Items.AddRange(new object[] { "프레스", "차제", "도장", "의장", "검사" });
-            DepartmentComboBox.Location = new Point(100, 178);
-            DepartmentComboBox.Name = "DepartmentComboBox";
-            DepartmentComboBox.Size = new Size(121, 23);
-            DepartmentComboBox.TabIndex = 18;
-            // 
-            // DepartmentNameLabel
-            // 
-            DepartmentNameLabel.AutoSize = true;
-            DepartmentNameLabel.Location = new Point(32, 181);
-            DepartmentNameLabel.Name = "DepartmentNameLabel";
-            DepartmentNameLabel.Size = new Size(42, 15);
-            DepartmentNameLabel.TabIndex = 17;
-            DepartmentNameLabel.Text = "부서 : ";
             // 
             // StatusColour
             // 
@@ -286,12 +241,8 @@
         private Panel panel1;
         private Label StatusLabel;
         private Label StatusColour;
-        private Label DepartmentNameLabel;
         private Label AdminNameLabel;
-        private ComboBox DepartmentComboBox;
         private ComboBox ProductNameComboBox;
         private Label WorkOrderIDLabel;
-        private ComboBox EquipmentComboBox;
-        private Label EquipmentLabel;
     }
 }
