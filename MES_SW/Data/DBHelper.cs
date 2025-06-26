@@ -75,6 +75,7 @@ namespace MES_SW.Data
         }
 
         // 생산지시와 생산공정 흐름 등록하기 위해 트랜잭션으로 처리 (관리자 쪽 작업지시에 있음)
+        /* 생산 지시
         public static int InsertWorkOrderWithProcess(string workOrderQuery, SqlParameter[] workOrderParams,
                                              string processQuery, SqlParameter[] processParams, string equipmentQuery, SqlParameter[] equipmentParams)
         {
@@ -135,6 +136,7 @@ namespace MES_SW.Data
                 }
             }
         }
+        */
 
         // 생산 시작 후 데이터 업데이트(작업자)
         /* StartWorkOrder
