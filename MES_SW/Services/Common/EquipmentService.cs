@@ -29,9 +29,9 @@ namespace MES_SW.Services.Common
         }
 
         // 현재 가동 중인 설비 정보를 가져오는 메서드
-        public DataTable GetUsingEquipment()
+        public DataTable GetUsingEquipment(int EmployeeID)
         {
-            return _equipmentRepository.GetUsingEquipmentInfo();
+            return _equipmentRepository.GetUsingEquipmentInfo(EmployeeID);
         }
 
         // 설비 결함 등록과 설비 상태 업데이트를 트랜잭션으로 처리하는 메서드

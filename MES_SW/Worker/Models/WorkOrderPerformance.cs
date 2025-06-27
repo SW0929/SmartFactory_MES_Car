@@ -11,7 +11,7 @@ namespace MES_SW.Worker.Models
         public int WorkOrderProcessID { get; set; }
         public int WorkOrderID { get; set; }
         public int ProcessID { get; set; }
-        public int EmployeeID { get; set; }
+        public int IssuedBy { get; set; }
         public int EquipmentID { get; set; }
         public int ProductID { get; set; }
         public int GoodQty { get; set; }

@@ -44,18 +44,24 @@ namespace MES_SW.Data
         /// 현재 가동 중인 설비 정보를 가져오는 메서드
         /// </summary>
         /// <returns></returns>
-        public DataTable GetUsingEquipmentInfo()
+        public DataTable GetUsingEquipmentInfo(int EmployeeID)
         {
             // LastUsedTime 컬럼이 null인 경우 '미사용'으로 표기
             // TODO : 조인 통해서 프로세스 이름 표시
             string query = @"
-                            SELECT EquipmentID, Name, Type, Status, ProcessID, ISNULL(CONVERT(VARCHAR, LastUsedTime, 23), '미사용') AS LastUsedTime 
-                            FROM Equipment
-                            WHERE Status = '가동'
-                            ORDER BY ProcessID
+                            SELECT e.EquipmentID, e.Name, e.Type, e.Status, p.Name AS 공정, ISNULL(CONVERT(VARCHAR, e.LastUsedTime, 23), '미사용') AS LastUsedTime 
+                            FROM Equipment e
+                            JOIN Users u ON u.EmployeeID = @EmployeeID
+                            JOIN Process p ON p.ProcessID = e.ProcessID
+                            WHERE e.Status = '가동' AND u.Department = p.Name
+                            ORDER BY e.ProcessID
                             ";
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@EmployeeID", EmployeeID)
+            };
             //Join Process ON Equipment.ProcessID = Process.ProcessID
-            return DBHelper.ExecuteDataTable(query);
+            return DBHelper.ExecuteDataTable(query, parameters);
         }
 
         // 설비 결함 등록 메서드

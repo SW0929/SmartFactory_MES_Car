@@ -28,76 +28,40 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridView1 = new DataGridView();
-            StartButton = new Button();
-            EndButton = new Button();
-            WorkOrderID = new Label();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            dateTimePicker1 = new DateTimePicker();
             SuspendLayout();
             // 
-            // dataGridView1
+            // flowLayoutPanel1
             // 
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(50, 58);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
-            dataGridView1.Size = new Size(993, 124);
-            dataGridView1.TabIndex = 0;
-            dataGridView1.CellClick += dataGridView1_CellClick;
-            dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
+            flowLayoutPanel1.AutoScroll = true;
+            flowLayoutPanel1.Location = new Point(3, 32);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(1107, 545);
+            flowLayoutPanel1.TabIndex = 4;
             // 
-            // StartButton
+            // dateTimePicker1
             // 
-            StartButton.Location = new Point(254, 492);
-            StartButton.Name = "StartButton";
-            StartButton.Size = new Size(75, 23);
-            StartButton.TabIndex = 1;
-            StartButton.Text = "시작";
-            StartButton.UseVisualStyleBackColor = true;
-            StartButton.Click += StartButton_Click;
-            // 
-            // EndButton
-            // 
-            EndButton.Location = new Point(750, 492);
-            EndButton.Name = "EndButton";
-            EndButton.Size = new Size(75, 23);
-            EndButton.TabIndex = 2;
-            EndButton.Text = "종료";
-            EndButton.UseVisualStyleBackColor = true;
-            EndButton.Click += EndButton_Click;
-            // 
-            // WorkOrderID
-            // 
-            WorkOrderID.AutoSize = true;
-            WorkOrderID.Location = new Point(50, 27);
-            WorkOrderID.Name = "WorkOrderID";
-            WorkOrderID.Size = new Size(83, 15);
-            WorkOrderID.TabIndex = 3;
-            WorkOrderID.Text = "생산지시 번호";
+            dateTimePicker1.Location = new Point(913, 3);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(200, 23);
+            dateTimePicker1.TabIndex = 5;
+            dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             // 
             // UserControl_WorkOrderList
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            Controls.Add(WorkOrderID);
-            Controls.Add(EndButton);
-            Controls.Add(StartButton);
-            Controls.Add(dataGridView1);
+            Controls.Add(dateTimePicker1);
+            Controls.Add(flowLayoutPanel1);
             Name = "UserControl_WorkOrderList";
             Size = new Size(1113, 580);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private DataGridView dataGridView1;
-        private Button StartButton;
-        private Button EndButton;
-        private Label WorkOrderID;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private DateTimePicker dateTimePicker1;
     }
 }

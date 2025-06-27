@@ -18,24 +18,26 @@ namespace MES_SW.Worker.WorkerUserControl
     // TODO : 실적 입력 할 때 맨앞에 0이 들어가는 것 예외처리 해야함. ex) 0001, 0112 
     public partial class WorkPerformanceForm : Form
     {
+        
         private bool isSaved = false; // 저장 여부를 추적하는 변수
         private WorkOrderPerformance _workOrderPerformance;
         private WorkPerformanceService _workPerformanceService;
 
 
-        public WorkPerformanceForm(int workOrderProcessID, int workOrderID, int processID, int employeeID, int equipmentID, int productID, int orderQty)
+        public WorkPerformanceForm(int workerID, WorkOrder workOrder)
         {
             InitializeComponent();
             // 생성자에서 매개변수로 받은 값을 WorkOrderPerformance 객체에 저장
+            
             _workOrderPerformance = new WorkOrderPerformance
             {
-                WorkOrderProcessID = workOrderProcessID,
-                WorkOrderID = workOrderID,
-                ProcessID = processID,
-                EmployeeID = employeeID,
-                EquipmentID = equipmentID,
-                ProductID = productID,
-                OrderQty = orderQty
+                WorkOrderProcessID = workOrder.WorkOrderProcessID,
+                WorkOrderID = workOrder.WorkOrderID,
+                ProcessID = workOrder.ProcessID,
+                IssuedBy = workerID,
+                EquipmentID = workOrder.EquipmentID,
+                ProductID = workOrder.ProductID,
+                OrderQty = workOrder.OrderQty
             };
             _workPerformanceService = new WorkPerformanceService();
         }
@@ -60,8 +62,7 @@ namespace MES_SW.Worker.WorkerUserControl
 
 
         private void WorkReportForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // 굳이 필요할까?  
+        {   
             if (!isSaved)
             {
                 DialogResult result = MessageBox.Show("저장되지 않은 데이터가 있습니다. 종료하시겠습니까?",

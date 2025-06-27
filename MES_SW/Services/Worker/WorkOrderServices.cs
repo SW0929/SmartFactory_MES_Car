@@ -1,5 +1,6 @@
 ﻿using MES_SW.Data;
 using MES_SW.Data.Worker;
+using MES_SW.Worker.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,15 @@ namespace MES_SW.Services.Worker
         public DataTable GetWorkOrders(int EmployeeID)
         {
             return _workOrderRepository.GetWorkOrder(EmployeeID);
+        }
+
+        public List<WorkOrder> GetOrdersByDate(DateTime date)
+        {
+            return _workOrderRepository.GetOrdersByDate(date);
+        }
+        public List<WorkOrder> GetOrdersWithDetailsByDate(DateTime date, int workerID)
+        {
+            return _workOrderRepository.GetOrdersWithDetailsByDate(date, workerID);
         }
 
         public bool StartWorkOrderProcess(int UserID, int WorkOrderID, int WorkOrderProcessID)

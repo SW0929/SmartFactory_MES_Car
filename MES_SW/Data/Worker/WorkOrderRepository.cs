@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using MES_SW.Worker.Models;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,6 +30,100 @@ namespace MES_SW.Data.Worker
                 new SqlParameter("@EmployeeID", EmployeeID)
             ];
             return DBHelper.ExecuteDataTable(query, parameter);
+        }
+
+        public List<WorkOrder> GetOrdersByDate(DateTime date)
+        {
+            List<WorkOrder> list = new();
+
+            string query = @"
+                            SELECT * FROM WorkOrders
+                            WHERE CAST(StartDate AS DATE) = @Date
+                             ";
+
+            using (SqlConnection conn = DBHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Date", date.Date);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    WorkOrder order = new WorkOrder
+                    {
+                        WorkOrderID = reader.GetInt32(0),
+                        ProductID = reader.GetInt32(1),
+                        OrderQty = reader.GetInt32(2),
+                        StartDate = reader.GetDateTime(3),
+                        IssuedBy = reader.GetInt32(5),
+                        Status = reader.GetString(6),
+                        
+                    };
+                    list.Add(order);
+                }
+            }
+
+            return list;
+        }
+
+        public List<WorkOrder> GetOrdersWithDetailsByDate(DateTime date, int workerID)
+        {
+            List<WorkOrder> list = new();
+
+            string query = @"
+                            SELECT 
+                                w.WorkOrderID,
+                                w.ProductID,
+                                p.Name AS ProductName,
+                                wop.ProcessID,
+                                wop.WorkOrderProcessID,
+                                pc.Name AS ProcessName,
+                                wop.EquipmentID,
+                                w.OrderQty,
+                                w.StartDate,
+                                w.IssueBy,
+                                u.UserName AS IssuedByName,
+                                wop.Status
+                            FROM WorkOrders w
+                            JOIN Product p ON p.ProductID = w.ProductID
+                            JOIN WorkOrderProcess wop ON wop.WorkOrderID = w.WorkOrderID
+                            JOIN Process pc ON pc.ProcessID = wop.ProcessID
+                            JOIN Users u ON u.EmployeeID = w.IssueBy
+                            JOIN Users uu ON uu.EmployeeID = @WorkerID
+                            WHERE CAST(w.StartDate AS DATE) = @Date AND uu.Department = pc.Name AND wop.Status IN ('대기', '진행 중')
+                        ";
+
+            using (SqlConnection conn = DBHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Date", date.Date);
+                cmd.Parameters.AddWithValue("@WorkerID", workerID);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    WorkOrder order = new WorkOrder
+                    {
+                        WorkOrderID = reader.GetInt32(0),
+                        ProductID = reader.GetInt32(1),
+                        ProductName = reader.GetString(2),
+                        ProcessID = reader.GetInt32(3),
+                        WorkOrderProcessID = reader.GetInt32(4),
+                        ProcessName = reader.GetString(5),
+                        EquipmentID = reader.GetInt32(6),
+                        OrderQty = reader.GetInt32(7),
+                        StartDate = reader.GetDateTime(8),
+                        IssuedBy = reader.GetInt32(9),
+                        IssuedByName = reader.GetString(10),
+                        Status = reader.GetString(11)
+                    };
+                    list.Add(order);
+                }
+            }
+
+            return list;
         }
 
 
