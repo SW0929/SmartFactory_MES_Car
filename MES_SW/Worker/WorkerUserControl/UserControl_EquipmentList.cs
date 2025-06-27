@@ -27,7 +27,7 @@ namespace MES_SW.Worker.WorkerUserControl
 
         private void LoadEquipment()
         {
-            dataGridView1.DataSource = _equipmentService.GetUsingEquipment();
+            dataGridView1.DataSource = _equipmentService.GetUsingEquipment(_UserID);
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 

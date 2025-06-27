@@ -162,7 +162,7 @@
             // WorkOrderIDLabel
             // 
             WorkOrderIDLabel.AutoSize = true;
-            WorkOrderIDLabel.Location = new Point(32, 278);
+            WorkOrderIDLabel.Location = new Point(32, 252);
             WorkOrderIDLabel.Name = "WorkOrderIDLabel";
             WorkOrderIDLabel.Size = new Size(83, 15);
             WorkOrderIDLabel.TabIndex = 20;
@@ -190,7 +190,7 @@
             // AdminNameLabel
             // 
             AdminNameLabel.AutoSize = true;
-            AdminNameLabel.Location = new Point(32, 236);
+            AdminNameLabel.Location = new Point(32, 213);
             AdminNameLabel.Name = "AdminNameLabel";
             AdminNameLabel.Size = new Size(43, 15);
             AdminNameLabel.TabIndex = 13;

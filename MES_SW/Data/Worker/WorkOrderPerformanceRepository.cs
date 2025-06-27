@@ -169,7 +169,7 @@ namespace MES_SW.Data.Worker
                             performanceCommand.Parameters.AddWithValue("@WorkOrderID", perf.WorkOrderID);
                             performanceCommand.Parameters.AddWithValue("@ProcessID", perf.ProcessID);
                             performanceCommand.Parameters.AddWithValue("@ProductID", perf.ProductID);
-                            performanceCommand.Parameters.AddWithValue("@RegiseredBy", perf.EmployeeID); // 현재 사용자 이름
+                            performanceCommand.Parameters.AddWithValue("@RegiseredBy", perf.IssuedBy); // 현재 사용자 이름
                             performanceCommand.Parameters.AddWithValue("@EquipmentID", perf.EquipmentID);
                             performanceCommand.Parameters.AddWithValue("@GoodQty", perf.GoodQty);
                             performanceCommand.Parameters.AddWithValue("@DefectQTy", perf.BadQty);
