@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MES_SW.Data.Worker
 {
@@ -91,13 +92,13 @@ namespace MES_SW.Data.Worker
                             JOIN Process pc ON pc.ProcessID = wop.ProcessID
                             JOIN Users u ON u.EmployeeID = w.IssueBy
                             JOIN Users uu ON uu.EmployeeID = @WorkerID
-                            WHERE CAST(w.StartDate AS DATE) = @Date AND uu.Department = pc.Name AND wop.Status IN ('대기', '진행 중')
+                            WHERE   uu.Department = pc.Name --AND CAST(w.StartDate AS DATE) = @Date AND wop.Status IN ('대기', '진행 중')
                         ";
-
+                            // 쿼리문에 주석 없애면 날짜 별, 상태 별로 조회 가능 함.
             using (SqlConnection conn = DBHelper.GetConnection())
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                cmd.Parameters.AddWithValue("@Date", date.Date);
+                //cmd.Parameters.AddWithValue("@Date", date.Date);
                 cmd.Parameters.AddWithValue("@WorkerID", workerID);
 
                 conn.Open();

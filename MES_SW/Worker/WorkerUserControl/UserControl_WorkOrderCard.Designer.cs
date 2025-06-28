@@ -29,6 +29,7 @@ namespace MES_SW.Worker.WorkerUserControl
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             ProcessName = new Label();
             ProductName = new Label();
             QtyLabel = new Label();
@@ -38,6 +39,7 @@ namespace MES_SW.Worker.WorkerUserControl
             progressBar1 = new ProgressBar();
             StartButton = new Button();
             WorkOrderIDLabel = new Label();
+            progressTimer = new System.Windows.Forms.Timer(components);
             SuspendLayout();
             // 
             // ProcessName
@@ -98,14 +100,14 @@ namespace MES_SW.Worker.WorkerUserControl
             // 
             progressBar1.Location = new Point(20, 212);
             progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(225, 25);
+            progressBar1.Size = new Size(182, 25);
             progressBar1.TabIndex = 6;
             // 
             // StartButton
             // 
             StartButton.Location = new Point(20, 243);
             StartButton.Name = "StartButton";
-            StartButton.Size = new Size(225, 22);
+            StartButton.Size = new Size(182, 22);
             StartButton.TabIndex = 7;
             StartButton.Text = "시작";
             StartButton.UseVisualStyleBackColor = true;
@@ -120,7 +122,11 @@ namespace MES_SW.Worker.WorkerUserControl
             WorkOrderIDLabel.TabIndex = 8;
             WorkOrderIDLabel.Text = "작업번호 : 1000";
             // 
-            // UserControal_WorkOrderCard
+            // progressTimer
+            // 
+            progressTimer.Tick += progressTimer_Tick;
+            // 
+            // UserControl_WorkOrderCard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -133,14 +139,14 @@ namespace MES_SW.Worker.WorkerUserControl
             Controls.Add(QtyLabel);
             Controls.Add(ProductName);
             Controls.Add(ProcessName);
-            Name = "UserControal_WorkOrderCard";
-            Size = new Size(269, 277);
-            DoubleClick += this.UserControl_WorkOrderCard_DoubleClick;
+            Name = "UserControl_WorkOrderCard";
+            Size = new Size(223, 270);
+            DoubleClick += UserControl_WorkOrderCard_DoubleClick;
             ResumeLayout(false);
             PerformLayout();
         }
 
-        
+
 
         #endregion
 
@@ -153,5 +159,6 @@ namespace MES_SW.Worker.WorkerUserControl
         private ProgressBar progressBar1;
         private Button StartButton;
         private Label WorkOrderIDLabel;
+        private System.Windows.Forms.Timer progressTimer;
     }
 }

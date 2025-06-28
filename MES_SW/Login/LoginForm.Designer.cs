@@ -39,9 +39,8 @@
             // 
             EmployeeNumText.Font = new Font("Stencil", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
             EmployeeNumText.Location = new Point(176, 254);
-            EmployeeNumText.Multiline = true;
             EmployeeNumText.Name = "EmployeeNumText";
-            EmployeeNumText.Size = new Size(200, 32);
+            EmployeeNumText.Size = new Size(200, 31);
             EmployeeNumText.TabIndex = 0;
             EmployeeNumText.TextAlign = HorizontalAlignment.Right;
             EmployeeNumText.KeyPress += EmployeeNumText_KeyPress;
