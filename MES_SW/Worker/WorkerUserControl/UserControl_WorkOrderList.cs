@@ -42,8 +42,6 @@ namespace MES_SW.Worker.WorkerUserControl
             LoadWorkOrdersByDate(dateTimePicker1.Value);
         }
 
-        
-
 
         #region Load_Methods
         

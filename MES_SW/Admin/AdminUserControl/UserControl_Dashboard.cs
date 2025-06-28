@@ -1,6 +1,7 @@
 ﻿using MES_SW.Data;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,7 +19,7 @@ namespace MES_SW.Admin
         public UserControl_Dashboard()
         {
             InitializeComponent();
-            
+
 
         }
 
@@ -92,33 +93,82 @@ namespace MES_SW.Admin
 
         private void LoadPerformanceChart()
         {
-           
+
+            
+
+            
             string query = @"
                             SELECT 
-                            p.ProcessID,
-                            p.Name AS ProcessName,
-                            ISNULL(SUM(wp.GoodQty), 0) AS TotalGood,
-                            ISNULL(SUM(wp.DefectQty), 0) AS TotalDefect
+                                p.ProcessID,
+                                p.Name AS ProcessName,
+                                wop.Status,
+                                COUNT(*) AS Count
+                            FROM Process p
+                            LEFT JOIN WorkOrderProcess wop ON wop.ProcessID = p.ProcessID
+                            GROUP BY p.ProcessID, p.Name, wop.Status
+                            ORDER BY p.ProcessID, wop.Status;";
+
+            Dictionary<string, Dictionary<string, int>> chartData = new();
+
+            using (SqlConnection conn = DBHelper.GetConnection())
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string processName = reader["ProcessName"].ToString();
+                        string status = reader["Status"]?.ToString() ?? "없음";
+                        int count = Convert.ToInt32(reader["Count"]);
+
+                        if (!chartData.ContainsKey(processName))
+                            chartData[processName] = new Dictionary<string, int>();
+
+                        chartData[processName][status] = count;
+                    }
+                }
+            }
+
+            // panelCharts는 FlowLayoutPanel이라고 가정
+            flowLayoutPanel1.Controls.Clear();
+
+            foreach (var processEntry in chartData)
+            {
+                string processName = processEntry.Key;
+                var statusDict = processEntry.Value;
+
+                Chart chart = new Chart();
+                chart.Size = new Size(400, 200);
+                chart.ChartAreas.Add(new ChartArea("Area"));
+                chart.Titles.Add(processName);
+
+                Series series = new Series("상태별 수량")
+                {
+                    ChartType = SeriesChartType.Column
+                };
+
+                foreach (var statusEntry in statusDict)
+                {
+                    series.Points.AddXY(statusEntry.Key, statusEntry.Value);
+                }
+
+                chart.Series.Add(series);
+                chart.Legends.Add(new Legend("Legend"));
+                flowLayoutPanel1.Controls.Add(chart);
+            }
+            
+            /*
+            string query = @"
+                            SELECT 
+                                p.ProcessID,
+                                p.Name AS ProcessName,
+                                ISNULL(SUM(wp.GoodQty), 0) AS TotalGood,
+                                ISNULL(SUM(wp.DefectQty), 0) AS TotalDefect
                             FROM Process p
                             LEFT JOIN WorkPerformance wp ON wp.ProcessID = p.ProcessID
                             GROUP BY p.ProcessID, p.Name
                             ORDER BY p.ProcessID;";
-
-            Chart chart = new Chart();
-            chart.Dock = DockStyle.Fill;
-            chart.ChartAreas.Add(new ChartArea("MainArea"));
-
-            Series goodSeries = new Series("양품 수량")
-            {
-                ChartType = SeriesChartType.Column,
-                Color = Color.Green
-            };
-
-            Series defectSeries = new Series("불량 수량")
-            {
-                ChartType = SeriesChartType.Column,
-                Color = Color.Red
-            };
 
             using (SqlConnection conn = DBHelper.GetConnection())
             using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -132,20 +182,35 @@ namespace MES_SW.Admin
                         int goodQty = Convert.ToInt32(reader["TotalGood"]);
                         int defectQty = Convert.ToInt32(reader["TotalDefect"]);
 
-                        goodSeries.Points.AddXY(processName, goodQty);
-                        defectSeries.Points.AddXY(processName, defectQty);
+                        Chart chart = new Chart();
+                        chart.Size = new Size(400, 200); // 차트 크기 조정
+                        chart.ChartAreas.Add(new ChartArea("MainArea"));
+
+                        Series goodSeries = new Series("양품 수량")
+                        {
+                            ChartType = SeriesChartType.Column,
+                            Color = Color.Green
+                        };
+
+                        Series defectSeries = new Series("불량 수량")
+                        {
+                            ChartType = SeriesChartType.Column,
+                            Color = Color.Red
+                        };
+
+                        goodSeries.Points.AddXY("양품", goodQty);
+                        defectSeries.Points.AddXY("불량", defectQty);
+
+                        chart.Series.Add(goodSeries);
+                        chart.Series.Add(defectSeries);
+                        chart.Titles.Add(processName);
+                        chart.Legends.Add(new Legend("Legend"));
+
+                        flowLayoutPanel1.Controls.Add(chart); // FlowLayoutPanel에 추가
                     }
                 }
-            }
+            }*/
 
-            chart.Series.Add(goodSeries);
-            chart.Series.Add(defectSeries);
-            chart.Legends.Add(new Legend("Legend"));
-
-            //panel1.Controls.Clear(); // 차트 표시할 패널에 그리기
-            panel1.Controls.Add(chart);
         }
-
-
     }
 }

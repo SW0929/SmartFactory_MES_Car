@@ -117,7 +117,7 @@
             WorkPerformanceButton.Name = "WorkPerformanceButton";
             WorkPerformanceButton.Size = new Size(261, 110);
             WorkPerformanceButton.TabIndex = 1;
-            WorkPerformanceButton.Text = "작업실적";
+            WorkPerformanceButton.Text = "작업실적 수정";
             WorkPerformanceButton.UseVisualStyleBackColor = true;
             WorkPerformanceButton.Click += WorkPerformanceButton_Click;
             // 
