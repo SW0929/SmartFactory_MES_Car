@@ -15,25 +15,87 @@
 - **Architecture**: MVC 유사 구조 (Form - Service - Repository - Model)
 
 ---
-## 📋 주요 기능
+
+
+## 📋📸 주요 기능 및 UI (수정 중)
+
+<details>
+    <summary>로그인</summary>
+
+![image](https://github.com/user-attachments/assets/1d3eef97-3e03-489d-b334-483cb216c105)
+
+
+### 로그인
+- 사용자의 사번으로 로그인 할 수 있음
+- 사용자의 역할에 따라 다른 Form(관리자/작업자) 이 나타남
+- 작업자/관리자 Form 에서 로그아웃하면 로그인 Form으로 다시 돌아옴
+</details>
+
+<details>
+    <summary>관리자</summary>
+
+![image](https://github.com/user-attachments/assets/8a50ddf8-22a6-4502-820b-f04c27f0ac1c)
+
+### 사용자 관리
+- 사용자 등록, 수정, 삭제
+- 사용자 상태 활성화
+- 사용자 역할 부여
 
 ### ✅ 작업 지시 관리
 - 작업 등록, 수정, 삭제
 - 제품 선택, 수량 및 시작일 입력
 - 설비 자동 할당 기능
+- 작업 상태 확인 가능
 
-### 🧰 설비 관리
+### 🧰 설비 목록
 - 설비 등록, 수정, 삭제
 - 설비 상태 확인 ('대기', '가동', '고장', '정비 중')
-- 결함 등록 및 해결 처리
+
+### 🧰 설비 관리
+- 작업자가 등록한 결함 해결 처리
+- 결함 사유 확인 기능
+
+### 📈 공정별 실적 차트 (추후 개발 예정)
+- 공정별 '양품/불량' 수량 차트 시각화
+- 실시간 생산 현황 확인 가능
+- (현재는 각 작업 지시의 흐름을 확인할 수 있음)
+
+</details>
+
+<details>
+    <summary>작업자</summary>
+    
+![image](https://github.com/user-attachments/assets/534a89f0-f105-45c4-a5f0-f439c272cae6)
+![image](https://github.com/user-attachments/assets/db65e844-f2f4-4d4d-94b7-1320489ec791)
+
+
+### ✅ 작업 지시 목록
+- 각 공정별 할당 받은 작업 목록 확인 가능
+- 할당 받은 작업 시작 가능
+- 실적 입력 기능
+- 날짜 별 할당 받은 작업 확인 기능
 
 ### 📊 작업 실적 등록
+(완료 된 작업 double click 하면 실적 form show -> 실적 입력 후 작업 종료)
 - 공정별 양품/불량 실적 등록
-- 실적 조회 및 수정
 
-### 📈 공정별 실적 차트
+### 📊 작업 실적 등록
+- 각 작업자가 등록 한 실적 조회 및 수정
+
+### 🧰 설비 결함 등록
+- 현재 가동 중인 설비 목록 확인 가능
+- 결함이 발생한 설비 등록
+
+### 📈 공정별 실적 차트 (추후 개발 예정)
 - 공정별 '양품/불량' 수량 차트 시각화
-- 실시간 생산 품질 현황 확인 가능
+- 실시간 생산 현황 확인 가능
+- (현재는 각 작업 지시의 흐름을 확인할 수 있음)
+
+</details>
+
+
+
+
 
 ---
 
@@ -42,7 +104,8 @@
 <details>
     <summary>🗂️ ERD (Entity Relationship Diagram)</summary>
 
-![MES_DB다이어그램](https://github.com/user-attachments/assets/65c66729-db35-4005-bada-a22322f324e3)
+![image](https://github.com/user-attachments/assets/34387e89-437c-43b2-a108-0c74c673215c)
+
 
 </details>
 
@@ -164,14 +227,90 @@
 | UpdateDate     | 실적 수정 날짜         |
 
 </details>
----
+
 
 ## 🧭 프로젝트 구조
 <details>
-    <summary>🧭 프로젝트 구조</summary>
+    <summary> 프로젝트 구조 </summary></summary>
 
+```bash
+MES_SW
+├── Admin                    # 관리자 관련 기능
+│   ├── AdminUserControl     # 관리자 화면(UserControls)
+│   │   ├── UserControl_Dashboard.cs
+│   │   ├── UserControl_Equipment.cs
+│   │   ├── UserControl_EquipmentDefect.cs
+│   │   ├── UserControl_UserManager.cs
+│   │   └── UserControl_WorkOrder.cs
+│   ├── Forms                # 관리자 메인 폼
+│   │   └── AdminForm.cs
+│   └── Models               # 관리자 전용 모델
+│       ├── Employee.cs
+│       ├── WorkOrder.cs
+│       └── Items/           # 드롭다운, 리스트용 모델
+│           ├── DepartmentItem.cs
+│           ├── EquipmentItem.cs
+│           ├── ProcessItem.cs
+│           └── ProductItem.cs
 
+├── Worker                  # 작업자 관련 기능
+│   ├── Forms                # 작업자 메인/서브 폼
+│   │   ├── WorkerForm.cs
+│   │   └── WorkPerformanceForm.cs
+│   ├── Models               # 작업자용 데이터 모델
+│   │   ├── WorkOrder.cs
+│   │   └── WorkOrderPerformance.cs
+│   └── WorkerUserControl    # 작업자 화면(UserControls)
+│       ├── UserControl_EquipmentList.cs
+│       ├── UserControl_WorkOrderCard.cs
+│       ├── UserControl_WorkOrderList.cs
+│       └── UserControl_WorkPerformance.cs
 
+├── Services                # 비즈니스 로직 계층
+│   ├── Admin
+│   │   ├── EquipmentDefectService.cs
+│   │   ├── UserManageService.cs
+│   │   └── WorkOrderService.cs
+│   ├── Common               # 공통 서비스
+│   │   ├── EquipmentService.cs
+│   │   ├── ProcessService.cs
+│   │   └── ProductService.cs
+│   └── Worker
+│       ├── WorkOrderServices.cs
+│       └── WorkPerformanceService.cs
+
+├── Data                   # DB 액세스 계층 (Repository 패턴)
+│   ├── DBHelper.cs         # 공통 DB 유틸리티
+│   ├── EquipmentDefect.cs
+│   ├── EquipmentRepository.cs
+│   ├── ProcessRepository.cs
+│   ├── ProductRepository.cs
+│   ├── UserRepository.cs
+│   ├── Admin
+│   │   ├── EquipmentDefectRepository.cs
+│   │   ├── UserManageRepository.cs
+│   │   └── WorkOrderRepository.cs
+│   └── Worker
+│       ├── WorkOrderPerformanceRepository.cs
+│       └── WorkOrderRepository.cs
+
+├── Login                  # 로그인 폼
+│   └── LoginForm.cs
+```
+</details>
+
+<details>
+    <summary> 시스템 구조 </summary></summary>
+
+```bash
+[WinForms UI] 
+    ↓
+[Service Layer]  ← 유효성 검증, 트랜잭션 관리
+    ↓
+[Repository Layer] ← SQL 실행, DB 접근
+    ↓
+[SQL Server (MSSQL)]
+```
 </details>
 
 ---
@@ -180,5 +319,15 @@
 - 이 구조는 기본적인 스마트팩토리 MES 흐름을 기반으로 설계되었습니다.
 - 사용자는 역할(UserRole)에 따라 권한이 구분됩니다 (예: 관리자, 작업자).
 - 설비 상태는 EquipmentDefect 테이블을 통해 점검/대기 전환됩니다.
+
+---
+
+## 📦 향후 개선 사항
+
+- [ ] UI/UX 개선
+- [ ] REST API 제공 및 웹 버전 연동 (ASP.NET Core + Vue.js)
+- [ ] 설비 실시간 연동 (MQTT 사용)
+- [ ] 설비 가동률, 공정별 효율 분석 기능 추가
+- [ ] 자재 관리 기능 추가
 
 ---
