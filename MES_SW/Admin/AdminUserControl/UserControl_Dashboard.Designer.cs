@@ -30,7 +30,6 @@
         {
             label1 = new Label();
             dataGridView1 = new DataGridView();
-            flowLayoutPanel1 = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -48,27 +47,18 @@
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(58, 70);
+            dataGridView1.Location = new Point(26, 70);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
-            dataGridView1.Size = new Size(937, 254);
+            dataGridView1.Size = new Size(1042, 509);
             dataGridView1.TabIndex = 1;
             dataGridView1.CellClick += dataGridView1_CellClick;
-            // 
-            // flowLayoutPanel1
-            // 
-            flowLayoutPanel1.AutoScroll = true;
-            flowLayoutPanel1.Location = new Point(63, 375);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(940, 194);
-            flowLayoutPanel1.TabIndex = 2;
             // 
             // UserControl_Dashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            Controls.Add(flowLayoutPanel1);
             Controls.Add(dataGridView1);
             Controls.Add(label1);
             Name = "UserControl_Dashboard";
@@ -82,6 +72,5 @@
 
         private Label label1;
         private DataGridView dataGridView1;
-        private FlowLayoutPanel flowLayoutPanel1;
     }
 }

@@ -197,6 +197,7 @@
             Controls.Add(panelMain);
             Controls.Add(panelMenu);
             Name = "AdminForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "관리자";
             tableLayoutPanel1.ResumeLayout(false);
             panelMenu.ResumeLayout(false);

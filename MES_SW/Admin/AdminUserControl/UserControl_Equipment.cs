@@ -195,6 +195,7 @@ namespace MES_SW.Admin
         }
         private void SetEquipmentFieldsFromRow(DataGridViewRow row)
         {
+
             EquipmentIDLabel.Text = row.Cells["EquipmentID"].Value.ToString();
             EquipmentNameTextBox.Text = row.Cells["Name"].Value.ToString();
             EquipmentTypeTextBox.Text = row.Cells["Type"].Value.ToString();

@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-// 수정 필요************************************************
+// 수정 필요************************************************ 
 namespace MES_SW.Admin
 {   //관리자와 작업자의 생산 대시보드 현황은 동일.
     public partial class UserControl_Dashboard : UserControl
@@ -26,14 +26,16 @@ namespace MES_SW.Admin
         private void UserControl_Dashboard_Load(object sender, EventArgs e)
         {
             LoadDashBoardData(); // 대시보드 데이터 로드
-            LoadPerformanceChart();
+            //LoadPerformanceChart();
             //CreatePieChart();
         }
 
         private void LoadDashBoardData()
         {
             // TODO : ProcessID 를 ProcessName로 변경
-            string query = "SELECT * FROM WorkOrderProcess";
+            string query = @"SELECT *
+                            FROM WorkOrderProcess
+                            ORDER BY WorkOrderID, ProcessID";
             dataGridView1.DataSource = DBHelper.ExecuteDataTable(query);
             dataGridView1.Columns["StartTime"].DefaultCellStyle.Format = "yyyy-MM-dd tt h:mm:ss";
             dataGridView1.Columns["EndTime"].DefaultCellStyle.Format = "yyyy-MM-dd tt h:mm:ss";
@@ -92,11 +94,7 @@ namespace MES_SW.Admin
         }
 
         private void LoadPerformanceChart()
-        {
-
-            
-
-            
+        {  
             string query = @"
                             SELECT 
                                 p.ProcessID,
@@ -108,7 +106,7 @@ namespace MES_SW.Admin
                             GROUP BY p.ProcessID, p.Name, wop.Status
                             ORDER BY p.ProcessID, wop.Status;";
 
-            Dictionary<string, Dictionary<string, int>> chartData = new();
+            //Dictionary<string, Dictionary<string, int>> chartData = new();
 
             using (SqlConnection conn = DBHelper.GetConnection())
             using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -118,19 +116,20 @@ namespace MES_SW.Admin
                 {
                     while (reader.Read())
                     {
-                        string processName = reader["ProcessName"].ToString();
+                        string processName = reader["ProcessName"]?.ToString() ?? "없음";
                         string status = reader["Status"]?.ToString() ?? "없음";
                         int count = Convert.ToInt32(reader["Count"]);
 
-                        if (!chartData.ContainsKey(processName))
-                            chartData[processName] = new Dictionary<string, int>();
+                        //if (!chartData.ContainsKey(processName))
+                        //    chartData[processName] = new Dictionary<string, int>();
 
-                        chartData[processName][status] = count;
+                        //chartData[processName][status] = count;
                     }
                 }
             }
 
             // panelCharts는 FlowLayoutPanel이라고 가정
+            /*
             flowLayoutPanel1.Controls.Clear();
 
             foreach (var processEntry in chartData)
@@ -157,7 +156,7 @@ namespace MES_SW.Admin
                 chart.Legends.Add(new Legend("Legend"));
                 flowLayoutPanel1.Controls.Add(chart);
             }
-            
+            */
             /*
             string query = @"
                             SELECT 
