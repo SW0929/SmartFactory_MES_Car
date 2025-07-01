@@ -93,7 +93,7 @@
             // EquipmentIDLabel
             // 
             EquipmentIDLabel.AutoSize = true;
-            EquipmentIDLabel.Location = new Point(123, 277);
+            EquipmentIDLabel.Location = new Point(41, 32);
             EquipmentIDLabel.Name = "EquipmentIDLabel";
             EquipmentIDLabel.Size = new Size(55, 15);
             EquipmentIDLabel.TabIndex = 11;
@@ -104,7 +104,7 @@
             // 
             ProcessIDComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             ProcessIDComboBox.FormattingEnabled = true;
-            ProcessIDComboBox.Location = new Point(122, 195);
+            ProcessIDComboBox.Location = new Point(122, 258);
             ProcessIDComboBox.Name = "ProcessIDComboBox";
             ProcessIDComboBox.Size = new Size(121, 23);
             ProcessIDComboBox.TabIndex = 3;
@@ -112,7 +112,7 @@
             // ProcessIDLabel
             // 
             ProcessIDLabel.AutoSize = true;
-            ProcessIDLabel.Location = new Point(45, 198);
+            ProcessIDLabel.Location = new Point(45, 261);
             ProcessIDLabel.Name = "ProcessIDLabel";
             ProcessIDLabel.Size = new Size(31, 15);
             ProcessIDLabel.TabIndex = 9;
@@ -120,7 +120,7 @@
             // 
             // EquipmentTypeTextBox
             // 
-            EquipmentTypeTextBox.Location = new Point(122, 84);
+            EquipmentTypeTextBox.Location = new Point(122, 147);
             EquipmentTypeTextBox.Name = "EquipmentTypeTextBox";
             EquipmentTypeTextBox.Size = new Size(100, 23);
             EquipmentTypeTextBox.TabIndex = 1;
@@ -128,7 +128,7 @@
             // EquipmentTypeLabel
             // 
             EquipmentTypeLabel.AutoSize = true;
-            EquipmentTypeLabel.Location = new Point(45, 87);
+            EquipmentTypeLabel.Location = new Point(45, 150);
             EquipmentTypeLabel.Name = "EquipmentTypeLabel";
             EquipmentTypeLabel.Size = new Size(31, 15);
             EquipmentTypeLabel.TabIndex = 7;
@@ -136,7 +136,7 @@
             // 
             // EquipmentStatusTextBox
             // 
-            EquipmentStatusTextBox.Location = new Point(122, 136);
+            EquipmentStatusTextBox.Location = new Point(122, 199);
             EquipmentStatusTextBox.Name = "EquipmentStatusTextBox";
             EquipmentStatusTextBox.Size = new Size(100, 23);
             EquipmentStatusTextBox.TabIndex = 2;
@@ -144,7 +144,7 @@
             // EquipmentStatusLabel
             // 
             EquipmentStatusLabel.AutoSize = true;
-            EquipmentStatusLabel.Location = new Point(45, 144);
+            EquipmentStatusLabel.Location = new Point(45, 207);
             EquipmentStatusLabel.Name = "EquipmentStatusLabel";
             EquipmentStatusLabel.Size = new Size(31, 15);
             EquipmentStatusLabel.TabIndex = 5;
@@ -152,7 +152,7 @@
             // 
             // EquipmentNameTextBox
             // 
-            EquipmentNameTextBox.Location = new Point(122, 37);
+            EquipmentNameTextBox.Location = new Point(122, 100);
             EquipmentNameTextBox.Name = "EquipmentNameTextBox";
             EquipmentNameTextBox.Size = new Size(100, 23);
             EquipmentNameTextBox.TabIndex = 0;
@@ -180,7 +180,7 @@
             // EquipmentName
             // 
             EquipmentName.AutoSize = true;
-            EquipmentName.Location = new Point(45, 40);
+            EquipmentName.Location = new Point(45, 103);
             EquipmentName.Name = "EquipmentName";
             EquipmentName.Size = new Size(43, 15);
             EquipmentName.TabIndex = 1;

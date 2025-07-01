@@ -46,6 +46,11 @@ namespace MES_SW.Admin
             dataGridView1.Columns["Description"].Visible = false;
         }
 
+        /// <summary>
+        /// 각 셀을 클릭하면 설비 결함 정보가 모든 textbox에 입려된다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             
@@ -63,6 +68,11 @@ namespace MES_SW.Admin
         #endregion
 
         #region Event_Handlers
+        /// <summary>
+        /// 선택한 설비 '점검' 상태로 변경
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void InspectButton_Click(object sender, EventArgs e)
         {
             _equipmentDefect = GetEquipmentFromInput();
@@ -85,6 +95,12 @@ namespace MES_SW.Admin
             }
         }
 
+
+        /// <summary>
+        /// 해결 완료된 설비 상태 변경
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SolvedButton_Click(object sender, EventArgs e)
         {
             _equipmentDefect = GetEquipmentFromInput();
@@ -110,6 +126,8 @@ namespace MES_SW.Admin
         }
 
         #endregion
+
+        // 사용자가 입력한 설비결함 Model 의 값 들을 받아온다.
         private EquipmentDefect GetEquipmentFromInput()
         {
 
@@ -124,6 +142,7 @@ namespace MES_SW.Admin
             };
         }
 
+        // 셀에서 선택된 설비 결함 정보를 각 데이터에 넣는다.
         private void SetDefectFormFieldsFromRow(DataGridViewRow row)
         {
 
