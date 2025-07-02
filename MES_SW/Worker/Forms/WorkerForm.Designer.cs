@@ -142,7 +142,7 @@
             // WorkerName
             // 
             WorkerName.AutoSize = true;
-            WorkerName.Location = new Point(25, 20);
+            WorkerName.Location = new Point(28, 21);
             WorkerName.Name = "WorkerName";
             WorkerName.Size = new Size(71, 15);
             WorkerName.TabIndex = 2;
