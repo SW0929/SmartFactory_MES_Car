@@ -1,0 +1,43 @@
+-초기값-
+INSERT INTO Product (ProductID, Name, Model, Description) VALUES
+(1, N'소나타', N'DN8', N'중형 세단, 고연비, 패밀리용 차량'),
+(2, N'아반떼', N'CN7', N'준중형 세단, 경제적인 연비, 도시형'),
+(3, N'투싼', N'NX4', N'준중형 SUV, 넓은 적재공간, 패밀리 SUV'),
+(4, N'팰리세이드', N'LX2', N'대형 SUV, 7~8인승, 고급 패밀리 차량'),
+(5, N'그랜저', N'GN7', N'준대형 세단, 고급 인테리어, 비즈니스용'),
+(6, N'베뉴', N'QX', N'소형 SUV, 젊은층 타깃, 도심형 모델'),
+(7, N'싼타페', N'MX5', N'중형 SUV, 5~7인승, 가족 여행에 적합'),
+(8, N'아이오닉5', N'NE', N'전기차, 초고속 충전 지원, 미래형 디자인');
+
+INSERT INTO Process (ProcessID, Name, Sequence, Description) VALUES
+(1, N'프레스', 1, N'철판을 자동차 외형으로 변형'),
+(2, N'차체', 2, N'차체 부품을 조립하여 자동차 골격 형성'),
+(3, N'도장', 3, N'자동차 외관 색상 및 방청 처리'),
+(4, N'의장', 4, N'주요 부품 장착 및 차량 조립'),
+(5, N'검사', 5, N'최종 품질 검사 및 출고 전 점검');
+
+INSERT INTO Equipment (EquipmentID, Name, Type, Status, ProcessID, LastUsedTime) VALUES
+(1, N'프레스기 A', N'프레스기계', N'대기', 1, NULL),
+(2, N'프레스기 B', N'프레스기계', N'대기', 1, NULL),
+(3, N'용접로봇 A', N'용접로봇', N'대기', 2, NULL),
+(4, N'프레임 체결장비', N'체결장비', N'대기', 2, NULL),
+(5, N'자동 도장기 A', N'도장설비', N'대기', 3, NULL),
+(6, N'건조로', N'건조설비', N'대기', 3, NULL),
+(7, N'대시보드 조립장비', N'조립장비', N'대기', 4, NULL),
+(8, N'시트 설치기', N'설치장비', N'대기', 4, NULL),
+(9, N'최종검사기 A', N'검사장비', N'대기', 5, NULL),
+(10, N'라이트 정렬기', N'검사장비', N'대기', 5, NULL),
+(12, N'프레스기 C', N'프레스기계', N'대기', 1, NULL);
+
+INSERT INTO Users (EmployeeID, UserName, UserRole, UserStatus, Department) VALUES
+(112345, N'정명돈', N'Worker', 1, N'프레스'),
+(132425, N'유재석', N'Worker', 1, N'프레스'),
+(990929, N'이상원', N'Admin', 1, N'프레스'),
+(2025010, N'박명수', N'Worker', 1, N'차체'),
+(2025011, N'하동준', N'Worker', 1, N'차체'),
+(2025012, N'노충철', N'Worker', 1, N'차체'),
+(2025013, N'길성준', N'Worker', 0, N'도장'),
+(2025014, N'정준하', N'Worker', 1, N'도장'),
+(2025015, N'이광수', N'Worker', 1, N'의장'),
+(2025017, N'손종민', N'Worker', 1, N'검사'),
+(2025018, N'손웅정', N'Worker', 1, N'검사');

@@ -1,0 +1,121 @@
+-- WorkPerformance 테이블
+CREATE TABLE WorkPerformance (
+    PerformanceID INT PRIMARY KEY IDENTITY(1,1),
+    OrderId INT NOT NULL,
+    ProcessID INT NOT NULL,
+    ProductID INT NOT NULL,
+    RegisteredBy INT NOT NULL,
+    EquipmentID INT NOT NULL,
+    GoodQty INT NOT NULL DEFAULT 0,
+    DefectQty INT NOT NULL DEFAULT 0,
+    Reason NVARCHAR(200),
+    RegDate DATETIME NOT NULL,
+    UpdateDate DATETIME,
+
+    FOREIGN KEY (OrderId) REFERENCES WorkOrders(WorkOrderID),
+    FOREIGN KEY (ProcessID) REFERENCES Process(ProcessID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
+    FOREIGN KEY (RegisteredBy) REFERENCES Users(EmployeeID),
+    FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID)
+);
+
+-- WorkOrders 테이블
+CREATE TABLE WorkOrders (
+    WorkOrderID INT PRIMARY KEY IDENTITY(1,1),
+    ProductID INT,
+    OrderQty INT NOT NULL,
+    StartDate DATE NOT NULL,
+    Department NVARCHAR(50),
+    IssueBy INT,
+    Status NVARCHAR(30) NOT NULL DEFAULT '대기',
+
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
+    FOREIGN KEY (IssueBy) REFERENCES Users(EmployeeID),
+    CHECK (Status IN ('대기', '진행 중', '완료'))
+);
+
+-- WorkOrderProcess 테이블
+CREATE TABLE WorkOrderProcess (
+    WorkOrderProcessID INT PRIMARY KEY IDENTITY(1,1),
+    WorkOrderID INT,
+    ProcessID INT,
+    EquipmentID INT,
+    AssignedUserID INT,
+    Status NVARCHAR(50) NOT NULL,
+    StartTime DATETIME,
+    EndTime DATETIME,
+
+    FOREIGN KEY (WorkOrderID) REFERENCES WorkOrders(WorkOrderID),
+    FOREIGN KEY (ProcessID) REFERENCES Process(ProcessID),
+    FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID),
+    FOREIGN KEY (AssignedUserID) REFERENCES Users(EmployeeID),
+    CHECK (Status IN ('대기', '진행 중', '완료'))
+);
+
+-- WorkOrderProcessLog 테이블
+CREATE TABLE WorkOrderProcessLog (
+    LogID INT PRIMARY KEY IDENTITY(1,1),
+    WorkOrderProcessID INT NOT NULL,
+    WorkOrderID INT NOT NULL,
+    ProcessID INT NOT NULL,
+    EquipmentID INT NOT NULL,
+    AssignedUserID INT NOT NULL,
+    StartTime DATETIME NOT NULL,
+    EndTime DATETIME NOT NULL,
+    LoggedAt DATETIME NOT NULL DEFAULT GETDATE(),
+
+    FOREIGN KEY (WorkOrderProcessID) REFERENCES WorkOrderProcess(WorkOrderProcessID)
+);
+
+-- EquipmentDefect 테이블
+CREATE TABLE EquipmentDefect (
+    DefectID INT PRIMARY KEY IDENTITY(1,1),
+    EquipmentID INT,
+    DefectTime DATETIME NOT NULL DEFAULT GETDATE(),
+    ReportedBy INT,
+    DefectType NVARCHAR(50) NOT NULL,
+    Description NVARCHAR(MAX),
+    Resolved BIT NOT NULL DEFAULT 0,
+    ResolvedTime DATETIME,
+
+    FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID),
+    FOREIGN KEY (ReportedBy) REFERENCES Users(EmployeeID)
+);
+
+-- Users 테이블
+CREATE TABLE Users (
+    EmployeeID INT PRIMARY KEY,
+    UserName NVARCHAR(50) NOT NULL,
+    UserRole NVARCHAR(50) DEFAULT 'Worker',
+    UserStatus BIT DEFAULT 0,
+    Department NVARCHAR(20)
+);
+
+-- Product 테이블
+CREATE TABLE Product (
+    ProductID INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(100) NOT NULL,
+    Model NVARCHAR(50) NOT NULL,
+    Description NVARCHAR(MAX)
+);
+
+-- Process 테이블
+CREATE TABLE Process (
+    ProcessID INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(50) NOT NULL,
+    Sequence INT NOT NULL,
+    Description NVARCHAR(255)
+);
+
+-- Equipment 테이블
+CREATE TABLE Equipment (
+    EquipmentID INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(100) NOT NULL,
+    Type NVARCHAR(50),
+    Status NVARCHAR(30) NOT NULL,
+    ProcessID INT,
+    LastUsedTime DATETIME,
+
+    FOREIGN KEY (ProcessID) REFERENCES Process(ProcessID),
+    CHECK (Status IN ('고장', '점검', '가동', '대기', '할당 대기'))
+);
