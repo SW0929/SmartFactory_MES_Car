@@ -49,7 +49,7 @@
             // WorkOrderNumLabel
             // 
             WorkOrderNumLabel.AutoSize = true;
-            WorkOrderNumLabel.Location = new Point(6, 12);
+            WorkOrderNumLabel.Location = new Point(12, 18);
             WorkOrderNumLabel.Name = "WorkOrderNumLabel";
             WorkOrderNumLabel.Size = new Size(101, 15);
             WorkOrderNumLabel.TabIndex = 0;
@@ -58,7 +58,7 @@
             // ProcessNameLabel
             // 
             ProcessNameLabel.AutoSize = true;
-            ProcessNameLabel.Location = new Point(6, 46);
+            ProcessNameLabel.Location = new Point(12, 51);
             ProcessNameLabel.Name = "ProcessNameLabel";
             ProcessNameLabel.Size = new Size(49, 15);
             ProcessNameLabel.TabIndex = 1;
@@ -67,7 +67,7 @@
             // EquipmentNameLabel
             // 
             EquipmentNameLabel.AutoSize = true;
-            EquipmentNameLabel.Location = new Point(6, 83);
+            EquipmentNameLabel.Location = new Point(12, 86);
             EquipmentNameLabel.Name = "EquipmentNameLabel";
             EquipmentNameLabel.Size = new Size(98, 15);
             EquipmentNameLabel.TabIndex = 2;
@@ -125,7 +125,7 @@
             // ProductNameLabel
             // 
             ProductNameLabel.AutoSize = true;
-            ProductNameLabel.Location = new Point(6, 120);
+            ProductNameLabel.Location = new Point(12, 120);
             ProductNameLabel.Name = "ProductNameLabel";
             ProductNameLabel.Size = new Size(78, 15);
             ProductNameLabel.TabIndex = 12;
